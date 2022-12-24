@@ -5,20 +5,35 @@ let
     pkgs.runCommand pkg {
       buildInputs = [ pkgs.makeWrapper ];
     } ''
-      mkdir $out
-      # Link every top-level folder from pkg to our new target
-      ln -s ${pkg}/* $out
-      # Except the bin folder
-      rm $out/bin
-      mkdir $out/bin
-      # We create the bin folder ourselves and link every binary in it
-      ln -s ${pkg}/bin/* $out/bin
-      # Except the binary
-      rm $out/bin/${pkg.pname}
-      # Because we create it ourself, by creating a wrapper
-      makeWrapper ${pkg}/bin/${pkg.pname} $out/bin/${pkg.pname} ${flags} --inherit-argv0
+        mkdir $out
+        # Link every top-level folder from pkg to our new target
+        ln -s ${pkg}/* $out
+        # Except the bin folder
+        rm $out/bin
+        mkdir $out/bin
+        # We create the bin folder ourselves and link every binary in it
+        ln -s ${pkg}/bin/* $out/bin
+        # Except the binary
+        rm $out/bin/${pkg.pname}
+        # Because we create it ourself, by creating a wrapper
+        makeWrapper ${pkg}/bin/${pkg.pname} $out/bin/${pkg.pname} --inherit-argv0 ${flags}
+
+        # Repeat the same thing to have real share/applications copied
+        rm $out/share
+        mkdir $out/share
+        ln -s ${pkg}/share/* $out/share
+
+        rm $out/share/applications
+        cp -r ${pkg}/share/applications $out/share
+
+        # And substitute paths in the desktop files
+        sed -i s%${pkg}%$out%g $out/share/applications/*.desktop
       '';
+
+  tdesktop = (wrap pkgs.tdesktop "--set LC_TIME C");
+
 in {
+
   imports = [
     ./terminal.nix
   ];
@@ -74,8 +89,11 @@ in {
     zellij
     delta
 
-    (wrap firefox "--set MOZ_USE_XINPUT2=1")
-    (wrap tdesktop "--set LC_TIME=C")
+    (wrap firefox "--set MOZ_USE_XINPUT2 1")
+
+    tdesktop
+    (makeAutostartItem { name = "org.telegram.desktop"; package = tdesktop; })
+  
     sxiv
     maim
     gnome.baobab
