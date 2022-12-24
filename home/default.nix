@@ -10,8 +10,8 @@ let
         ln -s ${pkg}/* $out
         # Except the bin folder
         rm $out/bin
-        mkdir $out/bin
         # We create the bin folder ourselves and link every binary in it
+        mkdir $out/bin
         ln -s ${pkg}/bin/* $out/bin
         # Except the binary
         rm $out/bin/${pkg.pname}
@@ -24,7 +24,9 @@ let
         ln -s ${pkg}/share/* $out/share
 
         rm $out/share/applications
-        cp -r ${pkg}/share/applications $out/share
+        mkdir $out/share/applications
+        # for some weird reason cp -r applications did not work (the copied folder had some temp file which threw off sed _somehow_)
+        cp ${pkg}/share/applications/*.desktop $out/share/applications
 
         # And substitute paths in the desktop files
         sed -i s%${pkg}%$out%g $out/share/applications/*.desktop
