@@ -20,12 +20,17 @@
       src = pkgs.fetchFromGitHub {
         owner = "awesomewm";
         repo = "awesome";
-        rev = "b7bac1dc761f7e231355e76351500a97b27b6803";
-        sha256 = "sha256-SxydaQScu0kvBn3VOnT29/Sji0Y+7my+tO46mpMggAQ=";
+        rev = "ee0663459922a41f57fa2cc936da80d5857eedc9";
+        sha256 = "sha256-K9qOOdzo/KEcEb6DJ1Q1W6sqarbDAQ3cm7Oa6pbikHI=";
       };
       # disable upstream patches since we're on git bleeding edge
       # and they are already there since forever ago
       patches = [];
+      # they've added those files with /usr/bin/env shebang, which is not available in the build sandbox
+      patchPhase = ''
+        patchShebangs tests/examples/_postprocess.lua
+        patchShebangs tests/examples/_postprocess_cleanup.lua
+      '';
       # deps used by my awesome setup through lgi
       buildInputs = super.buildInputs ++ (with pkgs; [ libsecret libsoup wireplumber glib-networking ]);
       # needed for glib-networking to be found by the thing
