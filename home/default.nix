@@ -87,7 +87,6 @@ in {
     ripgrep
     ncspot
     screenfetch
-    helix
     zellij
     delta
 
@@ -148,9 +147,7 @@ in {
 
     # LSPs
     sumneko-lua-language-server
-    # rust-analyzer
     python3Packages.python-lsp-server
-    rnix-lsp
     
     nixpkgs-fmt
 
@@ -261,6 +258,7 @@ in {
         {
           name = "nix";
           indent = { tab-width = 2; unit = "  "; };
+          language-server = { command = "${pkgs.rnix-lsp}/bin/rnix-lsp"; };
         }
         {
           name = "rust";
