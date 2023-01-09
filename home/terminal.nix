@@ -193,6 +193,7 @@
     enable = true;
     shellAbbrs = {
       la = "ls -lAh";
+      ll = "ls -lh";
       f = "fuck";
       gst = "git status";
       gco = "git checkout";
