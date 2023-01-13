@@ -13,14 +13,22 @@
         ./configuration.nix
         { # create a 'nixos' registry entry referencing the nixpkgs input of the system
           # to avoid redownloading new unstable nixpkgs on every search/run
-          nix.registry.nixos = {
-            from.id = "nixos";
-            from.type = "indirect";
-            flake = nixpkgs;
+          nix.registry = {
+            nixos = {
+              from = { id = "nixos"; type = "indirect"; };
+              flake = nixpkgs;
+            };
+            system = {
+              from = { id = "system"; type = "indirect"; };
+              to = { type = "git"; url = "https://git.sr.ht/~necauqua/nixos-config"; };
+            };
+            debug = {
+              from = { id = "debug"; type = "indirect"; };
+              to = { type = "path"; path = "/home/necauqua/projects/nixos-config"; };
+            };
           };
-          # and avoid channels and use the flake
-          # nix.nixPath = "nixpkgs=${nixpkgs}";
-          # ^ not sure if this is even needed if I only use nix-command
+          # and avoid channels altogether and use that input nixpkgs flake
+          nix.nixPath = [ "nixpkgs=${nixpkgs}" ];
         }
         home-manager.nixosModules.home-manager
         {
