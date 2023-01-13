@@ -11,9 +11,10 @@
     let
       modules = [
         ./configuration.nix
-        { # create a 'nixos' registry entry referencing the nixpkgs input of the system
-          # to avoid redownloading new unstable nixpkgs on every search/run
+        {
           nix.registry = {
+            # create a 'nixos' registry entry referencing the nixpkgs input of the system
+            # to avoid redownloading new unstable nixpkgs on every search/run
             nixos = {
               from = { id = "nixos"; type = "indirect"; };
               flake = nixpkgs;
@@ -21,10 +22,12 @@
             system = {
               from = { id = "system"; type = "indirect"; };
               to = { type = "git"; url = "https://git.sr.ht/~necauqua/nixos-config"; };
+              exact = false;
             };
             debug = {
               from = { id = "debug"; type = "indirect"; };
               to = { type = "path"; path = "/home/necauqua/projects/nixos-config"; };
+              exact = false;
             };
           };
           # and avoid channels altogether and use that input nixpkgs flake
