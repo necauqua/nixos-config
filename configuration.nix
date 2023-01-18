@@ -121,8 +121,12 @@ in {
       jdk16.source = adoptopenjdk-hotspot-bin-16;
       jdk17.source = jdk17;
 
-      # also for awesome for lua-lsp when editing the config
+      # also for awesome for lua LSP when editing the config
       awesome.source = my-pkgs.awesome-git;
+      # and the LSP itself
+      lua-lsp.source = sumneko-lua-language-server;
+      # and rnix-lsp for vscode (for helix it's in the HM config)
+      nix-lsp.source = rnix-lsp;
     };
   };
 

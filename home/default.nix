@@ -146,7 +146,6 @@ in {
     lua5_3.pkgs.tl
 
     # LSPs
-    sumneko-lua-language-server
     python3Packages.python-lsp-server
     
     nixpkgs-fmt
