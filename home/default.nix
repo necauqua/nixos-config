@@ -165,6 +165,7 @@ in {
       export __VK_LAYER_NV_optimus=NVIDIA_only
       exec -a "$0" "$@"
     '')
+    (pkgs.writeShellScriptBin ":wq" "kill $PPID")
   ];
 
   home.pointerCursor = {
