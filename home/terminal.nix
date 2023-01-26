@@ -55,6 +55,7 @@
           behind = "↓$count";
           diverged = "↑$ahead_count↓$behind_count";
         };
+        aws.disabled = true;
       };
     };
   };
