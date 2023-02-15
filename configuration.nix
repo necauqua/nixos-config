@@ -13,6 +13,7 @@ in {
     settings = {
       max-jobs = 18;
       trusted-users = ["root" "necauqua"];
+      auto-optimise-store = true;
     };
   };
 
@@ -63,8 +64,10 @@ in {
     hostId = "09e32be7";
     useDHCP = false;
     networkmanager.enable = true;
-    firewall.enable = false;
   };
+  # shave off ~5 secs from boot, lol
+  # we don't need this
+  systemd.services.NetworkManager-wait-online.enable = false; 
 
   i18n.defaultLocale = "en_US.UTF-8";
 
@@ -206,18 +209,6 @@ in {
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
-
-      # allow all the sample rates
-      config.pipewire = {
-        "context.properties" = {
-          "core.daemon" = true;
-          "core.name" = "pipewire-0";
-          "default.clock.rate" = 44100;
-          "default.allowed-rates" =
-            [ 44100 48000 88200 96000 176400 192000 384000 ];
-          "link.max-buffers" = 16;
-        };
-      };
     };
 
     openssh = {
