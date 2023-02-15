@@ -41,7 +41,7 @@ in {
     '';
     
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-    supportedFilesystems = [ "zfs" ];
+    supportedFilesystems = [ "zfs" "ntfs" ];
   };
 
   console.font = "${pkgs.terminus_font}/share/consolefonts/ter-v24n.psf.gz";
@@ -206,6 +206,18 @@ in {
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
+
+      # allow all the sample rates
+      config.pipewire = {
+        "context.properties" = {
+          "core.daemon" = true;
+          "core.name" = "pipewire-0";
+          "default.clock.rate" = 44100;
+          "default.allowed-rates" =
+            [ 44100 48000 88200 96000 176400 192000 384000 ];
+          "link.max-buffers" = 16;
+        };
+      };
     };
 
     openssh = {

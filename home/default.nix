@@ -94,7 +94,7 @@ in {
 
     tdesktop
     (makeAutostartItem { name = "org.telegram.desktop"; package = tdesktop; })
-  
+
     sxiv
     maim
     gnome.baobab
@@ -103,14 +103,14 @@ in {
     gnome.file-roller
     dfeet
     pavucontrol
-    qjackctl
+    qpwgraph
     barrier
-    
+
     gparted
     exfatprogs
     ntfs3g
     smartmontools
-    
+
     nomachine-client
     transmission-gtk
     carla
@@ -147,7 +147,7 @@ in {
 
     # LSPs
     python3Packages.python-lsp-server
-    
+
     nixpkgs-fmt
 
     minecraft
@@ -158,7 +158,9 @@ in {
     winetricks # needed for lutris among other things
 
     solaar
+    songrec
     awscli2
+    ranger
     
     (pkgs.writeShellScriptBin "prime-run" ''
       export __NV_PRIME_RENDER_OFFLOAD=1

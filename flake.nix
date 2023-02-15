@@ -19,13 +19,15 @@
               from = { id = "nixos"; type = "indirect"; };
               flake = nixpkgs;
             };
-            system = {
-              from = { id = "system"; type = "indirect"; };
+            # sudo nixos-rebuild switch --flake <main / local>
+            # well, for the first setup the full git url would be needed ¯\_(ツ)_/¯
+            main = {
+              from = { id = "main"; type = "indirect"; };
               to = { type = "git"; url = "https://git.sr.ht/~necauqua/nixos-config"; };
               exact = false;
             };
-            debug = {
-              from = { id = "debug"; type = "indirect"; };
+            local = {
+              from = { id = "local"; type = "indirect"; };
               to = { type = "path"; path = "/home/necauqua/projects/nixos-config"; };
               exact = false;
             };

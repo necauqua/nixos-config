@@ -4,6 +4,8 @@
   
   networking.hostName = "main";
 
+  boot.zfs.extraPools = [ "archive" ];
+
   # free up some cores to keep consuming that content
   # from the second monitor while packages are rebuilt
   nix.settings.max-jobs = 18;

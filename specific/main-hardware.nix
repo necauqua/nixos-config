@@ -23,8 +23,13 @@
       fsType = "vfat";
     };
 
-  fileSystems."/storage" =
+  fileSystems."/storage/games" =
     { device = "/dev/disk/by-uuid/f1ab243a-0c71-4671-9eeb-7b34c6610ddd";
+      fsType = "ext4";
+    };
+
+  fileSystems."/storage/secondary" =
+    { device = "/dev/disk/by-uuid/960bc50e-335c-4bd9-acfb-7f00e451396d";
       fsType = "ext4";
     };
 
