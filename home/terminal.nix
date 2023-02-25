@@ -225,91 +225,8 @@
     '';
     functions = {
       fish_title = "echo $_";
-      fish_greeting = "set -q IN_NIX_SHELL || fortune -s | lolcat -t";
+      fish_greeting = "set -q IN_NIX_SHELL || ${pkgs.fortune}/bin/fortune -s | ${pkgs.lolcat}/bin/lolcat -t";
       fish_right_prompt = "prompt_pwd";
-      # __fish_postexec_handler = {
-      #   body = ''
-      #     set -l ls $pipestatus
-      #     # allow disabling this for certain commands
-      #     # such as quiet-command-select
-      #     if set -q __no_command_stats
-      #         set -e __no_command_stats
-      #         return
-      #     end
-      #     set __last_status 0
-      #     for s in $ls
-      #         if [ $s -ne 0 ]
-      #             set __last_status (echo $ls | tr ' ' '|')
-      #             break
-      #         end
-      #     end
-      #     set -l d $CMD_DURATION
-      #     # 'before-prompt' - print this after the command finished
-      #     # but before the nexth prompt
-      #     if [ $d -gt 500 ] # only for long commands
-      #         echo (set_color 555)"   took $d ms"
-      #     end
-      #   '';
-      #   onEvent = "fish_postexec";
-      # };
-      # fish_prompt = ''
-      #   set -l sym 'λ '
-
-      #   if set -q SSH_CLIENT || set -q SSH_CONNECTION
-      #       echo -sn (set_color green)(uname -n)(set_color normal)'|'
-      #   end
-
-      #   if set -q IN_NIX_SHELL
-      #       echo -sn (set_color blue)nix-shell(set_color normal)'|'
-      #   end
-
-      #   if [ "$__last_status" != 0 ]
-      #       echo -sn (set_color red)"[$__last_status]"(set_color normal)" "
-      #   end
-
-      #   set -l repo_info (git rev-parse 2> /dev/null)
-      #   if [ "$status" = 0 ]
-
-      #       set -l staged (git diff --staged --name-status 2> /dev/null | wc -l)
-      #       set -l changed (git diff --name-status 2> /dev/null | wc -l)
-      #       set -l untracked (git ls-files --others --exclude-standard 2> /dev/null | wc -l)
-
-      #       set -l mod (set_color normal)
-      #       if [ "$staged" != 0 ]
-      #           set mod $mod(set_color '#33cc33')'⮤'$staged(set_color normal)
-      #       end
-      #       if [ "$changed" != 0 ]
-      #           set mod $mod(set_color '#6666ff')'❖'$changed(set_color normal)
-      #       end
-      #       if [ "$untracked" != 0 ]
-      #           set mod $mod(set_color '#cc3333')'⯈'$untracked
-      #       end
-      #       set -l branch (git symbolic-ref -q --short HEAD)
-      #       if [ -z "$branch" ]
-      #           set branch (set_color '#ff6611')(git rev-parse --short HEAD)
-      #       else
-      #           set branch (set_color '#ffaa33')$branch
-      #       end
-      #       set -l diffs ""
-      #       set -l up (git rev-list @\{u\}..@ --count 2> /dev/null)
-      #       if [ "$up" != 0 ]; and [ "$status" = 0 ]
-      #           set diffs $up'↑'
-      #       end
-      #       set -l down (git rev-list @..@\{u\} --count 2> /dev/null)
-      #       if [ "$down" != 0 ]; and [ "$status" = 0 ]
-      #           set diffs $diffs$down'↓'
-      #       end
-      #       if [ ! -z "$diffs" ]
-      #           set diffs (set_color normal)'('(set_color '#aaaaaa')$diffs(set_color normal)')'
-      #       end
-      #       echo -sn (set_color purple) '⌥' $branch $diffs $mod (set_color normal) '|'
-      #   end
-      #   if [ (id -u) = 0 ]
-      #       echo -s ' ' (set_color '#ff6666') $sym (set_color normal)
-      #   else
-      #       echo -s $sym
-      #   end
-      # '';
       bool = "and echo true; or echo false";
       fuck = ''
         set -l f (math (cat ~/.fucks_given 2>/dev/null; or echo 0) + 1)
@@ -343,6 +260,23 @@
         end
       '';
       mpvt = "mpv --wid=$WINDOWID $argv";
+      yt-music = ''
+        echo -e '\033[?25l' # hide cursor
+        mpv "ytdl://ytsearch:$argv" \
+          --no-video \
+          --no-resume-playback \
+          --no-pause \
+          --load-unsafe-playlists \
+          --msg-level=all=error,statusline=status
+        echo -e '\033[?25h' # show it back
+      '';
+      yt-search = ''
+        mpv "ytdl://ytsearch:$argv" \
+          --wid=$WINDOWID \
+          --load-unsafe-playlists \
+          --really-quiet \
+          --no-pause       
+      '';
     };
   };
 }

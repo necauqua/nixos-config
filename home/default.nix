@@ -53,9 +53,6 @@ in {
     tldr
     expect
     rlwrap
-    fortune
-    lolcat
-    figlet
     jq
     ijq
     jless
@@ -70,17 +67,8 @@ in {
     tree
     usbutils
     libnotify
-    jless
     wmctrl
-    (youtube-dl.overrideAttrs (super: {
-      patches = super.patches ++ [
-        (fetchpatch {
-          name = "fix-a-thing.patch";
-          url = "https://github.com/ytdl-org/youtube-dl/commit/23ad6402a6966dd09e4c854f32c33f69be1a064e.diff";
-          sha256 = "sha256-jopn8BOJA7DNY3xwGZqGyOvz2qRlSC3PBtIObCWXQRE=";
-        })
-      ];
-    }))
+    yt-dlp
 
     gh
     asciinema
@@ -88,7 +76,6 @@ in {
     ncspot
     screenfetch
     zellij
-    delta
 
     (wrap firefox "--set MOZ_USE_XINPUT2 1")
 
@@ -231,8 +218,8 @@ in {
         fetch.prune = "true";
         
         # delta settings
-        core.pager = "delta";
-        interactive.diffFilter = "delta --color-only";
+        core.pager = "${pkgs.delta}/bin/delta";
+        interactive.diffFilter = "${pkgs.delta}/bin/delta --color-only";
         "add.interactive".useBuiltin = false;
         delta = { navigate = true; light = false; };
         merge.conflictstyle = "diff3";
@@ -327,9 +314,9 @@ in {
     mpv = {
       enable = true;
       
-      package = pkgs.wrapMpv pkgs.mpv-unwrapped {
-         scripts = [ pkgs.mpvScripts.mpris ]; # add an essential script lol
-      };
+      package = (pkgs.mpv.override {
+        scripts = [ pkgs.mpvScripts.mpris ]; # add an essential script lol
+      });
       config = {
         volume = 60;
         volume-max = 200;
