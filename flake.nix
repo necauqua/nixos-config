@@ -3,12 +3,17 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "nixpkgs/nixos-22.11";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, nixpkgs-stable, home-manager, ... }:
     let
+      system = "x86_64-linux";
+      specialArgs = {
+        pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+      };
       modules = [
         ./configuration.nix
         {
@@ -37,20 +42,23 @@
         }
         home-manager.nixosModules.home-manager
         {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.necauqua = import ./home;
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.necauqua = import ./home;
+            extraSpecialArgs = specialArgs;
+          };
         }
       ];
     in {
       nixosConfigurations = {
         main = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
           modules = modules ++ [ ./specific/main.nix ];
+          inherit system specialArgs;
         };
         flex = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
           modules = modules ++ [ ./specific/flex.nix ];
+          inherit system specialArgs;
         };
       };
     };

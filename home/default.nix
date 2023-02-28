@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, pkgs-stable, config, ... }:
 let
   toml = pkgs.formats.toml {};
   wrap = pkg: flags:
@@ -75,7 +75,7 @@ in {
     ripgrep
     ncspot
     screenfetch
-    zellij
+    pkgs-stable.zellij
 
     (wrap firefox "--set MOZ_USE_XINPUT2 1")
 
@@ -124,7 +124,7 @@ in {
     sublime4
     vscode
     logseq
-    shadered
+    pkgs-stable.shadered
     via
 
     rustup
@@ -146,7 +146,7 @@ in {
 
     solaar
     songrec
-    awscli2
+    pkgs-stable.awscli2
     ranger
     
     (pkgs.writeShellScriptBin "prime-run" ''

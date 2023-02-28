@@ -88,7 +88,6 @@ in {
        extraGroups = [ "wheel" "docker" "dialout" "adbusers" "networkmanager" ];
        hashedPassword = "$6$.fpv9TmqXoHSfmj/$ql9VtGHMsyJssreJY0lTINfQkYZSZZnDzAozje4R1jWiih92I.QlHbjmfPeRexBjEM4VfZseEo4R5id/OkK9a1";
     };
-    groups.pulse = {};
   };
 
   environment = {
