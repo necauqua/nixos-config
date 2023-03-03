@@ -85,7 +85,7 @@ in {
     mutableUsers = false;
     users.necauqua = {
        isNormalUser = true;
-       extraGroups = [ "wheel" "docker" "dialout" "adbusers" "networkmanager" ];
+       extraGroups = [ "wheel" "docker" "dialout" "adbusers" "networkmanager" "wireshark" ];
        hashedPassword = "$6$.fpv9TmqXoHSfmj/$ql9VtGHMsyJssreJY0lTINfQkYZSZZnDzAozje4R1jWiih92I.QlHbjmfPeRexBjEM4VfZseEo4R5id/OkK9a1";
     };
   };
@@ -150,6 +150,7 @@ in {
     steam.enable = true;
     seahorse.enable = true;
     dconf.enable = true;
+    wireshark.enable = true;
   };
 
   # patch this up as somehow it's not a default and folders
