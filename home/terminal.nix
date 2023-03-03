@@ -93,6 +93,11 @@
           #   };
           # }
           {
+            hyperlinks = true;
+            command = "xdg-open";
+            mouse.enabled = true;
+          }
+          {
             regex = "(mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\\u0000-\\u001F\\u007F-\\u009F<>\" {-}\\\\^⟨⟩`]+";
             command = "xdg-open";
             post_processing = true;
