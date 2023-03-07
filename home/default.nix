@@ -421,6 +421,27 @@ in {
     videos = "$HOME/videos";
   };
 
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      # patch this up as somehow it's not a default and folders
+      # get opened in vscode of all things
+      "inode/directory" = "org.gnome.Nautilus.desktop";
+      # gimp takes like two eternities to boot while all I need
+      # is to see the image lol
+      "image/bmp"  = "sxiv.desktop";
+      "image/gif"  = "sxiv.desktop";
+      "image/jpeg" = "sxiv.desktop";
+      "image/jpg"  = "sxiv.desktop";
+      "image/png"  = "sxiv.desktop";
+      "image/webp" = "sxiv.desktop";
+      "image/heic" = "sxiv.desktop";
+    };
+  };
+
+  # because things just override the link? huh
+  xdg.configFile."mimeapps.list".force = true;
+
   # workaround for things that need the tray.target (e.g. udiskie)
   systemd.user.targets.tray = {
     Unit = {

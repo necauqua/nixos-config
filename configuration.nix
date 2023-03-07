@@ -153,12 +153,6 @@ in {
     wireshark.enable = true;
   };
 
-  # patch this up as somehow it's not a default and folders
-  # get opened in vscode of all things
-  xdg.mime.defaultApplications = {
-    "inode/directory" = "org.gnome.Nautilus.desktop";
-  };
-
   security = {
     pam.services.sddm.enableGnomeKeyring = true;
     sudo.extraConfig = ''
