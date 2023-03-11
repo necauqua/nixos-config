@@ -124,6 +124,7 @@ in {
     sublime4
     vscode
     logseq
+    obsidian
     pkgs-stable.shadered
     via
 
