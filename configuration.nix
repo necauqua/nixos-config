@@ -175,8 +175,8 @@ in {
         # ^ getting BadValue crashes in wine/lutris games without this
   
         sddm.enable = true;
-        autoLogin.enable = true;
-        autoLogin.user = "necauqua";
+        # autoLogin.enable = true;
+        # autoLogin.user = "necauqua";
         defaultSession = "none+awesome";
        };
        windowManager.awesome = {
