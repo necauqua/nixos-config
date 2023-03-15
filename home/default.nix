@@ -75,7 +75,7 @@ in {
     ripgrep
     ncspot
     screenfetch
-    pkgs-stable.zellij
+    zellij
 
     (wrap firefox "--set MOZ_USE_XINPUT2 1")
 
@@ -125,7 +125,7 @@ in {
     vscode
     logseq
     obsidian
-    pkgs-stable.shadered
+    shadered
     via
 
     rustup
@@ -147,7 +147,7 @@ in {
 
     solaar
     songrec
-    pkgs-stable.awscli2
+    awscli2
     ranger
     
     (pkgs.writeShellScriptBin "prime-run" ''

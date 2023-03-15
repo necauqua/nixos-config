@@ -76,7 +76,6 @@ in {
   hardware = {
     nvidia.modesetting.enable = true;
     opengl.driSupport32Bit = true;
-    video.hidpi.enable = true;
     bluetooth.enable = true;
   };
 
@@ -138,7 +137,7 @@ in {
 
     noto-fonts
     noto-fonts-cjk
-    noto-fonts-emoji
+    noto-fonts-emoji 
   ];
   programs = {
     nix-ld.enable = true;
