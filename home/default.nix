@@ -106,8 +106,7 @@ in {
     gifski
     chatterino2
     bitwarden
-    # fix opening links from discord
-    (discord.override { nss = nss_latest; })
+    (discord.override { withOpenASAR = true; })
     spotify
     tidal-hifi
     emote
