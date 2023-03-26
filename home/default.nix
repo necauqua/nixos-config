@@ -132,9 +132,6 @@ in {
     lua5_3.pkgs.luacheck
     lua5_3.pkgs.tl
 
-    # LSPs
-    python3Packages.python-lsp-server
-
     nixpkgs-fmt
 
     minecraft
@@ -255,6 +252,10 @@ in {
         {
           name = "rust";
           config.checkOnSave.command = "clippy";
+        }
+        {
+          name = "python";
+          language-server = { command = "${pkgs.python3Packages.python-lsp-server}/bin/pylsp"; };
         }
       ];
     };
