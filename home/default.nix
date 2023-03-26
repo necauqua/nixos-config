@@ -124,7 +124,7 @@ in {
     vscode
     logseq
     obsidian
-    shadered
+    pkgs-stable.shadered
     via
 
     rustup

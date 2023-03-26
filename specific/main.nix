@@ -29,21 +29,20 @@
       enable = true;
       openFirewall = true;
     };
-    pipewire = {
-      config.pipewire = {
-        "context.properties" = {
-          # focusrite scarlett 2i2
-          "default.clock.rate" = 192000;
-          # allowing all rates causes cracks
-          # when it flips between default of 44.1 and
-          # 48 of a yt video in firefox, especially when you seek
-          # "default.clock.allowed-rates" =
-          #   [ 44100 48000 88200 96000 176400 192000 ];
-          "link.max-buffers" = 16;
-        };
-      };
-    };
   };
+
+  # allowing all rates like:
+  # "default.clock.allowed-rates": [
+  #   44100, 48000, 88200, 96000, 176400, 192000
+  # ]
+  # causes cracks when the rate switches (e.g commonly between 44.1 and 48)
+  environment.etc."pipewire/pipewire.conf.d/focusrite.conf".text = ''
+    {
+      "context.properties": {
+        "default.clock.rate": 192000
+      }
+    }
+  '';
 
   # cooler control stuff
   hardware.gkraken.enable = true;

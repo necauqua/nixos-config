@@ -140,15 +140,16 @@ in {
     noto-fonts-emoji 
   ];
   programs = {
-    nix-ld.enable = true;
+    adb.enable = true;
+    dconf.enable = true;
+    fish.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
-    adb.enable = true;
-    steam.enable = true;
+    nix-ld.enable = true;
     seahorse.enable = true;
-    dconf.enable = true;
+    steam.enable = true;
     wireshark.enable = true;
   };
 
