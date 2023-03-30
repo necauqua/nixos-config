@@ -113,6 +113,9 @@ in {
       QT_USE_PHYSICAL_DPI = "1";
 
       SSH_AUTH_SOCK="/run/user/1000/keyring/ssh";
+
+      # huh. todo move all nvidia stuff to host-specific confs
+      LIBVA_DRIVER_NAME="nvidia";
     };
 
     etc = with pkgs; {
