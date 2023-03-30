@@ -150,7 +150,7 @@ in {
       enable = true;
       enableSSHSupport = true;
     };
-    nix-ld.enable = true;
+    # nix-ld.enable = true;
     seahorse.enable = true;
     steam.enable = true;
     wireshark.enable = true;
