@@ -252,6 +252,7 @@ in {
         {
           name = "rust";
           config.checkOnSave.command = "clippy";
+          language-server = { command = "${pkgs.rust-analyzer}/bin/rust-analyzer"; };
         }
         {
           name = "python";
