@@ -1,4 +1,7 @@
 { config, pkgs, lib, ... }: {
+
+  imports = [ ./flex-hardware.nix ];
+
   networking.hostName = "flex";
 
   nix.settings.max-jobs = 8;

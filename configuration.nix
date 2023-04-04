@@ -11,7 +11,6 @@ in {
       keep-derivations = true
     '';
     settings = {
-      max-jobs = 18;
       trusted-users = ["root" "necauqua"];
       auto-optimise-store = true;
     };
