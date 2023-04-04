@@ -127,8 +127,6 @@ in {
     pkgs-stable.shadered
     via
 
-    rustup
-
     lua5_3.pkgs.luacheck
     lua5_3.pkgs.tl
 
