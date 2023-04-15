@@ -237,5 +237,9 @@ in {
     autoPrune.enable = true;
   };
 
+  networking.firewall.allowedTCPPorts = [
+    24800 # barrier server
+  ];
+
   system.stateVersion = "21.11";
 }
