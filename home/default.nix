@@ -154,6 +154,8 @@ in {
     (pkgs.writeShellScriptBin ":wq" "kill $PPID")
   ];
 
+  xsession.enable = true;
+
   home.pointerCursor = {
     x11.enable = true;
     package = pkgs.qogir-icon-theme;

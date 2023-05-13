@@ -151,6 +151,7 @@ in {
     };
     # nix-ld.enable = true;
     seahorse.enable = true;
+    slock.enable = true;
     steam.enable = true;
     wireshark.enable = true;
   };
@@ -179,13 +180,15 @@ in {
         sddm.enable = true;
         # autoLogin.enable = true;
         # autoLogin.user = "necauqua";
-        defaultSession = "none+awesome";
+        # defaultSession = "none+awesome";
+        defaultSession = "none+leftwm";
        };
-       windowManager.awesome = {
-          enable = true;
-          package = my-pkgs.awesome-git;
-          luaModules = with pkgs.lua53Packages; [ luasocket tl ];
-       };
+       # windowManager.awesome = {
+       #    enable = true;
+       #    package = my-pkgs.awesome-git;
+       #    luaModules = with pkgs.lua53Packages; [ luasocket tl ];
+       # };
+      windowManager.leftwm.enable = true;
 
       videoDrivers = [ "nvidia" ];
 
