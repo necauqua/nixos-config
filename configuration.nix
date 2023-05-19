@@ -68,7 +68,15 @@ in {
   # we don't need this
   systemd.services.NetworkManager-wait-online.enable = false; 
 
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LANG="en_US.UTF-8";
+      LC_TIME="en_GB.UTF-8";
+      LC_PAPER="en_GB.UTF-8";
+      LC_MEASUREMENT="en_GB.UTF-8";
+    };
+  };
 
   # Enable sound
   sound.enable = true;
