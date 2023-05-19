@@ -207,13 +207,13 @@
       ggr = "git log --all --decorate --oneline --graph";
     };
     shellInit = ''
-      # run zellij if applicable
-      if status is-interactive && \
-         not set -q ZELLIJ && \
-         not test "$TERMINAL_EMULATOR" = JetBrains-JediTerm && \
-         not test "$TERM_PROGRAM" = vscode
-        exec zellij
-      end
+      # # run zellij if applicable
+      # if status is-interactive && \
+      #    not set -q ZELLIJ && \
+      #    not test "$TERMINAL_EMULATOR" = JetBrains-JediTerm && \
+      #    not test "$TERM_PROGRAM" = vscode
+      #   exec zellij
+      # end
       
       # global last status for prompt, separate from $status or $pipestatus
       # to be easily clearable by Ctrl+L (see bindings)
