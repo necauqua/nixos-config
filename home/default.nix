@@ -120,7 +120,7 @@ in {
     jetbrains.idea-ultimate
     android-studio
     godot
-    sublime4
+    # sublime4 - depends on insecure openssl, also I never use it lately, replaced by helix/vscode/logseq ¯\_(ツ)_/¯
     vscode
     logseq
     obsidian
@@ -243,7 +243,7 @@ in {
           "C-k" = "command_palette";
         };
       };
-      languages = [
+      languages.language = [
         {
           name = "nix";
           indent = { tab-width = 2; unit = "  "; };
