@@ -32,7 +32,7 @@ let
         sed -i s%${pkg}%$out%g $out/share/applications/*.desktop
       '';
 
-  tdesktop = (wrap pkgs-stable.tdesktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome");
+  tdesktop = (wrap pkgs.tdesktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome");
 
 in {
 
@@ -123,7 +123,6 @@ in {
     vscode
     logseq
     obsidian
-    pkgs-stable.shadered
     via
 
     lua5_3.pkgs.luacheck
