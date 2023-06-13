@@ -99,6 +99,7 @@ in {
   environment = {
     systemPackages = with pkgs; [
       fish
+      gparted
       helix
       polkit_gnome
       openssl

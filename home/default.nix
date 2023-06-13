@@ -93,7 +93,6 @@ in {
     qpwgraph
     barrier
 
-    gparted
     exfatprogs
     ntfs3g
     smartmontools
