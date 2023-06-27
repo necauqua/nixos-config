@@ -206,8 +206,11 @@ in {
       xkbOptions = "grp:alt_shift_toggle,compose:rwin";
     };
 
-    # I have a G Pro Wireless now, make solaar work
-    udev.packages = [ pkgs.logitech-udev-rules ];
+    udev.packages = with pkgs; [
+      # make solaar work
+      logitech-udev-rules
+      stlink
+    ];
 
     pipewire = {
       enable = true;
