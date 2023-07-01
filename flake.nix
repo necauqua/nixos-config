@@ -4,15 +4,17 @@
   inputs = {
     nixpkgs-stable.url = "nixpkgs/nixos-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.url = "github:nix-community/lanzaboote";
   };
 
-  outputs = { nixpkgs, nixpkgs-stable, home-manager, ... }:
+  outputs = { nixpkgs, nixpkgs-stable, home-manager, lanzaboote, ... }:
     let
       system = "x86_64-linux";
       specialArgs = {
         pkgs-stable = nixpkgs-stable.legacyPackages.${system};
       };
       modules = [
+        lanzaboote.nixosModules.lanzaboote
         ./configuration.nix
         {
           nix.registry = {

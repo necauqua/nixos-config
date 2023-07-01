@@ -1,10 +1,19 @@
 { config, pkgs, lib, ... }: {
 
   imports = [ ./main-hardware.nix ];
-  
+
   networking.hostName = "main";
 
-  boot.zfs.extraPools = [ "archive" ];
+  boot = {
+    bootspec.enable = true;
+    loader.systemd-boot.enable = lib.mkForce false;
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
+    zfs.extraPools = [ "archive" ];
+  };
+
   services.zfs.autoScrub.enable = true;
 
   # free up some cores to keep consuming that content
