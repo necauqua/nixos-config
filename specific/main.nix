@@ -11,6 +11,9 @@
       enable = true;
       pkiBundle = "/etc/secureboot";
     };
+    kernelParams = [
+      "libata.allow_tmp=1"
+    ];
     zfs.extraPools = [ "archive" ];
   };
 
