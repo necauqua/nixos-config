@@ -97,14 +97,35 @@ in {
   };
 
   environment = {
-    systemPackages = with pkgs; [
-      fish
-      gparted
-      helix
-      polkit_gnome
-      openssl
-      zfs
-    ];
+    systemPackages =
+      let
+        autostartHack = file: exec:
+          pkgs.stdenv.mkDerivation {
+            name = "autostart-hack";
+            buildCommand = ''
+              mkdir -p $out/etc/xdg/autostart
+              echo -e '[Desktop Entry]\nType=Application\nName=${file}\nExec=${exec}' > $out/etc/xdg/autostart/${file}-hack.desktop
+            '';
+          };
+        keyringHack = component:
+          autostartHack
+            "gnome-keyring-${component}"
+            "/run/wrappers/bin/gnome-keyring-daemon --start --components=${component}";
+      in with pkgs; [
+        fish
+        gparted
+        helix
+        openssl
+        zfs
+
+        polkit_gnome
+        # all the hacked autostart items are needed because of all things LeftWM does correctly
+        # handle the OnlyShowIn directive, which in gnome autostart files is set to gnome DMs
+        (autostartHack "polkit-gnome" "${polkit_gnome}/libexec/polkit-gnome-authentication-agent-1")
+        (keyringHack "secrets")
+        (keyringHack "ssh")
+        (keyringHack "pkcs11")
+      ];
     shells = [ pkgs.bashInteractive pkgs.fish ];
     variables = {
       EDITOR = "${pkgs.helix}/bin/hx";
@@ -134,7 +155,7 @@ in {
       jdk17.source = jdk17;
 
       # also for awesome for lua LSP when editing the config
-      awesome.source = my-pkgs.awesome-git;
+      # awesome.source = my-pkgs.awesome-git;
       # and the LSP itself
       lua-lsp.source = sumneko-lua-language-server;
       # and rnix-lsp for vscode (for helix it's in the HM config)
