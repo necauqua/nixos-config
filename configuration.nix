@@ -175,6 +175,7 @@ in {
     adb.enable = true;
     dconf.enable = true;
     fish.enable = true;
+    less.envVariables.LESS = "-FRX";
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
