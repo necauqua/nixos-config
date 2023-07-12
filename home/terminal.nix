@@ -5,7 +5,8 @@
       settings.verbs = [
         {
           invocation = "mpv";
-          external = "mpv --wid=$WINDOWID {file}";
+          execution = "fish -c \"mpvt {file}\"";
+          leave_broot = false;
         }
       ];
     };
