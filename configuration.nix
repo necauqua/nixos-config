@@ -205,8 +205,9 @@ in {
       excludePackages = [ pkgs.xorg.xorgserver ];
       displayManager = {
         xserverBin = lib.mkForce "${my-pkgs.xserver-bug865}/bin/X";
-        xserverArgs = ["-extension" "MIT-SHM"];
-        # ^ getting BadValue crashes in wine/lutris games without this
+        # xserverArgs = ["-extension" "MIT-SHM"];
+        # # ^ getting BadValue crashes in wine/lutris games without this
+        # ^ but it prevents OBS from capturing the screen (obviously), lol
   
         sddm.enable = true;
         # autoLogin.enable = true;
