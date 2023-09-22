@@ -277,6 +277,7 @@ in {
 
   networking.firewall.allowedTCPPorts = [
     24800 # barrier server
+    24274 # my nearby-share project wip thing
   ];
 
   system.stateVersion = "21.11";
