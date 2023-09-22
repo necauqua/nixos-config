@@ -118,7 +118,7 @@ in {
     obs-studio
     jetbrains.idea-ultimate
     android-studio
-    godot
+    godot3
     # sublime4 - depends on insecure openssl, also I never use it lately, replaced by helix/vscode/logseq ¯\_(ツ)_/¯
     vscode
     logseq
