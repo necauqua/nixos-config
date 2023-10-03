@@ -161,6 +161,13 @@ in {
       # and rnix-lsp for vscode (for helix it's in the HM config)
       nix-lsp.source = rnix-lsp;
     };
+
+    plasma5.excludePackages = with pkgs.libsForQt5; [
+      oxygen
+      khelpcenter
+      konsole
+      print-manager
+    ];
   };
 
   fonts.packages = with pkgs; [
@@ -180,9 +187,6 @@ in {
       enable = true;
       enableSSHSupport = true;
     };
-    # nix-ld.enable = true;
-    seahorse.enable = true;
-    slock.enable = true;
     steam.enable = true;
     wireshark.enable = true;
   };
@@ -210,17 +214,8 @@ in {
         # ^ but it prevents OBS from capturing the screen (obviously), lol
   
         sddm.enable = true;
-        # autoLogin.enable = true;
-        # autoLogin.user = "necauqua";
-        # defaultSession = "none+awesome";
-        defaultSession = "none+leftwm";
-       };
-       # windowManager.awesome = {
-       #    enable = true;
-       #    package = my-pkgs.awesome-git;
-       #    luaModules = with pkgs.lua53Packages; [ luasocket tl ];
-       # };
-      windowManager.leftwm.enable = true;
+      };
+      desktopManager.plasma5.enable = true;
 
       videoDrivers = [ "nvidia" ];
 
@@ -259,7 +254,6 @@ in {
       enable = true;
       nssmdns = true;
     };
-    greenclip.enable = true;
 
     openvpn.servers.vpn = {
       config = "config /home/necauqua/client.ovpn";

@@ -258,59 +258,6 @@ in {
         }
       ];
     };
-    rofi = {
-      enable = true;
-      font = "JetBrains Mono 12";
-      terminal = "alacritty";
-      theme =
-        let
-          lit = config.lib.formats.rasi.mkLiteral;
-        in {
-          "@import" = "default";
-          "*" = {
-            background = lit "black/50%";
-            foreground = lit "white";
-          };
-          window = {
-            fullscreen = true;
-            padding = lit "25%";
-            border = 0;
-          };
-          prompt.enabled = false;
-          textbox-prompt-colon.str = "λ";
-          entry = {
-            text-color = lit "rgba(0, 255, 255, 100%)";
-            placeholder = "search";
-            placeholder-color = lit "white/50%";
-          };
-          message = {
-            border = 0;
-            padding = lit "1ch 0";
-          };
-          listview = {
-            columns = 2;
-            fixed-columns = true;
-            padding = lit "2ch 0 0 0";
-            scrollbar = false;
-            dynamic = true;
-          };
-          element-icon = {
-            size = lit "2ch";
-            padding = lit "0.25ch 0.25ch 0 0";
-          };
-          element = {
-            padding = lit "0.5ch";
-            background-color = lit "transparent";
-          };
-          "element normal normal".background-color = lit "transparent";
-          "element alternate normal".background-color = lit "transparent";
-        };
-      extraConfig = {
-        modi = "window,run,ssh,windowcd,combi";
-        combi-hide-mode-prefix = true;
-        dpi = 1;
-      };
-    };
     mpv = {
       enable = true;
       
@@ -363,49 +310,7 @@ in {
     };
   };
 
-  services = {
-    picom = {
-      enable = true;
-      package = pkgs.picom-next;
-      settings = {
-        backend = "glx";
-        blur-background = true;
-        blur-background-exclude = [
-          "window_type = 'dock'"
-          "window_type = 'desktop'"
-          "class_g = 'Peek'"
-          "class_g = 'slop'"
-          "class_g = 'firefox'" # firefox menus
-          "class_g = 'TelegramDesktop'" # telegram menus too
-        ];
-        blur = {
-          method = "dual_kawase";
-          strength = 4;
-        };
-        dbus = true;
-        unredir-if-possible = true;
-      };
-    };
-    udiskie.enable = true;
-  };
-
-  xdg.configFile = {
-    "nixpkgs/config.nix".text = "{ allowUnfree = true; }";
-    "greenclip.toml".source = toml.generate "greenclip-config" {
-      greenclip = {
-        max_history_length = 100;
-        trim_space_from_selection = false;
-        # defaults that greenclip still requires to be present:
-        max_selection_size_bytes = 0;
-        history_file = "/home/necauqua/.cache/greenclip.history";
-        image_cache_directory = "/tmp/greenclip";
-        use_primary_selection_as_input = false;
-        blacklisted_applications = [];
-        enable_image_support = false;
-        static_history = [];
-      };
-    };
-  };
+  xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
   xdg.userDirs = {
     enable = true;
@@ -441,14 +346,6 @@ in {
 
   # because things just override the link? huh
   xdg.configFile."mimeapps.list".force = true;
-
-  # workaround for things that need the tray.target (e.g. udiskie)
-  systemd.user.targets.tray = {
-    Unit = {
-      Description = "Home Manager System Tray";
-      Requires = [ "graphical-session-pre.target" ];
-    };
-  };
 
   home.stateVersion = "22.11";
 }
