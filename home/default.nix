@@ -302,6 +302,8 @@ in {
     };
   };
 
+  services.kdeconnect.enable = true;
+
   xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
   xdg.userDirs = {

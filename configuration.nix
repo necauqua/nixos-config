@@ -269,10 +269,18 @@ in {
     autoPrune.enable = true;
   };
 
-  networking.firewall.allowedTCPPorts = [
-    24800 # barrier server
-    24274 # my nearby-share project wip thing
-  ];
+  networking.firewall = {
+    allowedTCPPorts = [
+      24800 # barrier server
+      24274 # my nearby-share project wip thing
+    ];
+    allowedTCPPortRanges = [ 
+      { from = 1714; to = 1764; } # KDE Connect
+    ];  
+    allowedUDPPortRanges = [ 
+      { from = 1714; to = 1764; } # KDE Connect
+    ];
+  };
 
   system.stateVersion = "21.11";
 }
