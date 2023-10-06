@@ -225,14 +225,6 @@ in {
       enable = true;
       config.style = "numbers";
     };
-    # neovim = {
-    #   enable = true;
-    #   extraConfig = ''
-    #     set runtimepath^=~/.vim runtimepath+=~/.vim/after
-    #     let &packpath = &runtimepath
-    #     source ~/.vimrc
-    #   '';
-    # };
     helix = {
       enable = true;
       settings = {
