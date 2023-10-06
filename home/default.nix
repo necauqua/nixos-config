@@ -141,7 +141,7 @@ in {
     songrec
     awscli2
     ranger
-    
+
     (pkgs.writeShellScriptBin "prime-run" ''
       export __NV_PRIME_RENDER_OFFLOAD=1
       export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
@@ -189,9 +189,9 @@ in {
       gtk-decoration-layout = "menu:";
     };
   };
-  
+
   # manual.manpages.enable = false;
-  
+
   programs = {
     git = {
       enable = true;
@@ -211,7 +211,7 @@ in {
         push.default = "current";
         pull.ff = "only";
         fetch.prune = "true";
-        
+
         # delta settings
         core.pager = "${pkgs.delta}/bin/delta";
         interactive.diffFilter = "${pkgs.delta}/bin/delta --color-only";
@@ -252,7 +252,7 @@ in {
     };
     mpv = {
       enable = true;
-      
+
       package = (pkgs.mpv.override {
         scripts = [ pkgs.mpvScripts.mpris ]; # add an essential script lol
       });

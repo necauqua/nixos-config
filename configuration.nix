@@ -39,7 +39,7 @@ in {
     extraModprobeConfig = ''
       options v4l2loopback exclusive_caps=1 card_label="Virtual Camera"
     '';
-    
+
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     supportedFilesystems = [ "zfs" "ntfs" ];
   };
@@ -66,7 +66,7 @@ in {
   };
   # shave off ~5 secs from boot, lol
   # we don't need this
-  systemd.services.NetworkManager-wait-online.enable = false; 
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -176,7 +176,7 @@ in {
 
     noto-fonts
     noto-fonts-cjk
-    noto-fonts-emoji 
+    noto-fonts-emoji
   ];
   programs = {
     adb.enable = true;
@@ -212,7 +212,7 @@ in {
         # xserverArgs = ["-extension" "MIT-SHM"];
         # # ^ getting BadValue crashes in wine/lutris games without this
         # ^ but it prevents OBS from capturing the screen (obviously), lol
-  
+
         sddm.enable = true;
       };
       desktopManager.plasma5.enable = true;
@@ -248,7 +248,7 @@ in {
       '';
     };
     gnome.gnome-keyring.enable = true;
-  
+
     dbus.enable = true;
     avahi = {
       enable = true;
@@ -259,7 +259,7 @@ in {
       config = "config /home/necauqua/client.ovpn";
       autoStart = false;
     };
-    
+
     keybase.enable = true;
   };
 
@@ -274,10 +274,10 @@ in {
       24800 # barrier server
       24274 # my nearby-share project wip thing
     ];
-    allowedTCPPortRanges = [ 
+    allowedTCPPortRanges = [
       { from = 1714; to = 1764; } # KDE Connect
-    ];  
-    allowedUDPPortRanges = [ 
+    ];
+    allowedUDPPortRanges = [
       { from = 1714; to = 1764; } # KDE Connect
     ];
   };
