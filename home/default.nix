@@ -237,7 +237,7 @@ in {
         {
           name = "nix";
           indent = { tab-width = 2; unit = "  "; };
-          language-server = { command = "${pkgs.rnix-lsp}/bin/rnix-lsp"; };
+          language-server = { command = "${pkgs.nil}/bin/nil"; };
         }
         {
           name = "rust";
