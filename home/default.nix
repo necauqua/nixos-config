@@ -84,10 +84,6 @@ in {
 
     sxiv
     maim
-    gnome.baobab
-    gnome.nautilus
-    gnome.zenity
-    gnome.file-roller
     dfeet
     pavucontrol
     qpwgraph
@@ -323,9 +319,6 @@ in {
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      # patch this up as somehow it's not a default and folders
-      # get opened in vscode of all things
-      "inode/directory" = "org.gnome.Nautilus.desktop";
       # gimp takes like two eternities to boot while all I need
       # is to see the image lol
       "image/bmp"  = "sxiv.desktop";
