@@ -187,6 +187,7 @@ in {
       enable = true;
       enableSSHSupport = true;
     };
+    partition-manager.enable = true;
     steam.enable = true;
     wireshark.enable = true;
   };

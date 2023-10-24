@@ -1,6 +1,5 @@
-{ pkgs, pkgs-stable, config, ... }:
+{ pkgs, ... }:
 let
-  toml = pkgs.formats.toml {};
   wrap = pkg: flags:
     pkgs.runCommand pkg {
       buildInputs = [ pkgs.makeWrapper ];
@@ -88,6 +87,7 @@ in {
     pavucontrol
     qpwgraph
     barrier
+    kgpg
 
     exfatprogs
     ntfs3g
@@ -115,7 +115,6 @@ in {
     jetbrains.idea-ultimate
     android-studio
     godot3
-    # sublime4 - depends on insecure openssl, also I never use it lately, replaced by helix/vscode/logseq ¯\_(ツ)_/¯
     vscode
     logseq
     obsidian
