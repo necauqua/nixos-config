@@ -262,6 +262,7 @@ in {
     };
 
     keybase.enable = true;
+    pcscd.enable = true;
   };
 
   virtualisation.docker = {
