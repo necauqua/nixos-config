@@ -116,7 +116,7 @@ in {
     android-studio
     godot3
     vscode
-    logseq
+    # logseq # depends on eol electron atm
     obsidian
     via
 
