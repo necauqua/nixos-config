@@ -228,22 +228,31 @@ in {
           "C-k" = "command_palette";
         };
       };
-      languages.language = [
-        {
-          name = "nix";
-          indent = { tab-width = 2; unit = "  "; };
-          language-server = { command = "${pkgs.nil}/bin/nil"; };
-        }
-        {
-          name = "rust";
-          config.checkOnSave.command = "clippy";
-          language-server = { command = "${pkgs.rust-analyzer}/bin/rust-analyzer"; };
-        }
-        {
-          name = "python";
-          language-server = { command = "${pkgs.python3Packages.python-lsp-server}/bin/pylsp"; };
-        }
-      ];
+      languages = {
+        language-server = {
+          nil.command = "${pkgs.nil}/bin/nil";
+          rust-analyzer = {
+            command = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+            config.checkOnSave.command = "clippy";
+          };
+          pylsp.command = "${pkgs.python3Packages.python-lsp-server}/bin/pylsp";
+        };
+        language = [
+          {
+            name = "nix";
+            indent = { tab-width = 2; unit = "  "; };
+            language-servers = ["nil"];
+          }
+          {
+            name = "rust";
+            language-servers = ["rust-analyzer"];
+          }
+          {
+            name = "python";
+            language-servers = ["pylsp"];
+          }
+        ];
+      };
     };
     mpv = {
       enable = true;
