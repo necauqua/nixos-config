@@ -1,7 +1,6 @@
-{ config, pkgs, lib, ... }:
-let
-  my-pkgs = import ./packages.nix { inherit pkgs; };
-in {
+{ config, pkgs, lib, ... }: {
+
+  imports = [ ./modules ];
 
   nix = {
     package = pkgs.nixUnstable;
@@ -90,42 +89,26 @@ in {
     defaultUserShell = pkgs.fish;
     mutableUsers = false;
     users.necauqua = {
-       isNormalUser = true;
-       extraGroups = [ "wheel" "docker" "dialout" "adbusers" "networkmanager" "wireshark" ];
-       hashedPassword = "$6$.fpv9TmqXoHSfmj/$ql9VtGHMsyJssreJY0lTINfQkYZSZZnDzAozje4R1jWiih92I.QlHbjmfPeRexBjEM4VfZseEo4R5id/OkK9a1";
+      isNormalUser = true;
+      extraGroups = [ "wheel" "docker" "dialout" "adbusers" "networkmanager" "wireshark" ];
+      hashedPassword = "$6$.fpv9TmqXoHSfmj/$ql9VtGHMsyJssreJY0lTINfQkYZSZZnDzAozje4R1jWiih92I.QlHbjmfPeRexBjEM4VfZseEo4R5id/OkK9a1";
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0oajjYx0nt7A2zBWjnc5gxTs1nBcGHuGNyp0Al5rAz openpgp:0xA61191F9"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoNFwj1SN1LJGT6Pto7hp9kHhWF9RsF0tXMI95Jix5P phone"
+      ];
     };
   };
 
   environment = {
-    systemPackages =
-      let
-        autostartHack = file: exec:
-          pkgs.stdenv.mkDerivation {
-            name = "autostart-hack";
-            buildCommand = ''
-              mkdir -p $out/etc/xdg/autostart
-              echo -e '[Desktop Entry]\nType=Application\nName=${file}\nExec=${exec}' > $out/etc/xdg/autostart/${file}-hack.desktop
-            '';
-          };
-        keyringHack = component:
-          autostartHack
-            "gnome-keyring-${component}"
-            "/run/wrappers/bin/gnome-keyring-daemon --start --components=${component}";
-      in with pkgs; [
-        fish
-        gparted
-        helix
-        openssl
-        zfs
+    systemPackages = with pkgs; [
+      fish
+      gparted
+      helix
+      openssl
+      zfs
 
-        polkit_gnome
-        # all the hacked autostart items are needed because of all things LeftWM does correctly
-        # handle the OnlyShowIn directive, which in gnome autostart files is set to gnome DMs
-        (autostartHack "polkit-gnome" "${polkit_gnome}/libexec/polkit-gnome-authentication-agent-1")
-        (keyringHack "secrets")
-        (keyringHack "ssh")
-        (keyringHack "pkcs11")
-      ];
+      polkit_gnome
+    ];
     shells = [ pkgs.bashInteractive pkgs.fish ];
     variables = {
       EDITOR = "${pkgs.helix}/bin/hx";
@@ -140,8 +123,6 @@ in {
 
       # no idea why is this not a default on an X11 systems
       QT_USE_PHYSICAL_DPI = "1";
-
-      SSH_AUTH_SOCK="/run/user/1000/keyring/ssh";
 
       # huh. todo move all nvidia stuff to host-specific confs
       LIBVA_DRIVER_NAME="nvidia";
@@ -183,17 +164,12 @@ in {
     dconf.enable = true;
     fish.enable = true;
     less.envVariables.LESS = "-FRX";
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
     partition-manager.enable = true;
     steam.enable = true;
     wireshark.enable = true;
   };
 
   security = {
-    pam.services.sddm.enableGnomeKeyring = true;
     sudo.extraConfig = ''
       Defaults passprompt = "[sudo] your password: "
       Defaults pwfeedback
@@ -209,7 +185,7 @@ in {
 
       excludePackages = [ pkgs.xorg.xorgserver ];
       displayManager = {
-        xserverBin = lib.mkForce "${my-pkgs.xserver-bug865}/bin/X";
+        xserverBin = lib.mkForce "${pkgs.xserver-bug865}/bin/X";
         # xserverArgs = ["-extension" "MIT-SHM"];
         # # ^ getting BadValue crashes in wine/lutris games without this
         # ^ but it prevents OBS from capturing the screen (obviously), lol
@@ -243,12 +219,8 @@ in {
 
     openssh = {
       enable = true;
-      extraConfig = ''
-        PubkeyAcceptedAlgorithms +ssh-rsa
-        HostkeyAlgorithms +ssh-rsa
-      '';
+      settings.PasswordAuthentication = false;
     };
-    gnome.gnome-keyring.enable = true;
 
     dbus.enable = true;
     avahi = {
@@ -256,13 +228,7 @@ in {
       nssmdns = true;
     };
 
-    openvpn.servers.vpn = {
-      config = "config /home/necauqua/client.ovpn";
-      autoStart = false;
-    };
-
     keybase.enable = true;
-    pcscd.enable = true;
   };
 
   virtualisation.docker = {

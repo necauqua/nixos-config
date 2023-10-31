@@ -77,6 +77,7 @@ in {
     zellij
 
     (wrap firefox "--set MOZ_USE_XINPUT2 1")
+    thunderbird
 
     tdesktop
     (makeAutostartItem { name = "org.telegram.desktop"; package = tdesktop; })
