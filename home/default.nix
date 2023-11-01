@@ -103,6 +103,7 @@ in {
     chatterino2
     bitwarden
     (discord.override { withOpenASAR = true; })
+    element-desktop
     spotify
     tidal-hifi
     emote
