@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }: {
+{ pkgs, lib, ... }: {
 
-  imports = [ ./main-hardware.nix ];
+  imports = [
+    ./main-hardware.nix
+    ../modules/lan-audio.nix
+  ];
 
   networking.hostName = "main";
 
@@ -48,13 +51,9 @@
   #   44100, 48000, 88200, 96000, 176400, 192000
   # ]
   # causes cracks when the rate switches (e.g commonly between 44.1 and 48)
-  environment.etc."pipewire/pipewire.conf.d/focusrite.conf".text = ''
-    {
-      "context.properties": {
-        "default.clock.rate": 192000
-      }
-    }
-  '';
+  environment.etc."pipewire/pipewire.conf.d/focusrite.conf".source = (pkgs.formats.json {}).generate "focusrite.conf" {
+    "context.properties"."default.clock.rate" = 192000;
+  };
 
   # cooler control stuff
   hardware.gkraken.enable = true;
