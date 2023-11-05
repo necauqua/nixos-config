@@ -196,7 +196,7 @@ in {
       userEmail = "self@necauqua.dev";
       aliases.rtag = "!f(){ git tag --message=\"Release \${1}\n\" \${1}; }; f";
       signing = {
-        key = "FFD8502A";
+        key = "29511C06755C211BB3D3419342997635A54BA55B";
         signByDefault = true;
       };
       extraConfig = {
