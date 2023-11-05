@@ -51,7 +51,8 @@
           };
         })
       ];
-    in {
+    in
+    {
       nixosConfigurations = {
         main = nixpkgs.lib.nixosSystem {
           modules = modules ++ [ ./specific/main.nix ];

@@ -6,7 +6,7 @@ let
   };
 in
 {
-  environment.etc."pipewire/pipewire.conf.d/rtp-source.conf".source = (pkgs.formats.json {}).generate "rtp-source.conf" {
+  environment.etc."pipewire/pipewire.conf.d/rtp-source.conf".source = (pkgs.formats.json { }).generate "rtp-source.conf" {
     "context.modules" = [
       {
         name = "libpipewire-module-rtp-sap";
@@ -20,9 +20,9 @@ in
           # stream rules at https://docs.pipewire.org/page_module_rtp_sap.html
           # also matches default, but explicit just to see what it does
           "stream.rules" = [
-            { matches = [ { "sess.sap.announce" = true; } ]; actions = { announce-stream = {}; }; }
+            { matches = [{ "sess.sap.announce" = true; }]; actions = { announce-stream = { }; }; }
             # ~ prefix means regex
-            { matches = [ { "rtp.session" = "~.*"; } ]; actions = { create-stream = {}; }; }
+            { matches = [{ "rtp.session" = "~.*"; }]; actions = { create-stream = { }; }; }
           ];
         };
       }

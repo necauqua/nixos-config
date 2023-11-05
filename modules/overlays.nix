@@ -1,4 +1,4 @@
-{...}:
+{ ... }:
 let
   overlay = final: prev: {
     xserver-bug865 = prev.xorg.xorgserver.overrideAttrs (super: {
@@ -17,6 +17,7 @@ let
       ];
     });
   };
-in {
+in
+{
   nixpkgs.overlays = [ overlay ];
 }

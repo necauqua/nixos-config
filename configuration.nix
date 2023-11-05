@@ -10,7 +10,7 @@
       keep-derivations = true
     '';
     settings = {
-      trusted-users = ["root" username];
+      trusted-users = [ "root" username ];
       auto-optimise-store = true;
     };
   };
@@ -34,7 +34,7 @@
     extraModulePackages = with config.boot.kernelPackages; [
       v4l2loopback.out
     ];
-    kernelModules = ["v4l2loopback"];
+    kernelModules = [ "v4l2loopback" ];
     extraModprobeConfig = ''
       options v4l2loopback exclusive_caps=1 card_label="Virtual Camera"
     '';
@@ -48,7 +48,7 @@
   swapDevices = [
     {
       device = "/var/swap";
-      size = lib.strings.toInt (builtins.readFile (pkgs.runCommand "memory-size" {} ''
+      size = lib.strings.toInt (builtins.readFile (pkgs.runCommand "memory-size" { } ''
         grep MemTotal /proc/meminfo | awk '{print int($2/1024)}' > $out
       ''));
     }
@@ -70,10 +70,10 @@
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
-      LANG="en_US.UTF-8";
-      LC_TIME="en_GB.UTF-8";
-      LC_PAPER="en_GB.UTF-8";
-      LC_MEASUREMENT="en_GB.UTF-8";
+      LANG = "en_US.UTF-8";
+      LC_TIME = "en_GB.UTF-8";
+      LC_PAPER = "en_GB.UTF-8";
+      LC_MEASUREMENT = "en_GB.UTF-8";
     };
   };
 
@@ -119,7 +119,7 @@
       NIX_AUTO_RUN = "1";
 
       # also make some java guis prettier
-      _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+      _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
 
       # no idea why is this not a default on an X11 systems
       QT_USE_PHYSICAL_DPI = "1";

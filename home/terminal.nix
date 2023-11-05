@@ -68,7 +68,7 @@
           columns = 80;
           lines = 24;
         };
-        resize_increments =  true;
+        resize_increments = true;
       };
       font = let font = "JetBrains Mono"; in {
         normal.family = font;
@@ -134,7 +134,7 @@
           };
         }
       ];
-      import = ["~/.config/alacritty/opacity.yml"];
+      import = [ "~/.config/alacritty/opacity.yml" ];
       colors = {
         primary = {
           background = "#2e3440";

@@ -23,7 +23,8 @@
     displayManager.setupCommands =
       let
         xrandr = "${pkgs.xorg.xrandr}/bin/xrandr";
-      in ''
+      in
+      ''
         ${xrandr} --newmode "1080x2160" 200.61 1080 1168 1288 1496 2160 2161 2164 2235 -hsync +vsync
         ${xrandr} --addmode HDMI-1-1 1080x2160
         ${pkgs.xorg.xinput}/bin/xinput --map-to-output "pointer:ELAN9008:00 04F3:2A46" eDP-1-1
