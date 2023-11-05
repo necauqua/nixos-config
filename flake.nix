@@ -29,7 +29,7 @@
             # well, for the first setup the full git url would be needed ¯\_(ツ)_/¯
             main = {
               from = { id = "main"; type = "indirect"; };
-              to = { type = "git"; url = "https://git.sr.ht/~necauqua/nixos-config"; };
+              to = { type = "sourcehut"; owner = "~necauqua"; repo = "nixos-config"; };
               exact = false;
             };
             local = {
