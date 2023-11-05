@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, username, ... }: {
 
   imports = [ ./modules ];
 
@@ -10,7 +10,7 @@
       keep-derivations = true
     '';
     settings = {
-      trusted-users = ["root" "necauqua"];
+      trusted-users = ["root" username];
       auto-optimise-store = true;
     };
   };
@@ -88,9 +88,10 @@
   users = {
     defaultUserShell = pkgs.fish;
     mutableUsers = false;
-    users.necauqua = {
+    users.${username} = {
       isNormalUser = true;
       extraGroups = [ "wheel" "docker" "dialout" "adbusers" "networkmanager" "wireshark" ];
+      # lol
       hashedPassword = "$6$.fpv9TmqXoHSfmj/$ql9VtGHMsyJssreJY0lTINfQkYZSZZnDzAozje4R1jWiih92I.QlHbjmfPeRexBjEM4VfZseEo4R5id/OkK9a1";
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0oajjYx0nt7A2zBWjnc5gxTs1nBcGHuGNyp0Al5rAz openpgp:0xA61191F9"
