@@ -80,7 +80,6 @@
   # Enable sound
   sound.enable = true;
   hardware = {
-    nvidia.modesetting.enable = true;
     opengl.driSupport32Bit = true;
     bluetooth.enable = true;
   };
@@ -124,9 +123,6 @@
 
       # no idea why is this not a default on an X11 systems
       QT_USE_PHYSICAL_DPI = "1";
-
-      # huh. todo move all nvidia stuff to host-specific confs
-      LIBVA_DRIVER_NAME="nvidia";
     };
 
     etc = with pkgs; {
@@ -195,8 +191,6 @@
       };
       desktopManager.plasma5.enable = true;
 
-      videoDrivers = [ "nvidia" ];
-
       # Configure keymap in X11
       layout = "us,ru";
       xkbOptions = "grp:alt_shift_toggle,compose:rwin";
@@ -234,7 +228,6 @@
 
   virtualisation.docker = {
     enable = true;
-    enableNvidia = true;
     autoPrune.enable = true;
   };
 

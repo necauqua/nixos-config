@@ -2,6 +2,7 @@
 
   imports = [
     ./main-hardware.nix
+    ./generic-nvidia.nix
     ../modules/lan-audio.nix
   ];
 
