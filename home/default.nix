@@ -246,6 +246,8 @@ in
             name = "nix";
             indent = { tab-width = 2; unit = "  "; };
             language-servers = [ "nil" ];
+            formatter.command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
+            auto-format = true;
           }
           {
             name = "rust";
