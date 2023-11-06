@@ -14,6 +14,7 @@
         username = "necauqua";
         pkgs-stable = nixpkgs-stable.legacyPackages.${system};
       };
+      home-module = import ./home;
       modules = [
         lanzaboote.nixosModules.lanzaboote
         ./configuration.nix
@@ -46,7 +47,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.${username} = import ./home;
+            users.${username} = home-module;
             extraSpecialArgs = specialArgs;
           };
         })
@@ -63,5 +64,6 @@
           inherit system specialArgs;
         };
       };
+      homeModules.main = home-module;
     };
 }
