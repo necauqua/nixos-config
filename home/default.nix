@@ -179,11 +179,11 @@ in
       package = pkgs.breeze-gtk;
     };
     gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = true;
+      gtk-application-prefer-dark-theme = 1;
       gtk-decoration-layout = "menu:";
     };
     gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = true;
+      gtk-application-prefer-dark-theme = 1;
       gtk-decoration-layout = "menu:";
     };
   };
