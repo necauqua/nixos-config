@@ -96,7 +96,6 @@ in
     ntfs3g
     smartmontools
 
-    nomachine-client
     transmission-gtk
     carla
     noise-repellent
