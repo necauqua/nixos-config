@@ -1,4 +1,4 @@
-{ config, pkgs, lib, username, ... }: {
+{ config, pkgs, lib, ... }: {
 
   imports = [ ./modules ];
 
@@ -10,7 +10,7 @@
       keep-derivations = true
     '';
     settings = {
-      trusted-users = [ "root" username ];
+      trusted-users = [ "root" "necauqua" ];
       auto-optimise-store = true;
     };
   };
@@ -87,7 +87,7 @@
   users = {
     defaultUserShell = pkgs.fish;
     mutableUsers = false;
-    users.${username} = {
+    users.necauqua = {
       isNormalUser = true;
       extraGroups = [ "wheel" "docker" "dialout" "adbusers" "networkmanager" "wireshark" ];
       # lol

@@ -39,6 +39,7 @@ in
 
   imports = [
     ./terminal.nix
+    ./gpg.nix
   ];
 
   home.packages = with pkgs; [
@@ -90,7 +91,6 @@ in
     pavucontrol
     qpwgraph
     barrier
-    kgpg
 
     exfatprogs
     ntfs3g
@@ -203,8 +203,6 @@ in
       extraConfig = {
         init.defaultBranch = "main";
         core.autocrlf = "input";
-        commit.gpgSign = true;
-        tag.gpgSign = true;
         push.followTags = true;
         push.default = "current";
         pull.ff = "only";

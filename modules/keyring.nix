@@ -1,12 +1,12 @@
-{ pkgs, username, ... }: {
+{ pkgs, ... }: {
 
   # smartcard daemon for ykman to work
   services.pcscd.enable = true;
   # note, also need this to stop annoying conflicts with gpg:
-  home-manager.users.${username}.home.file.".gnupg/scdaemon.conf".text = "disable-ccid";
+  # home-manager.users.${username}.home.file.".gnupg/scdaemon.conf".text = "disable-ccid";
+  # or <ditto>.programs.gpg.scdaemonSettings.disable-ccid = true if programs.gpg is enabled
 
   environment.systemPackages = with pkgs; [
-    gnome.seahorse
     yubikey-manager
     yubikey-personalization
   ];

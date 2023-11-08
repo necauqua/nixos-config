@@ -11,7 +11,6 @@
     let
       system = "x86_64-linux";
       specialArgs = {
-        username = "necauqua";
         pkgs-stable = nixpkgs-stable.legacyPackages.${system};
       };
       home-module = import ./home;
@@ -43,14 +42,14 @@
           nix.nixPath = [ "nixpkgs=${nixpkgs}" ];
         }
         home-manager.nixosModules.home-manager
-        ({ username, ... }: {
+        {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.${username} = home-module;
+            users.necauqua = home-module;
             extraSpecialArgs = specialArgs;
           };
-        })
+        }
       ];
     in
     {
