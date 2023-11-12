@@ -33,20 +33,8 @@ let
     '';
 
   tdesktop = (wrap pkgs.tdesktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome");
-
 in
 {
-
-  imports = [
-    ./alacritty.nix
-    ./headless.nix
-    ./helix.nix
-    ./mpv.nix
-    ./terminal.nix
-    ./git.nix
-    ./gpg.nix
-  ];
-
   home.packages = with pkgs; [
     dex
     xclip
@@ -195,6 +183,4 @@ in
 
   # because things just override the link? huh
   xdg.configFile."mimeapps.list".force = true;
-
-  home.stateVersion = "22.11";
 }

@@ -1,6 +1,7 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, flake-inputs, ... }: {
 
   imports = [
+    flake-inputs.lanzaboote.nixosModules.lanzaboote
     ./main-hardware.nix
     ./generic-nvidia.nix
     ../modules/lan-audio.nix

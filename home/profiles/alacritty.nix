@@ -19,19 +19,6 @@
       hints = {
         alphabet = "jfkdls;ahgurieowpq";
         enabled = [
-          # {
-          #   regex = "([-_0-9a-zA-Z/.]+):([0-9]+)";
-          #   command = "idea-line";
-          #   post_processing = true;
-          #   mouse = {
-          #     enabled = true;
-          #     mods = "None";
-          #   };
-          #   binding = {
-          #     key = "I";
-          #     mods = "Control|Shift";
-          #   };
-          # }
           {
             hyperlinks = true;
             command = "xdg-open";
