@@ -38,46 +38,22 @@ in
 {
 
   imports = [
+    ./alacritty.nix
+    ./headless.nix
+    ./helix.nix
+    ./mpv.nix
     ./terminal.nix
+    ./git.nix
     ./gpg.nix
   ];
 
   home.packages = with pkgs; [
-    nix-tree
-    cachix
-
     dex
-    iw
     xclip
-    ffmpeg
 
-    man-db
-    tldr
-    expect
-    rlwrap
-    jq
-    ijq
-    jless
-    fzf
-    nmap
     xdotool
-    calc
-    traceroute
-    dig
-    zip
-    unzip
-    tree
-    usbutils
     libnotify
     wmctrl
-    yt-dlp
-
-    gh
-    asciinema
-    ripgrep
-    ncspot
-    screenfetch
-    zellij
 
     (wrap firefox "--set MOZ_USE_XINPUT2 1")
     thunderbird
@@ -92,15 +68,10 @@ in
     qpwgraph
     barrier
 
-    exfatprogs
-    ntfs3g
-    smartmontools
-
     transmission-gtk
     carla
     noise-repellent
     peek
-    gifski
     chatterino2
     bitwarden
     (discord.override { withOpenASAR = true; })
@@ -123,22 +94,14 @@ in
     obsidian
     via
 
-    lua5_3.pkgs.luacheck
-    lua5_3.pkgs.tl
-
-    nixpkgs-fmt
-
     minecraft
     starsector
     prismlauncher # multimc fork that works on Nix from the box
-    packwiz
     lutris
     winetricks # needed for lutris among other things
 
     solaar
     songrec
-    awscli2
-    ranger
 
     (pkgs.writeShellScriptBin "prime-run" ''
       export __NV_PRIME_RENDER_OFFLOAD=1
@@ -191,121 +154,9 @@ in
   # manual.manpages.enable = false;
 
   programs = {
-    git = {
-      enable = true;
-      userName = "Anton Bulakh";
-      userEmail = "self@necauqua.dev";
-      aliases.rtag = "!f(){ git tag --message=\"Release \${1}\n\" \${1}; }; f";
-      signing = {
-        key = "29511C06755C211BB3D3419342997635A54BA55B";
-        signByDefault = true;
-      };
-      extraConfig = {
-        init.defaultBranch = "main";
-        core.autocrlf = "input";
-        push.followTags = true;
-        push.default = "current";
-        pull.ff = "only";
-        fetch.prune = "true";
-
-        # delta settings
-        core.pager = "${pkgs.delta}/bin/delta";
-        interactive.diffFilter = "${pkgs.delta}/bin/delta --color-only";
-        "add.interactive".useBuiltin = false;
-        delta = { navigate = true; light = false; };
-        merge.conflictstyle = "diff3";
-        diff.colorMoved = "default";
-      };
-    };
     bat = {
       enable = true;
       config.style = "numbers";
-    };
-    helix = {
-      enable = true;
-      settings = {
-        keys.normal = {
-          "C-q" = "hover";
-          "C-k" = "command_palette";
-        };
-      };
-      languages = {
-        language-server = {
-          nil.command = "${pkgs.nil}/bin/nil";
-          rust-analyzer = {
-            command = "${pkgs.rust-analyzer}/bin/rust-analyzer";
-            config.checkOnSave.command = "clippy";
-          };
-          pylsp.command = "${pkgs.python3Packages.python-lsp-server}/bin/pylsp";
-        };
-        language = [
-          {
-            name = "nix";
-            indent = { tab-width = 2; unit = "  "; };
-            language-servers = [ "nil" ];
-            formatter.command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
-            auto-format = true;
-          }
-          {
-            name = "rust";
-            language-servers = [ "rust-analyzer" ];
-          }
-          {
-            name = "python";
-            language-servers = [ "pylsp" ];
-          }
-        ];
-      };
-    };
-    mpv = {
-      enable = true;
-
-      package = (pkgs.mpv.override {
-        scripts = [ pkgs.mpvScripts.mpris ]; # add an essential script lol
-      });
-      config = {
-        volume = 60;
-        volume-max = 200;
-        pause = true;
-        save-position-on-quit = true;
-
-        audio-display = false;
-        term-osd-bar = true;
-        term-osd-bar-chars = "┣━╉─┨";
-
-        screenshot-format = "png";
-        screenshot-template = "mpv-1%tY%tm%td%tH%tM%tS%01n";
-
-        hwdec = true;
-        hwdec-codecs = "all";
-        profile = "gpu-hq";
-      };
-      bindings = {
-        "9" = "add ao-volume -1";
-        "/" = "add ao-volume -1";
-        "0" = "add ao-volume 1";
-        "*" = "add ao-volume 1";
-
-        WHEEL_LEFT = "seek 10";
-        WHEEL_RIGHT = "seek -10";
-        WHEEL_UP = "add ao-volume 1";
-        WHEEL_DOWN = "add ao-volume -1";
-
-        VOLUME_UP = "add ao-volume 1";
-        VOLUME_DOWN = "add ao-volume -1";
-
-        # reload file - useful when YouTube stream link expires
-        "Ctrl+r" = "loadfile \${path} replace";
-
-        # yank same as in vim or luakit
-        y = "run \"/usr/bin/env\" \"bash\" \"-c\" \"echo -n '\${path}' | xclip -i\"; show-text \"Path yanked: \${path}\"";
-        Y = "run \"/usr/bin/env\" \"bash\" \"-c\" \"echo -n '\${path}' | xclip -i -sel clip\"; show-text \"Path yanked to clipboard: \${path}\"";
-
-        # disable pause (there is space, huh) for p- clipboard commands
-        p = "ignore";
-        # same for progress, there is 'o' button
-        P = "ignore";
-      };
     };
   };
 
