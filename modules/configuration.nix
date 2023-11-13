@@ -1,6 +1,10 @@
-{ config, pkgs, lib, flake-inputs, ... }: {
+{ config, pkgs, lib, flake-inputs, modules, ... }: {
 
-  imports = [ ./modules ];
+  imports = with modules; [
+    keyring
+    overlays
+    usbip
+  ];
 
   nix = {
     package = pkgs.nixUnstable;

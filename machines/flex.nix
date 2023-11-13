@@ -1,8 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, modules, ... }: {
 
-  imports = [
-    ./flex-hardware.nix
-    ./generic-nvidia.nix
+  imports = with modules; [
+    configuration
+    nvidia
   ];
 
   networking.hostName = "flex";
@@ -43,4 +43,22 @@
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:2:0:0";
   };
+
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "sdhci_pci" ];
+  boot.kernelModules = [ "kvm-intel" ];
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/883dd157-68c7-4cca-aef8-f590a1872775";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/3632-E24C";
+      fsType = "vfat";
+    };
+  };
+
+  powerManagement.cpuFreqGovernor = "powersave";
+  hardware.cpu.intel.updateMicrocode = true;
+  hardware.enableRedistributableFirmware = true;
 }

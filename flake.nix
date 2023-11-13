@@ -10,16 +10,22 @@
   outputs = inputs @ { nixpkgs, nixpkgs-stable, home-manager, ... }:
     let
       system = "x86_64-linux";
-      lib = import ./lib.nix { inherit (nixpkgs) lib; };
+
+      inherit (import ./lib.nix { inherit (nixpkgs) lib; }) load-modules;
+
+      homeProfiles = load-modules ./home/profiles;
+      nixosModules = load-modules ./modules;
 
       specialArgs = {
         pkgs-stable = nixpkgs-stable.legacyPackages.${system};
         flake-inputs = inputs;
+        modules = nixosModules;
+        profiles = homeProfiles;
       };
 
-      hm-roles = import ./home/roles.nix { inherit (lib) load-modules; };
+      hm-roles = import ./home/roles.nix { profiles = homeProfiles; };
 
-      hm-module-main = args: {
+      hm-module-main = {
         imports = hm-roles.all;
         home.stateVersion = "22.11";
       };
@@ -33,26 +39,14 @@
           extraSpecialArgs = specialArgs;
         };
       };
+
+      machine = _: machine: nixpkgs.lib.nixosSystem {
+        inherit system specialArgs;
+        modules = [ machine hm-nixos ];
+      };
     in
     {
-      nixosConfigurations = {
-        main = nixpkgs.lib.nixosSystem {
-          modules = [
-            ./configuration.nix
-            ./machines/main.nix
-            hm-nixos
-          ];
-          inherit system specialArgs;
-        };
-        flex = nixpkgs.lib.nixosSystem {
-          modules = [
-            ./configuration.nix
-            ./machines/flex.nix
-            hm-nixos
-          ];
-          inherit system specialArgs;
-        };
-      };
+      nixosConfigurations = nixpkgs.lib.mapAttrs machine (load-modules ./machines);
       homeModules.main = hm-module-main;
     };
 }

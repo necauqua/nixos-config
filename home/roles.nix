@@ -1,7 +1,3 @@
-{ load-modules, ... }:
-let
-  profiles = load-modules ./profiles;
-in
-{
+{ profiles, ... }: {
   all = builtins.attrValues profiles;
 }

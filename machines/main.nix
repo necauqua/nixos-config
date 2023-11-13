@@ -1,10 +1,10 @@
-{ pkgs, lib, flake-inputs, ... }: {
+{ pkgs, lib, flake-inputs, modules, ... }: {
 
-  imports = [
+  imports = with modules; [
+    configuration
+    nvidia
+    lan-audio
     flake-inputs.lanzaboote.nixosModules.lanzaboote
-    ./main-hardware.nix
-    ./generic-nvidia.nix
-    ../modules/lan-audio.nix
   ];
 
   networking.hostName = "main";
@@ -16,11 +16,38 @@
       enable = true;
       pkiBundle = "/etc/secureboot";
     };
+    initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+    kernelModules = [ "kvm-amd" ];
     kernelParams = [
-      "libata.allow_tmp=1"
+      "libata.allow_tpm=1"
     ];
     zfs.extraPools = [ "archive" ];
   };
+
+  fileSystems = {
+    "/" =
+      {
+        device = "/dev/disk/by-uuid/2b2115f8-864f-4482-9e0d-a0211be2e40c";
+        fsType = "ext4";
+      };
+    "/boot" =
+      {
+        device = "/dev/disk/by-uuid/C995-FAC3";
+        fsType = "vfat";
+      };
+    "/storage/games" =
+      {
+        device = "/dev/disk/by-uuid/f1ab243a-0c71-4671-9eeb-7b34c6610ddd";
+        fsType = "ext4";
+      };
+    "/storage/secondary" =
+      {
+        device = "/dev/disk/by-uuid/960bc50e-335c-4bd9-acfb-7f00e451396d";
+        fsType = "ext4";
+      };
+  };
+
+  nixpkgs.hostPlatform = "x86_64-linux";
 
   services.zfs.autoScrub.enable = true;
 
@@ -57,6 +84,11 @@
     "context.properties"."default.clock.rate" = 192000;
   };
 
-  # cooler control stuff
-  hardware.gkraken.enable = true;
+  hardware = {
+    # cooler control stuff
+    gkraken.enable = true;
+
+    enableRedistributableFirmware = true;
+    cpu.amd.updateMicrocode = true;
+  };
 }

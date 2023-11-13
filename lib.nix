@@ -8,6 +8,10 @@
           isNixDir = type == "directory" && builtins.pathExists (path + "/${name}/default.nix");
         in
         isNix || isNixDir;
+      transform = name: _: {
+        name = lib.removeSuffix ".nix" name;
+        value = path + "/${name}";
+      };
     in
-    lib.mapAttrs (name: _: path + "/${name}") (lib.filterAttrs pred (builtins.readDir path));
+    lib.mapAttrs' transform (lib.filterAttrs pred (builtins.readDir path));
 }
