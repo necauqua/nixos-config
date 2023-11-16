@@ -81,7 +81,30 @@
   # ]
   # causes cracks when the rate switches (e.g commonly between 44.1 and 48)
   environment.etc."pipewire/pipewire.conf.d/focusrite.conf".text = builtins.toJSON {
-    "context.properties"."default.clock.rate" = 192000;
+    "context.properties" = {
+      "default.clock.rate" = 192000;
+      "default.configured.audio.source".name = "SF_mono_in";
+    };
+    "context.modules" = [
+      {
+        name = "libpipewire-module-loopback";
+        args = {
+          "node.description" = "Microphone";
+          "capture.props" = {
+            "node.name" = "capture.SF_stereo_in";
+            "audio.position" = [ "FL" ];
+            "node.target" = "alsa_output.usb-Focusrite_Scarlett_2i2_USB_Y8CQA1U1573F7C-00.pro-output-0";
+            "stream.dont-remix" = true;
+            "node.passive" = true;
+          };
+          "playback.props" = {
+            "node.name" = "SF_mono_in";
+            "media.class" = "Audio/Source";
+            "audio.position" = [ "MONO" ];
+          };
+        };
+      }
+    ];
   };
 
   hardware = {
