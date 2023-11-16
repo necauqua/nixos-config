@@ -80,7 +80,7 @@
   #   44100, 48000, 88200, 96000, 176400, 192000
   # ]
   # causes cracks when the rate switches (e.g commonly between 44.1 and 48)
-  environment.etc."pipewire/pipewire.conf.d/focusrite.conf".source = (pkgs.formats.json { }).generate "focusrite.conf" {
+  environment.etc."pipewire/pipewire.conf.d/focusrite.conf".text = builtins.toJSON {
     "context.properties"."default.clock.rate" = 192000;
   };
 

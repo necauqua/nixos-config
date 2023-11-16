@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 let
   ports = {
     sap = 9875;
@@ -6,7 +5,7 @@ let
   };
 in
 {
-  environment.etc."pipewire/pipewire.conf.d/rtp-source.conf".source = (pkgs.formats.json { }).generate "rtp-source.conf" {
+  environment.etc."pipewire/pipewire.conf.d/rtp-source.conf".text = builtins.toJSON {
     "context.modules" = [
       {
         name = "libpipewire-module-rtp-sap";
