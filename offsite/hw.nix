@@ -1,16 +1,22 @@
 { modulesPath, ... }: {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
-  boot.loader.grub.device = "/dev/disk/by-id/wwn-0x5002538e308356ac";
-  boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
-  boot.initrd.kernelModules = [ "nvme" ];
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/859f823c-f9ac-41a4-9e67-d546dbe8f4f4";
-    fsType = "ext4";
+  boot = {
+    loader.grub.device = "/dev/disk/by-id/wwn-0x50014ee059afcbb6";
+    initrd = {
+      availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
+      kernelModules = [ "nvme" ];
+    };
   };
-  fileSystems."/storage" = {
-    device = "/dev/disk/by-uuid/23c4a0b5-0c4e-4c00-8cf2-1eb672a9bae9";
-    fsType = "ext4";
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/49648b41-bb27-4a47-b874-235d61f417f3";
+      fsType = "ext4";
+    };
+    "/storage" = {
+      device = "/dev/disk/by-uuid/ec50ec1f-538c-4561-8c4c-989c1c70233c";
+      fsType = "ext4";
+    };
   };
 }

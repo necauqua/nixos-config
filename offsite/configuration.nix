@@ -1,6 +1,12 @@
 { pkgs, flakeInputs, ... }:
 {
-  imports = [ ./hw.nix ];
+  imports = [
+    flakeInputs.agenix.nixosModules.age
+    ./hw.nix
+    ./murmur.nix
+    ./nginx.nix
+    ./matrix.nix
+  ];
 
   nix = {
     nixPath = [ "nixpkgs=${flakeInputs.nixpkgs}" ];
@@ -13,6 +19,7 @@
   boot.tmp.cleanOnBoot = true;
 
   networking = {
+    hostName = "offsite";
     domain = "necauq.ua";
     defaultGateway6 = {
       address = "2a00:7a60:0001:0c00::1";
@@ -24,6 +31,7 @@
     }];
   };
 
+  # #KyivNotKiev
   time.timeZone = "Europe/Kiev";
 
   services.openssh = {
@@ -45,50 +53,5 @@
     pkgs.helix
   ];
 
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "necauqua@gmail.com";
-  };
-
-  services.nginx = {
-    enable = true;
-    recommendedTlsSettings = true;
-    recommendedOptimisation = true;
-    recommendedBrotliSettings = true;
-    recommendedGzipSettings = true;
-    recommendedProxySettings = true;
-  };
-
-  services.nginx.virtualHosts."necauq.ua" = let
-    hostname = "necauq.ua";
-    fqdn = "matrix.${hostname}";
-    baseUrl = "https://${fqdn}";
-    clientConfig = {
-      "m.homeserver" = {
-        base_url = baseUrl;
-        server_name = hostname;
-      };
-      "org.matrix.msc3575.proxy".url = baseUrl;
-    };
-    serverConfig."m.server" = "${fqdn}:443";
-    returnJson = data: ''
-      types {} default_type "application/json; charset=utf-8";
-      add_header Access-Control-Allow-Origin *;
-      return 200 '${builtins.toJSON data}';
-    '';
-  in {
-    forceSSL = true;
-    enableACME = true;
-    locations."= /.well-known/matrix/server".extraConfig = returnJson serverConfig;
-    locations."= /.well-known/matrix/client".extraConfig = returnJson clientConfig;
-    locations."= /healthcheck".extraConfig = returnJson {
-      status = "ok";
-      flakeRev = "${flakeInputs.self.rev or "dirty"}";
-    };
-    globalRedirect = "necauqua.dev";
-  };
-
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 }
