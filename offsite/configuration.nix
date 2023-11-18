@@ -6,6 +6,7 @@
     ./murmur.nix
     ./nginx.nix
     ./matrix.nix
+    ./pgp.nix
   ];
 
   nix = {
