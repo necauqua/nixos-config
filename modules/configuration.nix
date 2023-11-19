@@ -1,12 +1,7 @@
-{ pkgs, flakeInputs, ... }:
-{
+{ pkgs, flakeInputs, ... }: {
+
   imports = [
     flakeInputs.agenix.nixosModules.age
-    ./hw.nix
-    ./murmur.nix
-    ./nginx.nix
-    ./matrix.nix
-    ./pgp.nix
   ];
 
   nix = {
@@ -35,19 +30,11 @@
   # #KyivNotKiev
   time.timeZone = "Europe/Kiev";
 
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false;
-  };
-
   programs.fish.enable = true;
 
   users = {
     defaultUserShell = pkgs.fish;
     mutableUsers = false;
-    users.root.openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0oajjYx0nt7A2zBWjnc5gxTs1nBcGHuGNyp0Al5rAz openpgp:0xA61191F9"
-    ];
   };
 
   environment.systemPackages = [

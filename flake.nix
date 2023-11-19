@@ -12,25 +12,41 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      load-modules = path:
+        let
+          pred = name: type:
+            let
+              isNix = type == "regular" && pkgs.lib.hasSuffix ".nix" name;
+              isNixDir = type == "directory" && builtins.pathExists (path + "/${name}/default.nix");
+            in
+            isNix || isNixDir;
+          transform = name: _: {
+            name = pkgs.lib.removeSuffix ".nix" name;
+            value = path + "/${name}";
+          };
+        in
+        pkgs.lib.mapAttrs' transform (pkgs.lib.filterAttrs pred (builtins.readDir path));
     in
     {
       nixosConfigurations.offsite = nixpkgs.lib.nixosSystem {
         inherit system;
-        modules = [ ./offsite/configuration.nix ];
+        modules = builtins.attrValues (load-modules ./modules);
         specialArgs.flakeInputs = inputs;
       };
 
       deploy.nodes.offsite = {
         hostname = "necauq.ua";
         profiles.system = {
+          path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.offsite;
           sshUser = "root";
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.offsite;
+          fastConnection = true;
+          sshOpts = [ "-p" "5555" ];
         };
       };
 
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
-      devShells.x86_64-linux.default = pkgs.mkShell {
+      devShells.${system}.default = pkgs.mkShell {
         buildInputs = [
           agenix.packages.${system}.default
           deploy-rs.packages.${system}.default

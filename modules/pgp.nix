@@ -4,7 +4,7 @@ let
     add_header Access-Control-Allow-Origin *;
     ${stmt};
   '';
-  keys = mkResponse "application/pgp-keys" "alias ${./site/pgp.asc}";
+  keys = mkResponse "application/pgp-keys" "alias ${../site/pgp.asc}";
   policy = mkResponse "text/plain" "return 200 ''";
   wkdHash = "gcbtxq6fx9tu5g3iyscwoa7psh37wpd7";
   domain = "necauq.ua";
