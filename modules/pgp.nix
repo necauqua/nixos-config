@@ -1,3 +1,4 @@
+{ lib, ... }:
 let
   mkResponse = type: stmt: ''
     types {} default_type "${type}; charset=utf-8";
@@ -6,26 +7,38 @@ let
   '';
   keys = mkResponse "application/pgp-keys" "alias ${../site/pgp.asc}";
   policy = mkResponse "text/plain" "return 200 ''";
-  wkdHash = "gcbtxq6fx9tu5g3iyscwoa7psh37wpd7";
-  domain = "necauq.ua";
+
+  ids = [
+    # him@necauq.ua
+    { hashes = [ "gcbtxq6fx9tu5g3iyscwoa7psh37wpd7" ]; domain = "necauq.ua"; }
+    # self@necauqua.dev
+    { hashes = [ "eyhyzoqumnuxo315g6773ddh3tsdtkdb" ]; domain = "necauqua.dev"; }
+  ];
+
+  mapMerge = f: xs: lib.attrsets.mergeAttrsList (builtins.map f xs);
+
+  wkdKey = infix: hash: {
+    "= /.well-known/openpgpkey/${infix}hu/${hash}".extraConfig = keys;
+  };
+  wkdLocations = infix: hashes: {
+    "= /.well-known/openpgpkey/${infix}policy".extraConfig = policy;
+  } // mapMerge (wkdKey infix) hashes;
+
+  defineWKD = { hashes, domain }: {
+    "openpgpkey.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations = wkdLocations "${domain}/" hashes;
+    };
+    ${domain} = {
+      forceSSL = true;
+      enableACME = true;
+      locations = wkdLocations "" hashes // {
+        "= /pgp.asc".extraConfig = keys;
+      };
+    };
+  };
 in
 {
-  services.nginx.virtualHosts."openpgpkey.${domain}" = {
-    forceSSL = true;
-    enableACME = true;
-    locations = {
-      "= /.well-known/openpgpkey/${domain}/hu/${wkdHash}".extraConfig = keys;
-      "= /.well-known/openpgpkey/${domain}/policy".extraConfig = policy;
-    };
-  };
-  services.nginx.virtualHosts.${domain} = {
-    forceSSL = true;
-    enableACME = true;
-    locations = {
-      "= /pgp.asc".extraConfig = keys;
-      # for some reason this does not work for the gpg binary, it only reads the above "advanced" version with the subdomain
-      "= /.well-known/openpgpkey/hu/${wkdHash}".extraConfig = keys;
-      "= /.well-known/openpgpkey/policy".extraConfig = policy;
-    };
-  };
+  services.nginx.virtualHosts = mapMerge defineWKD ids;
 }
