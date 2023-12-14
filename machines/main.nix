@@ -83,7 +83,7 @@
   environment.etc."pipewire/pipewire.conf.d/focusrite.conf".text = builtins.toJSON {
     "context.properties" = {
       "default.clock.rate" = 192000;
-      "default.configured.audio.source".name = "SF_mono_in";
+      # "default.configured.audio.source".name = "SF_mono_in";
     };
     "context.modules" = [
       {
