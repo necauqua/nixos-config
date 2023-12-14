@@ -1,4 +1,4 @@
-{ flakeInputs, ... }: {
+{ flakeInputs, lib, ... }: {
   security.acme = {
     acceptTerms = true;
     defaults.email = "necauqua@gmail.com";
@@ -13,23 +13,67 @@
     recommendedProxySettings = true;
   };
 
-  services.nginx.virtualHosts."necauq.ua" =
+  services.nginx.virtualHosts =
     let
-      returnJson = data: ''
-        types {} default_type "application/json; charset=utf-8";
-        add_header Access-Control-Allow-Origin *;
-        return 200 '${builtins.toJSON data}';
-      '';
-    in
-    {
-      forceSSL = true;
-      enableACME = true;
-      locations."= /healthcheck".extraConfig = returnJson {
-        status = "ok";
-        flakeRev = "${flakeInputs.self.rev or "dirty"}";
+      www = host: {
+        "www.${host}" = {
+          forceSSL = true;
+          useACMEHost = host;
+          globalRedirect = host;
+        };
       };
-      globalRedirect = "necauqua.dev";
-    };
+      basic = host:
+        let
+          countDots = str:
+            builtins.stringLength str -
+            builtins.stringLength (builtins.replaceStrings [ "." ] [ "" ] str);
+          base.${host} = {
+            forceSSL = true;
+            enableACME = true;
+            root = "/var/www/${host}";
+          };
+        in
+        if countDots host == 1 then base // (www host) else base;
+    in
+    lib.mkMerge [
+      (basic "ld47.necauqua.dev")
+      (basic "ld49.necauqua.dev")
+      (basic "picolauncher.dev")
+      (www "necauqua.dev")
+      {
+        "default" = {
+          globalRedirect = "necauqua.dev";
+          default = true;
+        };
+        "necauq.ua" =
+          let
+            returnJson = data: ''
+              types {} default_type "application/json; charset=utf-8";
+              add_header Access-Control-Allow-Origin *;
+              return 200 '${builtins.toJSON data}';
+            '';
+          in
+          {
+            forceSSL = true;
+            enableACME = true;
+            locations."= /healthcheck".extraConfig = returnJson {
+              status = "ok";
+              flakeRev = "${flakeInputs.self.rev or "dirty"}";
+            };
+            globalRedirect = "necauqua.dev";
+          };
+        "necauqua.dev" = {
+          forceSSL = true;
+          enableACME = true;
+          root = "/var/www/necauqua.dev";
+        };
+        # "uq.rs" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   globalRedirect = "necauqua.dev";
+        # };
+      }
+    ];
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 }
