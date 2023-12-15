@@ -40,9 +40,10 @@
       (basic "ld49.necauqua.dev")
       (basic "picolauncher.dev")
       (www "necauqua.dev")
+      (www "necauq.ua")
       {
         "default" = {
-          globalRedirect = "necauqua.dev";
+          globalRedirect = "necauq.ua";
           default = true;
         };
         "necauq.ua" =
@@ -60,12 +61,12 @@
               status = "ok";
               flakeRev = "${flakeInputs.self.rev or "dirty"}";
             };
-            globalRedirect = "necauqua.dev";
+            root = "/var/www/necauqua.dev";
           };
         "necauqua.dev" = {
           forceSSL = true;
           enableACME = true;
-          root = "/var/www/necauqua.dev";
+          globalRedirect = "necauq.ua";
         };
         # "uq.rs" = {
         #   forceSSL = true;
