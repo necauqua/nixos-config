@@ -23,6 +23,8 @@ in
       enableSubmission = true;
       enableSubmissions = true;
       relayPort = 587;
+      destination = [ "localhost" ];
+      # ^ we're send-only, so send stuff to necauq.ua externally to be received by what's configured in dns
 
       hostname = domain;
       inherit domain;
