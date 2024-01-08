@@ -1,6 +1,6 @@
-{ ... }: {
+{ config, ... }: {
   programs.alacritty = {
-    enable = true;
+    enable = !config.headless;
     settings = {
       window = {
         dimensions = {

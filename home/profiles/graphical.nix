@@ -1,10 +1,8 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
+  graphical = !config.headless;
   wrap = pkg: flags:
-    pkgs.runCommand pkg
-      {
-        buildInputs = [ pkgs.makeWrapper ];
-      } ''
+    pkgs.runCommand pkg { buildInputs = [ pkgs.makeWrapper ]; } ''
       mkdir $out
       # Link every top-level folder from pkg to our new target
       ln -s ${pkg}/* $out
@@ -33,8 +31,70 @@ let
     '';
 
   tdesktop = (wrap pkgs.tdesktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome");
+
+  obsidian = lib.throwIf (lib.versionOlder "1.5.3" pkgs.obsidian.version) "Obsidian updated, check electron issue" (
+    pkgs.obsidian.override {
+      electron = pkgs.electron_25.overrideAttrs (_: {
+        preFixup = "patchelf --add-needed ${pkgs.libglvnd}/lib/libEGL.so.1 $out/bin/electron"; # NixOS/nixpkgs#272912
+        meta.knownVulnerabilities = [ ]; # NixOS/nixpkgs#273611
+      });
+    }
+  );
 in
 {
+  xsession.enable = graphical;
+
+  home.pointerCursor = {
+    x11.enable = graphical;
+    package = pkgs.qogir-icon-theme;
+    name = "Qogir";
+    size = 48;
+  };
+
+  gtk = {
+    enable = graphical;
+    iconTheme = {
+      # name = "Adwaita";
+      # package = pkgs.gnome.adwaita-icon-theme;
+      name = "breeze-dark";
+      package = pkgs.breeze-icons;
+    };
+    theme = {
+      # name = "Adwaita-dark";
+      # package = pkgs.gnome3.gnome-themes-extra;
+      name = "Breeze-Dark";
+      package = pkgs.breeze-gtk;
+    };
+    gtk3.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+      gtk-decoration-layout = "menu:";
+    };
+    gtk4.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+      gtk-decoration-layout = "menu:";
+    };
+  };
+
+  xdg.mimeApps = {
+    enable = graphical;
+    defaultApplications = {
+      # gimp takes like two eternities to boot while all I need
+      # is to see the image lol
+      "image/bmp" = "sxiv.desktop";
+      "image/gif" = "sxiv.desktop";
+      "image/jpeg" = "sxiv.desktop";
+      "image/jpg" = "sxiv.desktop";
+      "image/png" = "sxiv.desktop";
+      "image/webp" = "sxiv.desktop";
+      "image/heic" = "sxiv.desktop";
+    };
+  };
+
+  # because things just override the link? huh
+  xdg.configFile."mimeapps.list".force = graphical;
+
+  services.kdeconnect.enable = true;
+
   home.packages = with pkgs; [
     dex
     xclip
@@ -63,9 +123,8 @@ in
     chatterino2
     bitwarden
     (discord.override { withOpenASAR = true; })
+    mumble
     element-desktop
-    spotify
-    tidal-hifi
     emote
     lmms
     evince
@@ -100,87 +159,4 @@ in
     '')
     (pkgs.writeShellScriptBin ":wq" "kill $PPID")
   ];
-
-  xsession.enable = true;
-
-  home.pointerCursor = {
-    x11.enable = true;
-    package = pkgs.qogir-icon-theme;
-    name = "Qogir";
-    size = 48;
-  };
-
-  xresources.extraConfig = builtins.readFile (pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/arcticicestudio/nord-xresources/c4b8a29871ece1b3a9d9ef792880decdddacd837/src/nord";
-    sha256 = "sha256-vsxKcs9RnOcfEKhF72ySg/tDJIE/rKuklwkWJPOpzUc=";
-  });
-
-  gtk = {
-    enable = true;
-    iconTheme = {
-      # name = "Adwaita";
-      # package = pkgs.gnome.adwaita-icon-theme;
-      name = "breeze-dark";
-      package = pkgs.breeze-icons;
-    };
-    theme = {
-      # name = "Adwaita-dark";
-      # package = pkgs.gnome3.gnome-themes-extra;
-      name = "Breeze-Dark";
-      package = pkgs.breeze-gtk;
-    };
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-      gtk-decoration-layout = "menu:";
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-      gtk-decoration-layout = "menu:";
-    };
-  };
-
-  # manual.manpages.enable = false;
-
-  programs = {
-    bat = {
-      enable = true;
-      config.style = "numbers";
-    };
-  };
-
-  services.kdeconnect.enable = true;
-
-  xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
-
-  xdg.userDirs = {
-    enable = true;
-    createDirectories = true;
-
-    desktop = "$HOME/";
-    documents = "$HOME/documents";
-    download = "$HOME/downloads";
-    music = "$HOME/music";
-    pictures = "$HOME/images";
-    publicShare = "$HOME/documents/public";
-    templates = "$HOME/documents/templates";
-    videos = "$HOME/videos";
-  };
-
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      # gimp takes like two eternities to boot while all I need
-      # is to see the image lol
-      "image/bmp" = "sxiv.desktop";
-      "image/gif" = "sxiv.desktop";
-      "image/jpeg" = "sxiv.desktop";
-      "image/jpg" = "sxiv.desktop";
-      "image/png" = "sxiv.desktop";
-      "image/webp" = "sxiv.desktop";
-      "image/heic" = "sxiv.desktop";
-    };
-  };
-
-  # because things just override the link? huh
-  xdg.configFile."mimeapps.list".force = true;
 }

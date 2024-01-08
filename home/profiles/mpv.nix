@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   programs.mpv = {
-    enable = true;
+    enable = !config.headless;
 
     package = (pkgs.mpv.override {
       scripts = [ pkgs.mpvScripts.mpris ]; # add an essential script lol

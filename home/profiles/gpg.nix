@@ -1,4 +1,4 @@
-{ pkgs, ...}: {
+{ config, pkgs, lib, ... }: {
 
   programs.gpg = {
     enable = true;
@@ -10,8 +10,8 @@
     tag.gpgSign = true;
   };
 
-  home.packages = with pkgs; [
+  home.packages = lib.optionals (!config.headless) (with pkgs; [
     kgpg
     gnome.seahorse
-  ];
+  ]);
 }

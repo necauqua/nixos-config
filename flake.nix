@@ -48,5 +48,9 @@
     {
       nixosConfigurations = nixpkgs.lib.mapAttrs machine (load-modules ./machines);
       homeModules.main = hm-module-main;
+      homeModules.headless = {
+        imports = hm-roles.headless;
+        home.stateVersion = "22.11";
+      };
     };
 }
