@@ -219,8 +219,10 @@
       desktopManager.plasma5.enable = true;
 
       # Configure keymap in X11
-      layout = "us,ru";
-      xkbOptions = "grp:alt_shift_toggle,compose:rwin";
+      xkb = {
+        layout = "us,ru";
+        options = "grp:alt_shift_toggle,compose:rwin";
+      };
     };
 
     udev.packages = with pkgs; [
@@ -247,7 +249,7 @@
     dbus.enable = true;
     avahi = {
       enable = true;
-      nssmdns = true;
+      nssmdns4 = true;
     };
 
     keybase.enable = true;
