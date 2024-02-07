@@ -39,7 +39,7 @@
           }
         ];
       };
-      key_bindings = [
+      keyboard.bindings = [
         {
           key = "T";
           mods = "Control";
@@ -48,19 +48,19 @@
             args = [
               "-c"
               ''
-                cur=`grep ~/.config/alacritty/opacity.yml -Poe '(?<=  opacity: )\\d*\\.?\\d+' || true`
+                cur=`cat ~/.config/alacritty/opacity.toml | cut -d= -f2 || true`
                 if [[ "$cur" = 0.5 ]]; then
                   new=1.0
                 else
                   new=0.5
                 fi
-                echo -e "window:\\n    opacity: $new" > ~/.config/alacritty/opacity.yml
+                echo "window.opacity=$new" > ~/.config/alacritty/opacity.toml
               ''
             ];
           };
         }
       ];
-      import = [ "~/.config/alacritty/opacity.yml" ];
+      import = [ "~/.config/alacritty/opacity.toml" ];
       colors = {
         primary = {
           background = "#2e3440";
@@ -79,15 +79,9 @@
           text = "CellForeground";
           background = "#4c566a";
         };
-        search = {
-          matches = {
-            foreground = "CellBackground";
-            background = "#88c0d0";
-          };
-          footer_bar = {
-            background = "#434c5e";
-            foreground = "#d8dee9";
-          };
+        search.matches = {
+          foreground = "CellBackground";
+          background = "#88c0d0";
         };
         normal = {
           black = "#3b4252";
