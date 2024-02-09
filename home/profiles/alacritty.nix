@@ -1,4 +1,33 @@
-{ config, ... }: {
+{ config, pkgs, ... }: {
+
+  home.packages = [
+    # make launching termapps work in KDE
+    (pkgs.writeShellScriptBin "konsole" ''
+      new_args=()
+
+      while [[ $# -gt 0 ]]; do
+        case $1 in
+          -qwindowicon)
+            shift 2
+            ;;
+          -qwindowtitle)
+            new_args+=("--title" "$2")
+            shift 2
+            ;;
+          --workdir)
+            new_args+=("--working-directory" "$2")
+            shift 2
+            ;;
+          *)
+            new_args+=("$1")
+            shift
+            ;;
+        esac
+      done
+      alacritty "''${new_args[@]}"
+    '')
+  ];
+
   programs.alacritty = {
     enable = !config.headless;
     settings = {
