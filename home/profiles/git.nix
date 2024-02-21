@@ -15,14 +15,7 @@
       push.default = "current";
       pull.ff = "only";
       fetch.prune = "true";
-
-      # delta settings
-      core.pager = "${pkgs.delta}/bin/delta";
-      interactive.diffFilter = "${pkgs.delta}/bin/delta --color-only";
-      "add.interactive".useBuiltin = false;
-      delta = { navigate = true; light = false; };
-      merge.conflictstyle = "diff3";
-      diff.colorMoved = "default";
+      diff.external = "${pkgs.difftastic}/bin/difft";
     };
   };
 }
