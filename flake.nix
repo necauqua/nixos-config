@@ -7,7 +7,7 @@
     lanzaboote.url = "github:nix-community/lanzaboote";
   };
 
-  outputs = inputs @ { nixpkgs, nixpkgs-stable, home-manager, ... }:
+  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, home-manager, ... }:
     let
       system = "x86_64-linux";
 
@@ -40,9 +40,13 @@
         };
       };
 
+      global = {
+        system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
+      };
+
       machine = _: machine: nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
-        modules = [ machine hm-nixos ];
+        modules = [ global machine hm-nixos ];
       };
     in
     {
