@@ -5,7 +5,7 @@ let
     add_header Access-Control-Allow-Origin *;
     ${stmt};
   '';
-  keys = mkResponse "application/pgp-keys" "alias ${../site/pgp.asc}";
+  keys = mkResponse "application/pgp-keys" "alias ${../site/pgp.bin}";
   policy = mkResponse "text/plain" "return 200 ''";
 
   ids = [
