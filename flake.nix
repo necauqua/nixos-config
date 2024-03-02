@@ -26,11 +26,14 @@
           };
         in
         pkgs.lib.mapAttrs' transform (pkgs.lib.filterAttrs pred (builtins.readDir path));
+      global = {
+        system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
+      };
     in
     {
       nixosConfigurations.offsite = nixpkgs.lib.nixosSystem {
         inherit system;
-        modules = builtins.attrValues (load-modules ./modules);
+        modules = [ global ] ++ (builtins.attrValues (load-modules ./modules));
         specialArgs.flakeInputs = inputs;
       };
 
