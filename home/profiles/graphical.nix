@@ -86,7 +86,7 @@ in
 
   services.kdeconnect.enable = true;
 
-  home.packages = with pkgs; [
+  home.packages = with pkgs; lib.optionals graphical [
     dex
     xclip
 
