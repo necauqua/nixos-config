@@ -261,6 +261,7 @@
       24800 # barrier server
       24274 # my nearby-share project wip thing
       5173 # svelte dev server
+      9091 # transmission remote
     ];
     allowedTCPPortRanges = [
       { from = 1714; to = 1764; } # KDE Connect
