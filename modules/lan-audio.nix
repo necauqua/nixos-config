@@ -5,7 +5,7 @@ let
   };
 in
 {
-  environment.etc."pipewire/pipewire.conf.d/rtp-source.conf".text = builtins.toJSON {
+  services.pipewire.extraConfig.pipewire.rtp-source = {
     "context.modules" = [
       {
         name = "libpipewire-module-rtp-sap";
