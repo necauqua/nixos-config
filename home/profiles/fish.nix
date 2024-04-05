@@ -31,6 +31,8 @@
         bind \e\[5D backward-word
         bind \e\[5C forward-word
       end
+
+      complete -xc fcat -d Function -a '(functions -na)'
     '';
     functions = {
       fish_title = "echo $_";
