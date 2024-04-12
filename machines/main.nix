@@ -1,10 +1,11 @@
 { pkgs, lib, flake-inputs, modules, ... }: {
 
   imports = with modules; [
+    flake-inputs.lanzaboote.nixosModules.lanzaboote
     configuration
     nvidia
     lan-audio
-    flake-inputs.lanzaboote.nixosModules.lanzaboote
+    samba
   ];
 
   networking.hostName = "main";
