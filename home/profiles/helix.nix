@@ -2,6 +2,12 @@
   programs.helix = {
     enable = true;
     settings = {
+      editor = {
+        bufferline = "multiple";
+        cursorline = true;
+        lsp.display-inlay-hints = true;
+        indent-guides.render = true;
+      };
       keys.normal = {
         "C-q" = "hover";
         "C-k" = "command_palette";
