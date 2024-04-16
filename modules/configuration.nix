@@ -154,13 +154,6 @@
       jdk11.source = jdk11;
       jdk16.source = adoptopenjdk-hotspot-bin-16;
       jdk17.source = jdk17;
-
-      # also for awesome for lua LSP when editing the config
-      # awesome.source = my-pkgs.awesome-git;
-      # and the LSP itself
-      lua-lsp.source = sumneko-lua-language-server;
-      # and rnix-lsp for vscode (for helix it's in the HM config)
-      nix-lsp.source = rnix-lsp;
     };
 
     plasma5.excludePackages = with pkgs.libsForQt5; [
@@ -199,6 +192,7 @@
   };
 
   services = {
+    displayManager.sddm.enable = true;
     xserver = {
       enable = true;
       dpi = 196;
@@ -209,8 +203,6 @@
         # xserverArgs = ["-extension" "MIT-SHM"];
         # # ^ getting BadValue crashes in wine/lutris games without this
         # ^ but it prevents OBS from capturing the screen (obviously), lol
-
-        sddm.enable = true;
       };
       desktopManager.plasma5.enable = true;
 

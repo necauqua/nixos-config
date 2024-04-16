@@ -102,7 +102,7 @@ in
 
     sxiv
     maim
-    dfeet
+    d-spy
     pavucontrol
     qpwgraph
     barrier
