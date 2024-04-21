@@ -7,9 +7,11 @@
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
+    twitch-archiver.url = "github:necauqua/twitch-archiver";
+    twitch-archiver.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs @ { self, nixpkgs, deploy-rs, agenix }:
+  outputs = inputs @ { self, nixpkgs, deploy-rs, agenix, twitch-archiver }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -34,7 +36,10 @@
     {
       nixosConfigurations.offsite = nixpkgs.lib.nixosSystem {
         inherit system;
-        modules = [ global ] ++ (builtins.attrValues (load-modules ./modules));
+        modules = [
+          global
+          twitch-archiver.nixosModules.default
+        ] ++ (builtins.attrValues (load-modules ./modules));
         specialArgs.flakeInputs = inputs;
       };
 
