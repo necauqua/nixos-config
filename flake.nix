@@ -2,6 +2,7 @@
   description = "Deployment for my server cluster";
 
   inputs = {
+    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
