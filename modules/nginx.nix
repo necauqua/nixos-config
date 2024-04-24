@@ -67,6 +67,9 @@
           forceSSL = true;
           enableACME = true;
           globalRedirect = "necauq.ua";
+          locations."/.well-known/matrix".extraConfig = ''
+            return 404;
+          '';
         };
         # "uq.rs" = {
         #   forceSSL = true;
