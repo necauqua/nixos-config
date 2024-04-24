@@ -154,6 +154,9 @@
       jdk11.source = jdk11;
       jdk16.source = adoptopenjdk-hotspot-bin-16;
       jdk17.source = jdk17;
+
+      # static lua lsp location for vscode
+      lua-lsp.source = sumneko-lua-language-server;
     };
 
     plasma5.excludePackages = with pkgs.libsForQt5; [
