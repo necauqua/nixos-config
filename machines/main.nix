@@ -64,12 +64,12 @@
       # force composition pipeline to fix screen tearing with nvidia
       # and also setup the screen positions I guess
       screenSection = ''
-        Option "metamodes" "DP-2: nvidia-auto-select +1920+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}, HDMI-0: nvidia-auto-select +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}"
+        Option "metamodes" "DP-2: nvidia-auto-select +1920+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}, DP-5: nvidia-auto-select +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}"
       '';
       # previous xrandr setup to set screen positions
       # looks like it's still needed to set the primary screen
       displayManager.setupCommands = ''
-        ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --primary --right-of HDMI-0 || true;
+        ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --primary --right-of DP-5 || true;
       '';
     };
     # main pc is the media server/nas as well atm
