@@ -183,6 +183,10 @@
     partition-manager.enable = true;
     steam.enable = true;
     wireshark.enable = true;
+    nix-ld = {
+      enable = true;
+      libraries = [ ];
+    };
   };
 
   security = {
