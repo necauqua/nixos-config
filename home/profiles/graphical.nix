@@ -132,7 +132,6 @@ in
     obsidian
     via
 
-    minecraft
     starsector
     prismlauncher # multimc fork that works on Nix from the box
     lutris
