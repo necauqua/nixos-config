@@ -6,6 +6,7 @@
     nvidia
     lan-audio
     samba
+    arr
   ];
 
   networking.hostName = "main";
@@ -71,11 +72,6 @@
       displayManager.setupCommands = ''
         ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --primary --right-of DP-5 || true;
       '';
-    };
-    # main pc is the media server/nas as well atm
-    jellyfin = {
-      enable = true;
-      openFirewall = true;
     };
   };
 
