@@ -114,4 +114,10 @@
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
   };
+
+  # todo: maybe move this somewheree
+  services.ollama = {
+    enable = true;
+    acceleration = "cuda";
+  };
 }
