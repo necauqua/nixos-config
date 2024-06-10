@@ -22,6 +22,6 @@ in
   };
 
   security.acme.certs.${domain}.postRun = "systemctl restart murmur.service";
-  services.nginx.virtualHosts."${domain}".enableACME = true;
+  services.nginx.virtualHosts.${domain}.enableACME = true;
   users.users.murmur.extraGroups = [ "nginx" ];
 }

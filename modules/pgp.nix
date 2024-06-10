@@ -10,7 +10,7 @@ let
 
   ids = [
     # him@necauq.ua
-    { hashes = [ "gcbtxq6fx9tu5g3iyscwoa7psh37wpd7" ]; domain = "necauq.ua"; }
+    { hashes = [ "gcbtxq6fx9tu5g3iyscwoa7psh37wpd7" ]; domain = "necauq.ua"; dns = true; }
     # self@necauqua.dev
     { hashes = [ "eyhyzoqumnuxo315g6773ddh3tsdtkdb" ]; domain = "necauqua.dev"; }
   ];
@@ -24,10 +24,11 @@ let
     "= /.well-known/openpgpkey/${infix}policy".extraConfig = policy;
   } // mapMerge (wkdKey infix) hashes;
 
-  defineWKD = { hashes, domain }: {
+  defineWKD = { hashes, domain, dns ? false }: {
     "openpgpkey.${domain}" = {
       forceSSL = true;
-      enableACME = true;
+      enableACME = !dns;
+      useACMEHost = if dns then domain else null;
       locations = wkdLocations "${domain}/" hashes;
     };
     ${domain} = {

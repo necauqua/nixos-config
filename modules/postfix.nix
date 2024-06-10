@@ -56,7 +56,7 @@ in
         };
     };
 
-    nginx.virtualHosts."${domain}".enableACME = true;
+    nginx.virtualHosts.${domain}.enableACME = true;
   };
 
   security.acme.certs.${domain}.postRun = "systemctl restart postfix.service";

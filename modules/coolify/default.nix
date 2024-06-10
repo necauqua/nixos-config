@@ -48,9 +48,9 @@ in
         default "http://127.0.0.1:${toString port}";
       }
     '';
-    virtualHosts."coolify.necauq.ua" = {
+    virtualHosts."~^(.+?\\.)?coolify\\.necauq\\.ua" = {
       forceSSL = true;
-      enableACME = true;
+      useACMEHost = "necauq.ua";
       locations."/" = {
         proxyPass = "$coolify_addr";
         proxyWebsockets = true;
