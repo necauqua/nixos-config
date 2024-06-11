@@ -56,7 +56,7 @@ in
         default "http://127.0.0.1:${toString port}";
       }
     '';
-    virtualHosts."~^(.+?\\.)?coolify\\.necauq\\.ua" = {
+    virtualHosts."coolify.necauq.ua" = {
       forceSSL = true;
       useACMEHost = "necauq.ua";
       locations."/" = {
@@ -65,5 +65,15 @@ in
         extraConfig = "proxy_pass_header Authorization;";
       };
     };
+    # proxy to the coolify proxy for the subdomained services
+    virtualHosts."~^.+?\\.coolify\\.necauq\\.ua" = {
+      forceSSL = true;
+      useACMEHost = "necauq.ua";
+      locations."/".proxyPass = "http://127.0.0.1:8007";
+    };
   };
+
+  security.acme.certs."necauq.ua".extraDomainNames = [
+    "*.coolify.necauq.ua"
+  ];
 }

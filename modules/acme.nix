@@ -8,15 +8,17 @@
 
     certs =
       let
-        cloudflare = extras: {
-          dnsProvider = "cloudflare";
-          webroot = lib.mkForce null; # override all the nginx enableACME lines
-          credentialsFile = config.age.secrets.cloudflare.path;
-          extraDomainNames = extras;
+        cloudflare = domain: {
+          "${domain}" = {
+            dnsProvider = "cloudflare";
+            webroot = lib.mkForce null; # override all the nginx enableACME lines
+            credentialsFile = config.age.secrets.cloudflare.path;
+            extraDomainNames = [ "*.${domain}" ];
+          };
         };
       in
-      {
-        "necauq.ua" = cloudflare [ "*.necauq.ua" "*.coolify.necauq.ua" ];
-      };
+      lib.mkMerge [
+        (cloudflare "necauq.ua")
+      ];
   };
 }
