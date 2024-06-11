@@ -16,6 +16,14 @@ in
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGYpjnM7u9pCk6YfFoeIaQ18KVOctzGZb89eQjoOkzqJ root@coolify"
   ];
 
+  virtualisation.docker.daemon.settings = {
+    log-driver = "json-file";
+    log-opts = {
+      max-size = "10m";
+      max-file = "3";
+    };
+  };
+
   systemd.services.coolify-prepare-files = {
     description = "Setup files for coolify";
     wantedBy = [ "coolify.service" ];
@@ -54,7 +62,6 @@ in
       locations."/" = {
         proxyPass = "$coolify_addr";
         proxyWebsockets = true;
-        recommendedProxySettings = true;
         extraConfig = "proxy_pass_header Authorization;";
       };
     };
