@@ -13,7 +13,7 @@ in
   # on the server manually cuz I was too lazy to figure out the nix way
   # (I mean along with just running the docker-compose thing instead of re-nixing the entirety of coolify eh)
   users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGYpjnM7u9pCk6YfFoeIaQ18KVOctzGZb89eQjoOkzqJ root@coolify"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMMFPpHvX6LWKNceKTSDdBwwwC9Yqt80ztF8vaeW4zsh root@coolify"
   ];
 
   virtualisation.docker.daemon.settings = {
