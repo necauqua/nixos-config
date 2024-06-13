@@ -6,6 +6,5 @@ in
   "murmur-password.age".publicKeys = [ him offsite ];
   "reposilite-password.age".publicKeys = [ him offsite ];
   "smtp-server-sasl.age".publicKeys = [ him offsite ];
-  "coolify.age".publicKeys = [ him offsite ];
   "cloudflare.age".publicKeys = [ him offsite ];
 }
