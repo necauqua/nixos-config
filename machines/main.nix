@@ -7,6 +7,7 @@
     lan-audio
     samba
     arr
+    borg
   ];
 
   networking.hostName = "main";
