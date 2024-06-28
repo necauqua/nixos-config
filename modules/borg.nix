@@ -1,11 +1,15 @@
-{
+{ config, ... }: {
+
+  age.secrets.borg-key.file = ../secrets/borg-key;
+  age.secrets.borg-pass.file = ../secrets/borg-pass;
+
   services.borgbackup.jobs.offsite = {
     archiveBaseName = "home";
     dateFormat = "+1%Y-%m-%dT%H:%M:%S";
     repo = "borg@necauq.ua:.";
     encryption.mode = "repokey-blake2";
-    encryption.passCommand = "cat /run/keys/borgbackup_passphrase";
-    environment.BORG_RSH = "ssh -i /root/.ssh/borg_ed25519 -p 5555";
+    encryption.passCommand = "cat ${config.age.secrets.borg-pass.path}";
+    environment.BORG_RSH = "ssh -i ${config.age.secrets.borg-key.path} -p 5555";
 
     preHook = ''
       extraCreateArgs=--exclude-caches # nix-side extraCreateArgs are broken atm

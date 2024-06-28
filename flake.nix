@@ -7,11 +7,14 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, home-manager, ... }:
+  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, home-manager, agenix, ... }:
     let
       system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
 
       inherit (import ./lib.nix { inherit (nixpkgs) lib; }) load-modules;
 
@@ -44,6 +47,7 @@
 
       global = {
         system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
+        imports = [ agenix.nixosModules.age ];
       };
 
       machine = _: machine: nixpkgs.lib.nixosSystem {
@@ -57,6 +61,11 @@
       homeModules.headless = {
         imports = hm-roles.headless;
         home.stateVersion = "22.11";
+      };
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = [
+          agenix.packages.${system}.default
+        ];
       };
     };
 }
