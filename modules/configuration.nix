@@ -150,7 +150,6 @@
       # stable locations for all them javas
       jdk8.source = jdk8;
       jdk11.source = jdk11;
-      jdk16.source = adoptopenjdk-hotspot-bin-16;
       jdk17.source = jdk17;
 
       # static lua lsp location for vscode
