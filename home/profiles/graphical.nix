@@ -107,7 +107,7 @@ in
     qpwgraph
     barrier
 
-    transmission-gtk
+    transmission_4-gtk
     carla
     noise-repellent
     peek

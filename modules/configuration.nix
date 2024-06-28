@@ -101,7 +101,7 @@
   # Enable sound
   sound.enable = true;
   hardware = {
-    opengl.driSupport32Bit = true;
+    graphics.enable32Bit = true;
     bluetooth.enable = true;
   };
 
