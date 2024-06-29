@@ -34,7 +34,7 @@
   programs.fish.enable = true;
 
   users = {
-    defaultUserShell = pkgs.fish;
+    users.root.shell = pkgs.fish;
     mutableUsers = false;
   };
 
