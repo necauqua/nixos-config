@@ -31,26 +31,18 @@
   environment.sessionVariables.STEAM_FORCE_DESKTOPUI_SCALING = "2";
 
   fileSystems = {
-    "/" =
-      {
-        device = "/dev/disk/by-uuid/2b2115f8-864f-4482-9e0d-a0211be2e40c";
-        fsType = "ext4";
-      };
-    "/boot" =
-      {
-        device = "/dev/disk/by-uuid/C995-FAC3";
-        fsType = "vfat";
-      };
-    "/storage/games" =
-      {
-        device = "/dev/disk/by-uuid/f1ab243a-0c71-4671-9eeb-7b34c6610ddd";
-        fsType = "ext4";
-      };
-    "/storage/secondary" =
-      {
-        device = "/dev/disk/by-uuid/960bc50e-335c-4bd9-acfb-7f00e451396d";
-        fsType = "ext4";
-      };
+    "/" = {
+      label = "main";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      label = "boot";
+      fsType = "vfat";
+    };
+    "/storage/games" = {
+      label = "games";
+      fsType = "btrfs";
+    };
   };
 
   nixpkgs.hostPlatform = "x86_64-linux";

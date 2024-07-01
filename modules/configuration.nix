@@ -61,7 +61,7 @@
     '';
 
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-    supportedFilesystems = [ "zfs" "ntfs" ];
+    supportedFilesystems = [ "zfs" "ntfs" "btrfs" ];
   };
 
   console.font = "${pkgs.terminus_font}/share/consolefonts/ter-v24n.psf.gz";
