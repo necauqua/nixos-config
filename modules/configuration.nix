@@ -1,6 +1,7 @@
 { config, pkgs, lib, flake-inputs, features, ... }: {
 
   imports = with features; [
+    automount
     home-manager
     keyring
     overlays
