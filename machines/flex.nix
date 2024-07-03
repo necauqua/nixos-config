@@ -1,6 +1,6 @@
-{ pkgs, modules, ... }: {
+{ pkgs, features, ... }: {
 
-  imports = with modules; [
+  imports = with features; [
     configuration
     nvidia
   ];

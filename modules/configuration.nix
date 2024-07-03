@@ -1,23 +1,18 @@
-{ config, pkgs, lib, flake-inputs, modules, ... }: {
+{ config, pkgs, lib, flake-inputs, features, ... }: {
 
-  imports = with modules; [
+  imports = with features; [
+    home-manager
     keyring
     overlays
     usbip
+    nix-config
   ];
 
   nix = {
-    package = pkgs.nixVersions.latest;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
     settings = {
-      trusted-users = [ "root" "necauqua" ];
+      trusted-users = [ "necauqua" ];
       auto-optimise-store = true;
     };
-
-    # avoid channels altogether and use the input nixpkgs flake
-    nixPath = [ "nixpkgs=${flake-inputs.nixpkgs}" ];
     registry = {
       # pin nixpkgs for speed
       nixpkgs.flake = flake-inputs.nixpkgs;
@@ -35,8 +30,6 @@
       };
     };
   };
-
-  nixpkgs.config.allowUnfree = true;
 
   boot = {
     loader = {

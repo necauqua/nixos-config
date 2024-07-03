@@ -1,6 +1,6 @@
-{ pkgs, lib, flake-inputs, modules, ... }: {
+{ pkgs, lib, flake-inputs, features, ... }: {
 
-  imports = with modules; [
+  imports = with features; [
     flake-inputs.lanzaboote.nixosModules.lanzaboote
     configuration
     nvidia
