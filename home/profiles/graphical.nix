@@ -84,6 +84,12 @@ in
   # because things just override the link? huh
   xdg.configFile."mimeapps.list".force = graphical;
 
+  # checkLinkTargets seems to happen before writeBoundary.. but this works
+  # just setting home.file.".gtkrc-2.0".force = true results in a conflict sadly
+  home.activation.resetGtkrc2 = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
+    run rm -f $VERBOSE_ARG $HOME/.gtkrc-2.0
+  '';
+
   services.kdeconnect.enable = true;
 
   home.packages = with pkgs; lib.optionals graphical [
