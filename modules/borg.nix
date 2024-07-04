@@ -18,6 +18,9 @@
     paths = [ "." ];
 
     startAt = "daily";
+    persistentTimer = true;
+    inhibitsSleep = true;
+
     prune.keep = {
       daily = 7;
       weekly = 4;
