@@ -12,6 +12,8 @@ in
 
   boot.kernelParams = [ "hid_apple.fnmode=0" ];
 
+  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-v24n.psf.gz";
+
   environment = {
     systemPackages = with pkgs; [
       fish
