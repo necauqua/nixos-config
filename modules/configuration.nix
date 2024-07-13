@@ -106,7 +106,6 @@
       gparted
       helix
       openssl
-      zfs
 
       polkit_gnome
     ];
@@ -171,6 +170,7 @@
       Defaults passprompt = "[sudo] your password: "
       Defaults pwfeedback
       Defaults insults
+      Defaults lecture = never
     '';
     rtkit.enable = true;
   };

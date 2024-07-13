@@ -1,4 +1,4 @@
-{ pkgs, features, ... }: {
+{ config, pkgs, lib, features, ... }: {
 
   imports = with features; [
     configuration
@@ -50,16 +50,64 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.kernelModules = [ "kvm-intel" ];
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/883dd157-68c7-4cca-aef8-f590a1872775";
-      fsType = "ext4";
-    };
-    "/boot" = {
-      device = "/dev/disk/by-uuid/3632-E24C";
-      fsType = "vfat";
-    };
+  boot.initrd.luks.devices.root = {
+    device = "/dev/disk/by-label/root";
+    preLVM = true;
   };
+
+  # zfs is so completely stupid, apparently they made it so
+  # you cannot rollback to an older snapshot without deleting
+  # all the newer ones.. FOR SOME REASON??..?
+  #
+  # And no, there is NO *ACTUAL* REASON for it to be required, only
+  # some semantics about how the rollback does not roll back just the
+  # file state but the entire dataset and that includes latter snapshots..
+  #
+  # Haven't figured out a clean way to make snapshots of old roots here,
+  # clone promotion does not do the trick (and aint the clones just as
+  # useless because of a stupid implicit semantic dependencies lol)
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r rpool/root@blank
+  '';
+
+  fileSystems =
+    let
+      mounts = {
+        "/boot" = {
+          device = "/dev/disk/by-label/boot";
+          fsType = "vfat";
+        };
+      };
+      zfs-mounts = {
+        "/" = "root";
+        "/nix" = "nix";
+        "/home" = "home";
+        "/saved" = "saved";
+        "/var/log" = "logs";
+        "/var/lib/docker" = "docker";
+        "/home/necauqua/.local/share/Steam/steamapps" = "games";
+      };
+      persist-bind-mounts = {
+        "/var/lib/bluetooth" = "bluetooth";
+        "/var/lib/NetworkManager" = "network-manager/lib";
+        "/etc/NetworkManager/system-connections" = "network-manager/connections";
+      };
+    in
+    mounts
+    // (lib.mapAttrs
+      (_: name: {
+        device = "rpool/${name}";
+        fsType = "zfs";
+      })
+      zfs-mounts)
+    // (lib.mapAttrs
+      (_: name: {
+        device = "/saved/${name}";
+        options = [ "bind" "noauto" "x-systemd.automount" ];
+      })
+      persist-bind-mounts);
+
+  environment.etc."machine-id".source = "/saved/machine-id";
 
   powerManagement.cpuFreqGovernor = "powersave";
   hardware.cpu.intel.updateMicrocode = true;
