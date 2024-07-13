@@ -1,7 +1,30 @@
-{ config, ... }: {
+{ config, pkgs, ... }: {
 
   age.secrets.borg-key.file = ../secrets/borg-key;
   age.secrets.borg-pass.file = ../secrets/borg-pass;
+
+  environment.systemPackages =
+    let
+      bb = config.services.borgbackup;
+      job = bb.jobs.offsite;
+      pass = ''
+        export BORG_PASSPHRASE=(sudo ${
+          job.encryption.passCommand
+        } 2>/dev/null || read -sP 'passphrase> ')
+      '';
+    in
+    [
+      bb.package
+      (pkgs.writeShellScriptBin "borg-local" ''
+        export BORG_REPO="/media/big chungus/backups.borg"
+        ${pass}
+      '')
+      (pkgs.writeShellScriptBin "borg-remote" ''
+        export BORG_REPO="${job.repo}"
+        export BORG_RSH="${job.environment.BORG_RSH}"
+        ${pass}
+      '')
+    ];
 
   services.borgbackup.jobs.offsite = {
     archiveBaseName = "home";
