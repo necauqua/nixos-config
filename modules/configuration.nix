@@ -60,15 +60,6 @@
 
   console.font = "${pkgs.terminus_font}/share/consolefonts/ter-v24n.psf.gz";
 
-  swapDevices = [
-    {
-      device = "/var/swap";
-      size = lib.strings.toInt (builtins.readFile (pkgs.runCommand "memory-size" { } ''
-        grep MemTotal /proc/meminfo | awk '{print int($2/1024)}' > $out
-      ''));
-    }
-  ];
-
   powerManagement.cpuFreqGovernor = "performance";
 
   time.timeZone = "Europe/Kiev";
