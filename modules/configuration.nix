@@ -74,7 +74,6 @@
   time.timeZone = "Europe/Kiev";
 
   networking = {
-    hostId = "09e32be7";
     useDHCP = false;
     networkmanager.enable = true;
   };

@@ -5,7 +5,7 @@
     nvidia
   ];
 
-  networking.hostName = "flex";
+  networking = { hostName = "flex"; hostId = "ea6a1608"; };
 
   nix.settings.max-jobs = 8;
 

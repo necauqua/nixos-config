@@ -10,7 +10,7 @@
     borg
   ];
 
-  networking.hostName = "main";
+  networking = { hostName = "main"; hostId = "09e32be7"; };
 
   boot = {
     bootspec.enable = true;
