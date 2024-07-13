@@ -60,8 +60,6 @@
 
   console.font = "${pkgs.terminus_font}/share/consolefonts/ter-v24n.psf.gz";
 
-  powerManagement.cpuFreqGovernor = "performance";
-
   time.timeZone = "Europe/Kiev";
 
   networking = {
@@ -82,11 +80,9 @@
     };
   };
 
-  # Enable sound
-  sound.enable = true;
   hardware = {
-    graphics.enable32Bit = true;
     bluetooth.enable = true;
+    graphics.enable32Bit = true;
   };
 
   users = {
