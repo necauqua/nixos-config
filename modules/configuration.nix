@@ -58,7 +58,11 @@
     supportedFilesystems = [ "zfs" "ntfs" "btrfs" ];
   };
 
-  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-v24n.psf.gz";
+  console = {
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-v24n.psf.gz";
+    packages = [ pkgs.terminus_font ];
+  };
 
   time.timeZone = "Europe/Kiev";
 

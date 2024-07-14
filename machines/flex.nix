@@ -61,8 +61,10 @@
   };
 
   boot = {
-    kernelModules = [ "kvm-intel" ];
+    loader.systemd-boot.consoleMode = "max";
     kernelParams = [ "video=HDMI-A-1:d" ];
+
+    kernelModules = [ "kvm-intel" ];
 
     initrd = {
       availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "sdhci_pci" ];
