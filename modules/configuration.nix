@@ -223,8 +223,6 @@
       enable = true;
       nssmdns4 = true;
     };
-
-    keybase.enable = true;
   };
 
   virtualisation.docker = {
