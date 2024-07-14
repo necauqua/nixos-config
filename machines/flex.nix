@@ -42,6 +42,17 @@
     };
   };
 
+  systemd.services.disable-touchpad-screen = {
+    wantedBy = [ "halt.target" "reboot.target" "poweroff.target" ];
+    before = [ "halt.target" "reboot.target" "poweroff.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "disable-touchpad-screen" ''
+        xrandr --output HDMI-1 --off
+      '';
+    };
+  };
+
   # do the nvidia+intel laptop magic
   hardware.nvidia.prime = {
     offload.enable = true;
