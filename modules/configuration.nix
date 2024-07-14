@@ -37,12 +37,12 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    consoleLogLevel = 0;
-    initrd.verbose = false;
+    # consoleLogLevel = 0;
+    # initrd.verbose = false;
     # kernelPackages = pkgs.linuxPackages_zen;
     kernelParams = [
-      "udev.log_priority=3"
-      "quiet"
+      # "udev.log_priority=3"
+      # "quiet"
       # fix keychron fn keys
       "hid_apple.fnmode=0"
     ];
