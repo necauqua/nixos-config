@@ -57,6 +57,7 @@ in
           if(!self, "~"),
           if(root, "┴"),
           if(current_working_copy, "@"),
+          if(description.starts_with("nix flake update"), "❄️"),
           if(immutable, "◆"),
           if(description.starts_with("wip: "), "⊘"),
           if(conflict, "×"),
