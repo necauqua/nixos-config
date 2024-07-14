@@ -1,4 +1,4 @@
-{ config, pkgs, lib, features, ... }: {
+{ pkgs, lib, features, ... }: {
 
   imports = with features; [
     configuration
@@ -29,6 +29,8 @@
         ''
           ${xrandr} --newmode "1080x2160" 200.61 1080 1168 1288 1496 2160 2161 2164 2235 -hsync +vsync
           ${xrandr} --addmode HDMI-1-1 1080x2160
+          echo on > /sys/kernel/debug/dri/1/HDMI-A-1/force
+          echo off > /sys/kernel/debug/dri/1/HDMI-A-1/force
           ${pkgs.xorg.xinput}/bin/xinput --map-to-output "pointer:ELAN9008:00 04F3:2A46" eDP-1-1
           ${pkgs.unclutter-xfixes}/bin/unclutter --hide-on-touch -b
         '';
@@ -47,28 +49,34 @@
     nvidiaBusId = "PCI:2:0:0";
   };
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "sdhci_pci" ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot = {
+    kernelModules = [ "kvm-intel" ];
+    kernelParams = [ "video=HDMI-A-1:d" ];
 
-  boot.initrd.luks.devices.root = {
-    device = "/dev/disk/by-label/root";
-    preLVM = true;
+    initrd = {
+      availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "sdhci_pci" ];
+
+      luks.devices.root = {
+        device = "/dev/disk/by-label/root";
+        preLVM = true;
+      };
+
+      # zfs is so completely stupid, apparently they made it so
+      # you cannot rollback to an older snapshot without deleting
+      # all the newer ones.. FOR SOME REASON??..?
+      #
+      # And no, there is NO *ACTUAL* REASON for it to be required, only
+      # some semantics about how the rollback does not roll back just the
+      # file state but the entire dataset and that includes latter snapshots..
+      #
+      # Haven't figured out a clean way to make snapshots of old roots here,
+      # clone promotion does not do the trick (and aint the clones just as
+      # useless because of a stupid implicit semantic dependencies lol)
+      postDeviceCommands = lib.mkAfter ''
+        zfs rollback -r rpool/root@blank
+      '';
+    };
   };
-
-  # zfs is so completely stupid, apparently they made it so
-  # you cannot rollback to an older snapshot without deleting
-  # all the newer ones.. FOR SOME REASON??..?
-  #
-  # And no, there is NO *ACTUAL* REASON for it to be required, only
-  # some semantics about how the rollback does not roll back just the
-  # file state but the entire dataset and that includes latter snapshots..
-  #
-  # Haven't figured out a clean way to make snapshots of old roots here,
-  # clone promotion does not do the trick (and aint the clones just as
-  # useless because of a stupid implicit semantic dependencies lol)
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r rpool/root@blank
-  '';
 
   fileSystems =
     let
