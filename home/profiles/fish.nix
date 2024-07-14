@@ -5,10 +5,18 @@
       la = "ls -lAh";
       ll = "ls -lh";
       f = "fuck";
+      sudo = "sudo -sE";
       gst = "git status";
       gco = "git checkout";
       gbd = "git branch -d";
       ggr = "git log --all --decorate --oneline --graph";
+
+      ns.expansion = "nix shell nixpkgs#%";
+      ns.setCursor = true;
+      nr.expansion = "nix run nixpkgs#%";
+      nr.setCursor = true;
+      ci.expansion = " jj commit -m '%'";
+      ci.setCursor = true;
     };
     shellInit = ''
       # # run zellij if applicable
@@ -52,7 +60,6 @@
         body = "command ls --color=auto --classify=auto $argv";
         wraps = "ls";
       };
-      sudo = "command sudo -s $argv";
 
       launch = ''
         set -l fixed (string escape -- $argv)
