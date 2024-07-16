@@ -1,6 +1,6 @@
-{
+{ config, ... }: {
   programs.firefox = {
-    enable = true;
+    enable = !config.headless;
     profiles.default = {
       path = "profiles/default";
       settings = {

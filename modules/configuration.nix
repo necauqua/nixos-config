@@ -127,6 +127,9 @@
 
       # no idea why is this not a default on an X11 systems
       QT_USE_PHYSICAL_DPI = "1";
+
+      # make firefox way better with touchscreen/touchpad and stuff
+      MOZ_USE_XINPUT2 = "1";
     };
 
     etc = with pkgs; {
