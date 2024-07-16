@@ -74,11 +74,6 @@
       ranger
     ];
 
-    xresources.extraConfig = builtins.readFile (pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/arcticicestudio/nord-xresources/c4b8a29871ece1b3a9d9ef792880decdddacd837/src/nord";
-      sha256 = "sha256-vsxKcs9RnOcfEKhF72ySg/tDJIE/rKuklwkWJPOpzUc=";
-    });
-
     programs = {
       broot = {
         enable = true;
