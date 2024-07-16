@@ -77,24 +77,6 @@
             return 1
         end
       '';
-      mpvt = "mpv --wid=$WINDOWID $argv";
-      yt-music = ''
-        echo -e '\033[?25l' # hide cursor
-        mpv "ytdl://ytsearch:$argv" \
-          --no-video \
-          --no-resume-playback \
-          --no-pause \
-          --load-unsafe-playlists \
-          --msg-level=all=error,statusline=status
-        echo -e '\033[?25h' # show it back
-      '';
-      yt-search = ''
-        mpv "ytdl://ytsearch:$argv" \
-          --wid=$WINDOWID \
-          --load-unsafe-playlists \
-          --really-quiet \
-          --no-pause
-      '';
     };
   };
 }

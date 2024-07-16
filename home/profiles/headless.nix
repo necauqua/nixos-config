@@ -75,16 +75,7 @@
     ];
 
     programs = {
-      broot = {
-        enable = true;
-        settings.verbs = [
-          {
-            invocation = "mpv";
-            execution = "fish -c \"mpvt {file}\"";
-            leave_broot = false;
-          }
-        ];
-      };
+      broot.enable = true;
       bat = {
         enable = true;
         config.style = "numbers";

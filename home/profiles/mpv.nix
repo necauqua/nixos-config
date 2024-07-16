@@ -1,6 +1,38 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, ... }:
+let
+  enable = !config.headless;
+in
+{
+  programs.broot.settings.verbs = lib.mkIf enable [
+    {
+      invocation = "mpv";
+      execution = "fish -c \"mpvt {file}\"";
+      leave_broot = false;
+    }
+  ];
+  programs.fish.functions = lib.mkIf enable {
+    mpvt = "mpv --wid=$WINDOWID $argv";
+    yt-music = ''
+      echo -e '\033[?25l' # hide cursor
+      mpv "ytdl://ytsearch:$argv" \
+        --no-video \
+        --no-resume-playback \
+        --no-pause \
+        --load-unsafe-playlists \
+        --msg-level=all=error,statusline=status
+      echo -e '\033[?25h' # show it back
+    '';
+    yt-search = ''
+      mpv "ytdl://ytsearch:$argv" \
+        --wid=$WINDOWID \
+        --load-unsafe-playlists \
+        --really-quiet \
+        --no-pause
+    '';
+  };
+
   programs.mpv = {
-    enable = !config.headless;
+    inherit enable;
 
     package = (pkgs.mpv.override {
       scripts = [ pkgs.mpvScripts.mpris ]; # add an essential script lol
