@@ -27,12 +27,12 @@
   security.pam = {
     u2f = {
       enable = true;
-      cue = true;
+      settings.cue = true;
 
       # nix shell nixos#pam_u2f
       # pamu2fcfg > file; pamu2fcfg -n >> file # for subsequent keys
       # move there, chmod+chown, yadda yadda
-      authFile = "/etc/u2f_mapping";
+      settings.authFile = "/etc/u2f_mapping";
     };
     services.sddm.enableGnomeKeyring = true;
   };
