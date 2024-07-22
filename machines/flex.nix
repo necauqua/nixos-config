@@ -39,6 +39,9 @@
         Option "AllowIndirectGLXProtocol" "off"
         Option "TripleBuffer" "on"
       '';
+
+      # flex has no rwin
+      xkb.options = "grp:alt_shift_toggle,compose:rctrl";
     };
   };
 

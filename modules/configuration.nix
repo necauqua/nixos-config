@@ -200,7 +200,7 @@
       # Configure keymap in X11
       xkb = {
         layout = "us,ru";
-        options = "grp:alt_shift_toggle,compose:rwin";
+        options = lib.mkDefault "grp:alt_shift_toggle,compose:rwin";
       };
     };
 
