@@ -183,7 +183,11 @@
   };
 
   services = {
-    displayManager.sddm.enable = true;
+    displayManager.autoLogin = {
+      enable = true;
+      user = "necauqua";
+    };
+
     xserver = {
       enable = true;
       dpi = 196;
@@ -195,7 +199,7 @@
         # # ^ getting BadValue crashes in wine/lutris games without this
         # ^ but it prevents OBS from capturing the screen (obviously), lol
       };
-      desktopManager.plasma5.enable = true;
+      windowManager.leftwm.enable = true;
 
       # Configure keymap in X11
       xkb = {
