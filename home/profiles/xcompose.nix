@@ -53,16 +53,16 @@ let
     p-h = "💜";
   };
 
-  f = k: v:
+  transform = key: value:
     let
-      keys = lib.splitString "-" k;
+      keys = lib.splitString "-" key;
       mapped = builtins.map (k: "<${k}>") keys;
       joined = lib.concatStringsSep " " mapped;
     in
-    "<Multi_key> ${joined} : \"${v}\"";
+    "<Multi_key> ${joined} : \"${value}\"";
 
-  text = builtins.concatStringsSep "\n" (lib.mapAttrsToList f items);
+  text = builtins.concatStringsSep "\n" (lib.mapAttrsToList transform items);
 in
 {
-  home.file.".XCompose".text = text;
+  home.file.".XCompose".text = text + "\n";
 }
