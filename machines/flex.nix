@@ -136,4 +136,12 @@
   powerManagement.cpuFreqGovernor = "powersave";
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
+
+  programs.light = {
+    enable = true;
+    brightnessKeys = {
+      enable = true;
+      step = 5;
+    };
+  };
 }
