@@ -11,7 +11,6 @@
   };
 
   home.packages = lib.optionals (!config.headless) (with pkgs; [
-    kgpg
     seahorse
   ]);
 }
