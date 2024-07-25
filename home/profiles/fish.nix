@@ -34,6 +34,10 @@
       # override Ctrl+L to also clear last status
       bind \cl 'clear -x; set __last_status 0; commandline -f repaint'
 
+      # default is backward-kill-path-component, word has more word-separating chars,
+      # particularly the # that's useful for flake references
+      bind \cw backward-kill-word
+
       # fix intellij terminal ctrl-arrows
       if test "$TERMINAL_EMULATOR" = JetBrains-JediTerm
         bind \e\[5D backward-word
