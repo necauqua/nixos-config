@@ -66,7 +66,13 @@ in
     run rm -f $VERBOSE_ARG $HOME/.gtkrc-2.0
   '';
 
-  services.kdeconnect.enable = true;
+  services = {
+    kdeconnect.enable = true;
+    betterlockscreen = {
+      enable = true;
+      arguments = [ "blur" ];
+    };
+  };
 
   home.packages = with pkgs; lib.optionals graphical [
     dex
