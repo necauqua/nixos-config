@@ -70,9 +70,6 @@
     useDHCP = false;
     networkmanager.enable = true;
   };
-  # shave off ~5 secs from boot, lol
-  # we don't need this
-  systemd.services.NetworkManager-wait-online.enable = false;
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
