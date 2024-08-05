@@ -56,6 +56,7 @@
       ".tldrc"
       ".vscode"
       ".wine"
+      ".mozilla"
 
       "downloads"
 
