@@ -10,6 +10,8 @@
     recommendedGzipSettings = true;
     recommendedProxySettings = true;
 
+    proxyResolveWhileRunning = true;
+
     virtualHosts =
       let
         www = host: {
