@@ -40,26 +40,26 @@
         (www "necauq.ua")
         {
           "default" = {
-            globalRedirect = "necauq.ua";
             default = true;
+            forceSSL = true; # forceSSL is important so a default https vhost is created too
+            useACMEHost = "necauq.ua";
+            globalRedirect = "necauq.ua";
           };
-          "necauq.ua" =
-            let
-              returnJson = data: ''
+          "necauq.ua" = {
+            root = "/var/www/necauqua.dev";
+            locations."= /healthcheck".extraConfig =
+              let
+                data = {
+                  status = "ok";
+                  flakeRev = "${flakeInputs.self.rev or "dirty"}";
+                };
+              in
+              ''
                 types {} default_type "application/json; charset=utf-8";
                 add_header Access-Control-Allow-Origin *;
                 return 200 '${builtins.toJSON data}';
               '';
-            in
-            {
-              forceSSL = true;
-              enableACME = true;
-              locations."= /healthcheck".extraConfig = returnJson {
-                status = "ok";
-                flakeRev = "${flakeInputs.self.rev or "dirty"}";
-              };
-              root = "/var/www/necauqua.dev";
-            };
+          };
           "necauqua.dev" = {
             forceSSL = true;
             enableACME = true;
