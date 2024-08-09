@@ -72,6 +72,7 @@ in
       enable = true;
       arguments = [ "blur" ];
     };
+    dunst.enable = true;
   };
 
   home.packages = with pkgs; lib.optionals graphical [
