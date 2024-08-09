@@ -8,5 +8,5 @@
   # huh
   environment.variables.LIBVA_DRIVER_NAME = "nvidia";
 
-  virtualisation.docker.enableNvidia = config.virtualisation.docker.enable;
+  hardware.nvidia-container-toolkit.enable = config.virtualisation.docker.enable;
 }
