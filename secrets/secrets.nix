@@ -7,4 +7,5 @@ in
   "reposilite-password.age".publicKeys = [ him offsite ];
   "smtp-server-sasl.age".publicKeys = [ him offsite ];
   "cloudflare.age".publicKeys = [ him offsite ];
+  "portunus.age".publicKeys = [ him offsite ];
 }
