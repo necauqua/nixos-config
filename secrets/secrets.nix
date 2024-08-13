@@ -8,4 +8,6 @@ in
   "smtp-server-sasl.age".publicKeys = [ him offsite ];
   "cloudflare.age".publicKeys = [ him offsite ];
   "portunus.age".publicKeys = [ him offsite ];
+  "homelab-proxy.age".publicKeys = [ him offsite ];
+  "homelab-cert.age".publicKeys = [ him offsite ];
 }

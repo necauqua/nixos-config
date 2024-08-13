@@ -1,6 +1,15 @@
-{ flakeInputs, lib, ... }: {
+{ config, flakeInputs, lib, ... }: {
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
+
+  age.secrets.homelab-proxy = {
+    file = ../secrets/homelab-proxy.age;
+    owner = config.services.nginx.user;
+  };
+  age.secrets.homelab-cert = {
+    file = ../secrets/homelab-cert.age;
+    owner = config.services.nginx.user;
+  };
 
   services.nginx = {
     enable = true;
@@ -70,11 +79,24 @@
               return 404;
             '';
           };
-          # "uq.rs" = {
-          #   forceSSL = true;
-          #   enableACME = true;
-          #   globalRedirect = "necauqua.dev";
-          # };
+          "home.necauq.ua" = {
+            forceSSL = true;
+            useACMEHost = "necauq.ua";
+            locations."/".extraConfig = ''
+              include ${config.age.secrets.homelab-proxy.path};
+              proxy_ssl_trusted_certificate ${config.age.secrets.homelab-cert.path};
+              proxy_ssl_verify off;
+            '';
+          };
+          "~^(?<subdomain>.+)\.home\.necauq\.ua" = {
+            forceSSL = true;
+            useACMEHost = "necauq.ua";
+            locations."/".extraConfig = ''
+              include "${config.age.secrets.homelab-proxy.path}";
+              proxy_ssl_trusted_certificate ${config.age.secrets.homelab-cert.path};
+              proxy_ssl_verify off;
+            '';
+          };
         }
       ];
   };
