@@ -1,4 +1,4 @@
-{ config, flakeInputs, lib, ... }: {
+{ flakeInputs, config, pkgs, lib, ... }: {
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
@@ -17,6 +17,7 @@
     recommendedOptimisation = true;
     recommendedBrotliSettings = true;
     recommendedGzipSettings = true;
+
     recommendedProxySettings = true;
 
     proxyResolveWhileRunning = true;
@@ -42,6 +43,22 @@
             };
           in
           if countDots host == 1 then base // (www host) else base;
+        home-config = {
+          forceSSL = true;
+          useACMEHost = "necauq.ua";
+          extraConfig = "include \"${pkgs.authelia-location}\";";
+          locations."/" = {
+            # overriden by the homelab-proxy include
+            # needs to not be null for recommendedProxySettings to be applied
+            proxyPass = "dummy";
+            extraConfig = ''
+              include "${pkgs.authelia-authrequest}";
+              include "${config.age.secrets.homelab-proxy.path}";
+              proxy_ssl_trusted_certificate ${config.age.secrets.homelab-cert.path};
+              proxy_ssl_verify off;
+            '';
+          };
+        };
       in
       lib.mkMerge [
         (basic "ld47.necauqua.dev")
@@ -79,24 +96,8 @@
               return 404;
             '';
           };
-          "home.necauq.ua" = {
-            forceSSL = true;
-            useACMEHost = "necauq.ua";
-            locations."/".extraConfig = ''
-              include ${config.age.secrets.homelab-proxy.path};
-              proxy_ssl_trusted_certificate ${config.age.secrets.homelab-cert.path};
-              proxy_ssl_verify off;
-            '';
-          };
-          "~^(?<subdomain>.+)\.home\.necauq\.ua" = {
-            forceSSL = true;
-            useACMEHost = "necauq.ua";
-            locations."/".extraConfig = ''
-              include "${config.age.secrets.homelab-proxy.path}";
-              proxy_ssl_trusted_certificate ${config.age.secrets.homelab-cert.path};
-              proxy_ssl_verify off;
-            '';
-          };
+          "home.necauq.ua" = home-config;
+          "~^(?<subdomain>.+)\.home\.necauq\.ua" = home-config;
         }
       ];
   };

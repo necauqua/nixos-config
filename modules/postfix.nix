@@ -1,20 +1,19 @@
 { config, pkgs, ... }:
 let
   domain = "necauq.ua";
+  cfg = config.services.postfix;
 in
 {
   age.secrets.smtp-server-sasl = {
     file = ../secrets/smtp-server-sasl.age;
-    mode = "770";
-    owner = "postfix";
-    group = "postfix";
+    owner = cfg.user;
   };
 
   services = {
     opendkim = {
       enable = true;
-      user = "postfix";
-      group = "postfix";
+      user = cfg.user;
+      group = cfg.group;
       domains = "csl:${domain}";
       selector = "main";
     };
@@ -60,7 +59,7 @@ in
   };
 
   security.acme.certs.${domain}.postRun = "systemctl restart postfix.service";
-  users.users.postfix.extraGroups = [ "nginx" ];
+  users.users.postfix.extraGroups = [ config.services.nginx.group ];
 
-  networking.firewall.allowedTCPPorts = [ config.services.postfix.relayPort ];
+  networking.firewall.allowedTCPPorts = [ cfg.relayPort ];
 }
