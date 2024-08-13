@@ -1,0 +1,80 @@
+{ config, lib, ... }:
+let
+  cfg = config.services.nginx;
+  secret = name: config.age.secrets.${name}.path;
+in
+{
+  options = with lib; {
+    custom.services = mkOption {
+      type = types.listOf (types.submodule {
+        options = {
+          name = mkOption {
+            type = types.str;
+            description = "The name of the service, used for the subdomain";
+          };
+          port = mkOption {
+            type = types.int;
+            description = "The port the service is running on, to be proxied from the subdomain";
+          };
+        };
+      });
+      description = "List of subdomain-port pairs to be proxied";
+      default = [ ];
+    };
+  };
+
+  config = {
+
+    age.secrets = {
+      selfsig-key = {
+        file = ../secrets/selfsig-key;
+        owner = cfg.user;
+      };
+      selfsig-cert = {
+        file = ../secrets/selfsig-cert;
+        owner = cfg.user;
+      };
+    };
+
+    services.nginx = {
+      enable = true;
+
+      recommendedTlsSettings = true;
+      recommendedOptimisation = true;
+      recommendedBrotliSettings = true;
+      recommendedGzipSettings = true;
+      recommendedProxySettings = true;
+
+      proxyResolveWhileRunning = true;
+
+      virtualHosts =
+        let
+          hostDef = port: {
+            onlySSL = true;
+            sslCertificate = secret "selfsig-cert";
+            sslCertificateKey = secret "selfsig-key";
+            extraConfig = "ssl_stapling off;";
+
+            locations."/".extraConfig = ''
+              # specifically don't use proxyPass to avoid recommended proxy headers
+              # because of course they are applied AFTER extraConfig
+              proxy_pass http://127.0.0.1:${toString port};
+              
+              set_real_ip_from  necauq.ua;
+              real_ip_header    X-Forwarded-For;
+              real_ip_recursive on;
+            '';
+          };
+        in
+        lib.mkMerge
+          (
+            [{
+              # heimdall (hub) running in docker, todo move to nix
+              "home.necauq.ua" = hostDef 9999;
+            }] ++ (map (s: { "${s.name}.home.necauq.ua" = hostDef s.port; }) config.custom.services)
+          );
+    };
+
+    networking.firewall.allowedTCPPorts = [ 443 ];
+  };
+}

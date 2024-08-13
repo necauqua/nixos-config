@@ -8,4 +8,6 @@ in
 {
   borg-key.publicKeys = keys;
   borg-pass.publicKeys = keys;
+  selfsig-key.publicKeys = keys;
+  selfsig-cert.publicKeys = keys;
 }

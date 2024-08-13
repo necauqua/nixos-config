@@ -8,6 +8,7 @@
     samba
     arr
     borg
+    nginx
   ];
 
   networking = { hostName = "main"; hostId = "09e32be7"; };
