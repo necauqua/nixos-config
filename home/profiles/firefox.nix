@@ -96,6 +96,12 @@
 
         inherit (config.programs.firefox.profiles.default) settings userChrome;
       };
+      streaming = {
+        id = 2;
+        path = "profiles/streaming";
+
+        inherit (config.programs.firefox.profiles.default) settings userChrome;
+      };
     };
   };
 }
