@@ -7,7 +7,7 @@ in
     backend = "docker";
     containers.reposilite = {
       image = "dzikoysk/reposilite@sha256:379fff2c62a1580362aae9abaeebf58bea5ad0faf025e4519e460fe696c643c0";
-      ports = [ "${builtins.toString port}:8080" ];
+      ports = [ "127.0.0.1:${builtins.toString port}:8080" ];
       volumes = [ "/root/reposilite-data:/app/data" ];
     };
   };
