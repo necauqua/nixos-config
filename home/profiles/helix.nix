@@ -21,6 +21,7 @@
           config.checkOnSave.command = "clippy";
         };
         pylsp.command = "${pkgs.python3Packages.python-lsp-server}/bin/pylsp";
+        luals.command = "${pkgs.lua-language-server}/bin/lua-language-server";
       };
       language = [
         {
@@ -37,6 +38,10 @@
         {
           name = "python";
           language-servers = [ "pylsp" ];
+        }
+        {
+          name = "lua";
+          language-servers = [ "luals" ];
         }
       ];
     };
