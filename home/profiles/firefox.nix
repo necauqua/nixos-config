@@ -88,6 +88,74 @@
           html:not(:has(.tabbrowser-tab:nth-child(2))) {
             --uc-sidebar-width: 0 !important;
           }
+
+          /* Autohide navbar too */
+
+          /* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/autohide_toolbox.css made available under Mozilla Public License v. 2.0
+          See the above repository for updates as well as full license text. */
+
+          :root {
+            --uc-autohide-toolbox-delay: 200ms; /* Wait 0.1s before hiding toolbars */
+            --uc-toolbox-rotation: 82deg;
+          }
+
+          :root[sizemode="maximized"] {
+            --uc-toolbox-rotation: 88.5deg;
+          }
+
+          :root[sizemode="fullscreen"],
+          :root[sizemode="fullscreen"] #navigator-toolbox { margin-top: 0 !important; }
+
+          #navigator-toolbox {
+            position: fixed !important;
+            display: block;
+            background-color: var(--lwt-accent-color,black) !important;
+            transition: transform 82ms linear, opacity 82ms linear !important;
+            transition-delay: var(--uc-autohide-toolbox-delay) !important;
+            transform-origin: top;
+            transform: rotateX(var(--uc-toolbox-rotation));
+            opacity: 0;
+            line-height: 0;
+            z-index: 1;
+            pointer-events: none;
+          }
+
+          #navigator-toolbox:hover,
+          #navigator-toolbox:focus-within {
+            transition-delay: 33ms !important;
+            transform: rotateX(0);
+            opacity: 1;
+          }
+          /* This ruleset is separate, because not having :has support breaks other selectors as well */
+          #mainPopupSet:has(> #appMenu-popup:hover) ~ toolbox {
+            transition-delay: 33ms !important;
+            transform: rotateX(0);
+            opacity: 1;
+          }
+
+          #navigator-toolbox > * { line-height: normal; pointer-events: auto }
+
+          #navigator-toolbox,
+          #navigator-toolbox > * {
+            width: 100vw;
+            -moz-appearance: none !important;
+          }
+
+          /* These two exist for oneliner compatibility */
+          #nav-bar { width: var(--uc-navigationbar-width,100vw) }
+          #TabsToolbar { width: calc(100vw - var(--uc-navigationbar-width,0px)) }
+
+          /* Don't apply transform before window has been fully created */
+          :root:not([sessionrestored]) #navigator-toolbox { transform:none !important }
+
+          :root[customizing] #navigator-toolbox {
+            position: relative !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+
+          #navigator-toolbox[inFullscreen] > #PersonalToolbar,
+          #PersonalToolbar[collapsed="true"] { display: none }
         '';
       };
       KEKW = {
