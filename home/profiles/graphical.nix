@@ -72,6 +72,7 @@ in
       enable = true;
       arguments = [ "blur" ];
     };
+    caffeine.enable = true;
     dunst.enable = true;
   };
 
