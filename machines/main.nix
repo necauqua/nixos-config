@@ -9,6 +9,7 @@
     arr
     borg
     nginx
+    obs
   ];
 
   networking = { hostName = "main"; hostId = "09e32be7"; };

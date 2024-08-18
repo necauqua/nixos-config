@@ -112,7 +112,6 @@ in
     audacity
     gimp
     blender
-    obs-studio
     jetbrains.idea-ultimate
     android-studio
     godot3
