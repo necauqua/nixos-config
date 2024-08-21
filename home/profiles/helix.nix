@@ -16,6 +16,7 @@
     languages = {
       language-server = {
         nil.command = "${pkgs.nil}/bin/nil";
+        zls.command = "${pkgs.zls}/bin/zls";
         rust-analyzer = {
           command = "${pkgs.rust-analyzer}/bin/rust-analyzer";
           config.checkOnSave.command = "clippy";
@@ -42,6 +43,10 @@
         {
           name = "lua";
           language-servers = [ "luals" ];
+        }
+        {
+          name = "zig";
+          language-servers = [ "zls" ];
         }
       ];
     };
