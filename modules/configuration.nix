@@ -1,4 +1,4 @@
-{ config, pkgs, flake-inputs, features, ... }: {
+{ config, pkgs, features, ... }: {
 
   imports = with features; [
     automount
@@ -6,32 +6,10 @@
     keyring
     overlays
     usbip
+    nix-flakes
     nix-config
     xorg
   ];
-
-  nix = {
-    settings = {
-      trusted-users = [ "necauqua" ];
-      auto-optimise-store = true;
-    };
-    registry = {
-      # pin nixpkgs for speed
-      nixpkgs.flake = flake-inputs.nixpkgs;
-      # sudo nixos-rebuild switch --flake <main / local>
-      # well, for the first setup the full git url would be needed ¯\_(ツ)_/¯
-      main = {
-        from = { id = "main"; type = "indirect"; };
-        to = { type = "sourcehut"; owner = "~necauqua"; repo = "nixos-config"; };
-        exact = false;
-      };
-      local = {
-        from = { id = "local"; type = "indirect"; };
-        to = { type = "path"; path = "/home/necauqua/projects/nixos-config"; };
-        exact = false;
-      };
-    };
-  };
 
   boot = {
     loader = {

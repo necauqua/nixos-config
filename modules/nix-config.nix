@@ -1,16 +1,25 @@
-{ pkgs, flake-inputs, ... }: {
-
+{ flake-inputs, ... }: {
   nix = {
-    package = pkgs.nixVersions.latest;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-
-    settings.trusted-users = [ "root" ];
-
-    # avoid channels altogether and use the input nixpkgs flake
-    nixPath = [ "nixpkgs=${flake-inputs.nixpkgs}" ];
+    settings = {
+      trusted-users = [ "necauqua" ];
+      auto-optimise-store = true;
+    };
+    registry = {
+      # pin nixpkgs for speed
+      nixpkgs.flake = flake-inputs.nixpkgs;
+      # sudo nixos-rebuild switch --flake <main / local>
+      # well, for the first setup the full git url would be needed ¯\_(ツ)_/¯
+      main = {
+        from = { id = "main"; type = "indirect"; };
+        to = { type = "sourcehut"; owner = "~necauqua"; repo = "nixos-config"; };
+        exact = false;
+      };
+      local = {
+        from = { id = "local"; type = "indirect"; };
+        to = { type = "path"; path = "/home/necauqua/projects/nixos-config"; };
+        exact = false;
+      };
+    };
   };
-
   nixpkgs.config.allowUnfree = true;
 }

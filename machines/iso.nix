@@ -7,7 +7,7 @@ in
 
   imports = with features; [
     "${flake-inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
-    nix-config
+    nix-flakes
   ];
 
   boot.kernelParams = [ "hid_apple.fnmode=0" ];
