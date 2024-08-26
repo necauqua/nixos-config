@@ -3,6 +3,7 @@
   imports = with features; [
     configuration
     nvidia
+    hyprland
   ];
 
   networking = { hostName = "flex"; hostId = "ea6a1608"; };
