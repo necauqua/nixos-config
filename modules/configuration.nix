@@ -99,12 +99,6 @@
 
       # also make some java guis prettier
       _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-
-      # no idea why is this not a default on an X11 systems
-      QT_USE_PHYSICAL_DPI = "1";
-
-      # make firefox way better with touchscreen/touchpad and stuff
-      MOZ_USE_XINPUT2 = "1";
     };
 
     etc = with pkgs; {
@@ -158,10 +152,6 @@
   };
 
   services = {
-    displayManager.autoLogin = {
-      enable = true;
-      user = "necauqua";
-    };
 
     udev.packages = with pkgs; [
       # make solaar work
