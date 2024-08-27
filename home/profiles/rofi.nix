@@ -1,6 +1,7 @@
-{ config, ... }: {
+{ config, pkgs, ... }: {
   programs.rofi = {
     enable = true;
+    package = pkgs.rofi-wayland;
     font = "JetBrains Mono 12";
     terminal = "alacritty";
     theme =
@@ -48,7 +49,7 @@
         "element alternate normal".background-color = lit "transparent";
       };
     extraConfig = {
-      modi = "window,run,ssh,windowcd,combi";
+      modi = "window,run,ssh,combi";
       combi-hide-mode-prefix = true;
       dpi = 1;
     };
