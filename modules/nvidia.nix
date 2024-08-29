@@ -4,6 +4,7 @@
 
   hardware.nvidia = {
     modesetting.enable = true;
+    open = lib.mkDefault true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
