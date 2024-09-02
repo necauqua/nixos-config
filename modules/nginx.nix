@@ -59,7 +59,7 @@ in
               # specifically don't use proxyPass to avoid recommended proxy headers
               # because of course they are applied AFTER extraConfig
               proxy_pass http://127.0.0.1:${toString port};
-              
+
               set_real_ip_from  necauq.ua;
               real_ip_header    X-Forwarded-For;
               real_ip_recursive on;
@@ -74,6 +74,9 @@ in
             }] ++ (map (s: { "${s.name}.home.necauq.ua" = hostDef s.port; }) config.custom.services)
           );
     };
+
+    systemd.services.nginx.after = [ "network-online.target" ];
+    systemd.services.nginx.wants = [ "network-online.target" ];
 
     networking.firewall.allowedTCPPorts = [ 443 ];
   };
