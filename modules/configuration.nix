@@ -98,7 +98,7 @@
       NIX_AUTO_RUN = "1";
 
       # also make some java guis prettier
-      _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+      _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2.5 -Dawt.useSystemAAFontSettings=lcd -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
     };
 
     etc = with pkgs; {
