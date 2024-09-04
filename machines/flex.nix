@@ -63,6 +63,7 @@
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:2:0:0";
   };
+  hardware.nvidia.open = false;
 
   hardware.graphics.extraPackages = with pkgs; [
     intel-media-driver # LIBVA_DRIVER_NAME=iHD
