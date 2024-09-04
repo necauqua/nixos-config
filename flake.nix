@@ -9,9 +9,11 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     twitch-archiver.url = "github:necauqua/twitch-archiver";
     twitch-archiver.inputs.nixpkgs.follows = "nixpkgs";
+    catfeeder-bot.url = "sourcehut:~necauqua/catfeeder-bot";
+    catfeeder-bot.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs @ { self, nixpkgs, deploy-rs, agenix, twitch-archiver }:
+  outputs = inputs @ { self, nixpkgs, deploy-rs, agenix, twitch-archiver, catfeeder-bot }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -39,6 +41,12 @@
         modules = [
           global
           twitch-archiver.nixosModules.default
+          catfeeder-bot.nixosModules.default
+          ({
+            # secrets file is temp, todo move to agenix lol
+            services.catfeeder-bot = { enable = true; secretsFile = "/opt/secrets.json"; };
+            services.twitch-archiver = { enable = true; channels = [ "necauqua" ]; };
+          })
         ] ++ (builtins.attrValues (load-modules ./modules));
         specialArgs.flakeInputs = inputs;
       };
