@@ -61,6 +61,7 @@
             if [[ -z "$flake" ]]; then
               flake=local
             fi
+            ulimit -n 65535 # well this is a thing now
             sudo nixos-rebuild switch --flake $flake
           '')
         ];
