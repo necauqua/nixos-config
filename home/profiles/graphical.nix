@@ -73,7 +73,7 @@ in
       arguments = [ "blur" ];
     };
     caffeine.enable = true;
-    dunst.enable = true;
+    swaync.enable = true;
   };
 
   home.packages = with pkgs; lib.optionals graphical [
