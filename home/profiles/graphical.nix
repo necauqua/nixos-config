@@ -45,13 +45,13 @@ in
     defaultApplications = {
       # gimp takes like two eternities to boot while all I need
       # is to see the image lol
-      "image/bmp" = "sxiv.desktop";
-      "image/gif" = "sxiv.desktop";
-      "image/jpeg" = "sxiv.desktop";
-      "image/jpg" = "sxiv.desktop";
-      "image/png" = "sxiv.desktop";
-      "image/webp" = "sxiv.desktop";
-      "image/heic" = "sxiv.desktop";
+      "image/bmp" = "nsxiv.desktop";
+      "image/gif" = "nsxiv.desktop";
+      "image/jpeg" = "nsxiv.desktop";
+      "image/jpg" = "nsxiv.desktop";
+      "image/png" = "nsxiv.desktop";
+      "image/webp" = "nsxiv.desktop";
+      "image/heic" = "nsxiv.desktop";
     };
   };
 
@@ -87,7 +87,7 @@ in
     tdesktop
     (makeAutostartItem { name = "org.telegram.desktop"; package = tdesktop; })
 
-    sxiv
+    nsxiv
     maim
     d-spy
     pavucontrol
@@ -106,6 +106,7 @@ in
     emote
     lmms
     evince
+    file-roller
 
     audacity
     gimp
@@ -125,6 +126,7 @@ in
 
     solaar
     songrec
+    ghidra
 
     (pkgs.writeShellScriptBin "prime-run" ''
       export __NV_PRIME_RENDER_OFFLOAD=1
