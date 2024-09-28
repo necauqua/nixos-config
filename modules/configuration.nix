@@ -129,7 +129,6 @@
   ];
   programs = {
     adb.enable = true;
-    dconf.enable = true;
     fish.enable = true;
     less.envVariables.LESS = "-FRX";
     partition-manager.enable = true;

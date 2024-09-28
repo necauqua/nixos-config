@@ -6,40 +6,38 @@ in
   xsession.enable = graphical;
 
   home.pointerCursor = {
-    x11.enable = graphical;
     package = pkgs.qogir-icon-theme;
     name = "Qogir";
-    size = 48;
+    size = 16;
   };
 
   gtk = {
     enable = graphical;
-    iconTheme = {
-      # name = "Adwaita";
-      # package = pkgs.gnome.adwaita-icon-theme;
-      name = "breeze-dark";
-      package = pkgs.breeze-icons;
-    };
     theme = {
-      # name = "Adwaita-dark";
-      # package = pkgs.gnome3.gnome-themes-extra;
-      name = "Breeze-Dark";
-      package = pkgs.breeze-gtk;
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
     };
     gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
+      gtk-application-prefer-dark-theme = true;
       gtk-decoration-layout = "menu:";
     };
     gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
+      gtk-application-prefer-dark-theme = true;
       gtk-decoration-layout = "menu:";
     };
   };
 
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
+  qt = {
+    enable = graphical;
+    platformTheme.name = "Adwaita-dark";
+    style = {
+      name = "Adwaita-dark";
+      package = pkgs.adwaita-qt;
     };
+  };
+
+  dconf.settings = {
+    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
   };
 
   xdg.mimeApps = {

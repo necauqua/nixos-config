@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, features, ... }: {
+  imports = [ features.gnome ];
 
   services.greetd = {
     enable = true;
