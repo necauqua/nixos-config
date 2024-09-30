@@ -8,6 +8,7 @@
     usbip
     nix-flakes
     nix-config
+    tailscale
   ];
 
   boot = {
