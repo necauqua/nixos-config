@@ -10,4 +10,5 @@ in
   borg-pass.publicKeys = keys;
   selfsig-key.publicKeys = keys;
   selfsig-cert.publicKeys = keys;
+  homelab-auth.publicKeys = keys;
 }

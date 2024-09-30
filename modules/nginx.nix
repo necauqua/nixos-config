@@ -25,16 +25,20 @@ in
 
   config = {
 
-    age.secrets = {
-      selfsig-key = {
-        file = ../secrets/selfsig-key;
-        owner = cfg.user;
-      };
-      selfsig-cert = {
-        file = ../secrets/selfsig-cert;
-        owner = cfg.user;
-      };
-    };
+    age.secrets =
+      let
+        mkSecret = name: {
+          "${name}" = {
+            file = ../secrets + "/${name}";
+            owner = cfg.user;
+          };
+        };
+      in
+      lib.mkMerge (map mkSecret [
+        "selfsig-key"
+        "selfsig-cert"
+        "homelab-auth"
+      ]);
 
     services.nginx = {
       enable = true;
@@ -53,6 +57,7 @@ in
             onlySSL = true;
             sslCertificate = secret "selfsig-cert";
             sslCertificateKey = secret "selfsig-key";
+            basicAuthFile = secret "homelab-auth";
             extraConfig = "ssl_stapling off;";
 
             locations."/".extraConfig = ''
