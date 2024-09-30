@@ -32,7 +32,8 @@ in
     aliases = {
       all = [ "log" "-r" "all()" ];
       mine = [ "log" "-r" "mine()" ];
-      tug = [ "branch" "set" "main" "-r" "@-" ];
+      tug = [ "bookmark" "set" "main" "-r" "@-" ];
+      diffp = [ "diff" "-r" "@-" ];
       hide = [ "abandon" ];
       sq = [ "squash" ];
       push = [ "git" "push" ];
