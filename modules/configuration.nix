@@ -27,6 +27,10 @@
       prefixLength = 64;
     }];
   };
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "server";
+  };
 
   # #KyivNotKiev
   time.timeZone = "Europe/Kiev";
