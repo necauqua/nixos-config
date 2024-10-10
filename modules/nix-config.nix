@@ -1,7 +1,13 @@
-{ flake-inputs, ... }: {
+{ flake-inputs, lib, ... }: {
   nix = {
     settings = {
       trusted-users = [ "necauqua" ];
+      trusted-substituters = lib.mkAfter [
+        "https://necauqua.cachix.org"
+      ];
+      trusted-public-keys = [
+        "necauqua.cachix.org-1:XG5McOG0XwQ9kayUuEiEn0cPoLAMvc2TVs3fXqv/7Uc="
+      ];
       auto-optimise-store = true;
     };
     registry = {
