@@ -116,4 +116,7 @@
     enable = true;
     acceleration = "cuda";
   };
+
+  # cat likes to warm its butt on the radiator and keeps pressing the button omfg
+  services.logind.powerKey = "ignore";
 }
