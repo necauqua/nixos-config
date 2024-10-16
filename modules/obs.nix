@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, pkgs-stable, ... }: {
   environment.systemPackages = [
     (pkgs.wrapOBS {
       plugins = with pkgs.obs-studio-plugins; [
@@ -7,7 +7,7 @@
         obs-pipewire-audio-capture
         obs-scale-to-sound
         obs-shaderfilter
-        obs-transition-table
+        pkgs-stable.obs-studio-plugins.obs-transition-table
         obs-tuna
         obs-vkcapture
       ];
