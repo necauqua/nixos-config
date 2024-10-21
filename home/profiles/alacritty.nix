@@ -1,6 +1,6 @@
-{ config, pkgs, ... }: {
+{ config, system-config, pkgs, lib, ... }: {
 
-  home.packages = [
+  home.packages = lib.optionals system-config.services.xserver.desktopManager.plasma5.enable [
     # make launching termapps work in KDE
     (pkgs.writeShellScriptBin "konsole" ''
       new_args=()
