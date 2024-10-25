@@ -44,6 +44,51 @@ in
         ];
       });
       tdesktop = (wrap prev.tdesktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome");
+
+      pyhidra = with pkgs; python3.pkgs.buildPythonPackage rec {
+        pname = "pyhidra";
+        version = "1.0.2";
+        pyproject = true;
+
+        src = fetchFromGitHub {
+          owner = "dod-cyber-crime-center";
+          repo = "pyhidra";
+          rev = version;
+          hash = "sha256-YAtQ0jN6+EqKNLDGgvFUf3lB5FR/dDEQ+g/BfUyRhRo=";
+        };
+
+        nativeBuildInputs = with python3.pkgs; [
+          copyDesktopItems
+          setuptools
+          wheel
+        ];
+
+        propagatedBuildInputs = with python3.pkgs; [
+          jpype1
+          tkinter
+        ];
+
+        makeWrapperArgs = [
+          "--set GHIDRA_INSTALL_DIR ${ghidra}/lib/ghidra"
+          "--prefix PATH : ${lib.makeBinPath [ openjdk17 ]}"
+        ];
+
+        pythonImportsCheck = [ "pyhidra" ];
+
+        desktopItems = [
+          (makeDesktopItem {
+            name = pname;
+            desktopName = "Ghidra (pyhidra)";
+            comment = "Ghidra Software Reverse Engineering Suite (pyhidra launcher)";
+            categories = [ "Application" "Development" ];
+            terminal = false;
+            startupNotify = true;
+            icon = "ghidra";
+            startupWMClass = "ghidra-Ghidra";
+            exec = "pyhidra --gui";
+          })
+        ];
+      };
     })
   ];
 }
