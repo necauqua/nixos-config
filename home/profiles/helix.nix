@@ -14,15 +14,27 @@
       };
     };
     languages = {
-      language-server = {
-        nil.command = "${pkgs.nil}/bin/nil";
-        zls.command = "${pkgs.zls}/bin/zls";
+      language-server = with pkgs; {
+        nil.command = "${nil}/bin/nil";
+        zls.command = "${zls}/bin/zls";
         rust-analyzer = {
-          command = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+          command = "${rust-analyzer}/bin/rust-analyzer";
           config.checkOnSave.command = "clippy";
         };
-        pylsp.command = "${pkgs.python3Packages.python-lsp-server}/bin/pylsp";
-        luals.command = "${pkgs.lua-language-server}/bin/lua-language-server";
+        pylsp = {
+          config.pylsp.plugins.rope_autoimport.enabled = true;
+          command =
+            let
+              combined = python3.withPackages (p: with p; [
+                python-lsp-server
+                python-lsp-black
+                pylsp-rope
+                python-lsp-ruff
+              ]);
+            in
+            "${combined}/bin/pylsp";
+        };
+        luals.command = "${lua-language-server}/bin/lua-language-server";
       };
       language = [
         {
