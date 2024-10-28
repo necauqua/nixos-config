@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ config, system-config, pkgs, ... }: {
   services.picom = {
-    enable = true;
+    enable = !config.headless && system-config.services.xserver.enable;
     package = pkgs.picom-next;
     settings = {
       backend = "glx";

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, system-config, pkgs, lib, ... }:
 let
   graphical = !config.headless;
 in
@@ -65,13 +65,12 @@ in
   '';
 
   services = {
-    kdeconnect.enable = true;
     betterlockscreen = {
-      enable = true;
+      enable = graphical && system-config.services.xserver.enable;
       arguments = [ "blur" ];
     };
-    caffeine.enable = true;
-    swaync.enable = true;
+    caffeine.enable = graphical;
+    swaync.enable = graphical;
   };
 
   home.packages = with pkgs; lib.optionals graphical [

@@ -1,7 +1,8 @@
 { config, system-config, pkgs, lib, ... }: {
 
+  # make launching termapps work in KDE
+  # keep this thing here for history idk, maybe I'll run KDE again at some point
   home.packages = lib.optionals system-config.services.xserver.desktopManager.plasma5.enable [
-    # make launching termapps work in KDE
     (pkgs.writeShellScriptBin "konsole" ''
       new_args=()
 

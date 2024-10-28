@@ -1,6 +1,6 @@
 { config, pkgs, ... }: {
   programs.rofi = {
-    enable = true;
+    enable = !config.headless;
     package = pkgs.rofi-wayland;
     font = "JetBrains Mono 12";
     terminal = "alacritty";
