@@ -2,7 +2,7 @@
 
   programs.gpg = {
     enable = true;
-    # scdaemonSettings.disable-ccid = true;
+    scdaemonSettings.disable-ccid = true;
   };
 
   programs.git.extraConfig = {
