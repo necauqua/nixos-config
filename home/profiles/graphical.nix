@@ -11,6 +11,8 @@ in
     size = 16;
   };
 
+  xresources.extraConfig = "Xft.dpi: 196";
+
   gtk = {
     enable = graphical;
     theme = {
