@@ -89,7 +89,7 @@
           };
         }
       ];
-      import = [ "~/.config/alacritty/opacity.toml" ];
+      general.import = [ "~/.config/alacritty/opacity.toml" ];
       colors = {
         primary = {
           background = "#2e3440";
