@@ -2,6 +2,9 @@
   description = "NixOS configuration";
 
   inputs = {
+    # can be updated separately with `nix flake update nixpkgs-future`
+    # or even set to latest master with `nix flake lock --override-input nixpkgs-future github:NixOS/nixpkgs/master`
+    nixpkgs-future.url = "nixpkgs/nixos-unstable";
     nixpkgs.url = "nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "nixpkgs/nixos-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -11,7 +14,7 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, agenix, ... }:
+  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-future, agenix, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -34,6 +37,7 @@
         specialArgs = {
           inherit features;
           pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+          pkgs-future = nixpkgs-future.legacyPackages.${system};
           flake-inputs = inputs;
           hm-profiles = profiles;
         };

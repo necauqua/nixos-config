@@ -1,4 +1,4 @@
-{
+{ pkgs-future, ... }: {
   services =
     let yup = { enable = true; openFirewall = true; };
     in {
@@ -8,6 +8,9 @@
       sonarr = yup // { user = "necauqua"; group = "users"; };
       jellyseerr = yup;
     };
+
+  # update jellyfin to 10.10 because cringe
+  nixpkgs.overlays = [ (final: prev: { jellyfin = pkgs-future.jellyfin; }) ];
 
   custom.services = [
     { name = "jellyfin"; port = 8096; }
