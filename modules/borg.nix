@@ -57,6 +57,7 @@
       ".vscode"
       ".wine"
       ".mozilla"
+      ".ollama"
 
       "downloads"
 
