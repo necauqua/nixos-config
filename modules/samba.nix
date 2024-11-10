@@ -12,7 +12,7 @@
           "netbios name" = config.networking.hostName;
 
           "create mask" = "0664";
-          "force crate mode" = "0664";
+          "force create mode" = "0664";
           "directory mask" = "0775";
           "follow symlinks" = "yes";
 
