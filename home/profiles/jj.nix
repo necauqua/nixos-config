@@ -9,7 +9,7 @@ in
     user.email = git.userEmail;
 
     git.auto-local-branch = false;
-    git.push-branch-prefix = "necauqua/push-";
+    git.push-bookmark-prefix = "necauqua/push-";
 
     signing = {
       backend = "gpg";
