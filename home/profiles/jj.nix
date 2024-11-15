@@ -32,7 +32,7 @@ in
     aliases = {
       all = [ "log" "-r" "all()" ];
       mine = [ "log" "-r" "mine()" ];
-      tug = [ "bookmark" "set" "main" "-r" "@-" ];
+      tug = [ "bookmark" "move" "--from" "heads(::@- & bookmarks())" "--to" "@-" ];
       diffp = [ "diff" "-r" "@-" ];
       hide = [ "abandon" ];
       sq = [ "squash" ];
