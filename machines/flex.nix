@@ -133,6 +133,7 @@
       (_: name: {
         device = "rpool/${name}";
         fsType = "zfs";
+        neededForBoot = name == "saved";
       })
       zfs-mounts)
     // (lib.mapAttrs
