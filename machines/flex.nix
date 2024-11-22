@@ -124,6 +124,8 @@
         "/var/lib/bluetooth" = "bluetooth";
         "/var/lib/NetworkManager" = "network-manager/lib";
         "/etc/NetworkManager/system-connections" = "network-manager/connections";
+        "/var/lib/systemd/coredump" = "systemd/coredump";
+        "/var/lib/systemd/backlight" = "systemd/backlight";
       };
     in
     mounts
