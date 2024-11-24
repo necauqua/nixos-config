@@ -25,28 +25,26 @@
     };
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
     kernelModules = [ "kvm-amd" ];
-    kernelParams = [
-      "libata.allow_tpm=1"
-    ];
-    zfs.extraPools = [ "archive" ];
+    kernelParams = [ "libata.allow_tpm=1" ];
+    zfs.extraPools = [ "bulk" ];
   };
 
   # fix stupid steam hidpi
   environment.sessionVariables.STEAM_FORCE_DESKTOPUI_SCALING = "2";
 
   fileSystems = {
-    "/" = {
-      label = "main";
-      fsType = "ext4";
-    };
-    "/boot" = {
-      label = "boot";
-      fsType = "vfat";
-    };
-    "/storage/games" = {
-      label = "games";
-      fsType = "btrfs";
-    };
+    # Those folders (so, their datasets) are needed in initrd,
+    # so we legacy-mount them here
+    # (neededForBoot is not necessary for those specific ones)
+    # Everything else is mounted by zfs
+    "/" = { device = "main/root"; fsType = "zfs"; };
+    "/nix" = { device = "main/nix"; fsType = "zfs"; };
+    "/var" = { device = "main/var/_"; fsType = "zfs"; };
+    "/var/log" = { device = "main/var/log"; fsType = "zfs"; };
+    "/var/lib" = { device = "main/var/lib/_"; fsType = "zfs"; };
+
+    # and boot of course is out-of-zfs on a separate partition
+    "/boot" = { label = "boot"; fsType = "vfat"; };
   };
 
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -116,7 +114,11 @@
   services.ollama = {
     enable = true;
     acceleration = "cuda";
+    # /var/lib/ollama is a zfs dataset, dont do the whole `private` symlink thing with DynamicUser
+    user = "ollama";
   };
+  # same
+  systemd.services.ollama.serviceConfig.DynamicUser = lib.mkForce false;
 
   # cat likes to warm its butt on the radiator and keeps pressing the button omfg
   services.logind.powerKey = "ignore";
