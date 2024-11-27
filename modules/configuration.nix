@@ -107,9 +107,11 @@
       jdk8.source = jdk8;
       jdk11.source = jdk11;
       jdk17.source = jdk17;
+      jdk21.source = jdk21;
 
-      # static lua lsp location for vscode
+      # static lsp locations for vscode
       lua-lsp.source = sumneko-lua-language-server;
+      nix-lsp.source = nil;
     };
 
     plasma5.excludePackages = with pkgs.libsForQt5; [
