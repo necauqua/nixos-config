@@ -6,7 +6,7 @@
 
   nix = {
     nixPath = [ "nixpkgs=${flakeInputs.nixpkgs}" ];
-    extraOptions = "experimental-features = nix-command flakes repl-flake";
+    extraOptions = "experimental-features = nix-command flakes";
     registry.nixos = {
       from = { id = "nixos"; type = "indirect"; };
       flake = flakeInputs.nixpkgs;
