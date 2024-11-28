@@ -24,6 +24,8 @@
       # "quiet"
       # fix keychron fn keys
       "hid_apple.fnmode=0"
+      # enable cp --reflink on zfs
+      "zfs.zfs_bclone_enabled=1"
     ];
     extraModulePackages = with config.boot.kernelPackages; [
       v4l2loopback.out
