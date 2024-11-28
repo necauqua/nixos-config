@@ -58,19 +58,24 @@
   };
 
   # do the nvidia+intel laptop magic
-  hardware.nvidia.prime = {
-    offload.enable = true;
-    intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:2:0:0";
+  hardware.nvidia = {
+    prime = {
+      offload.enable = true;
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:2:0:0";
+    };
+    open = false;
   };
-  hardware.nvidia.open = false;
 
   hardware.graphics.extraPackages = with pkgs; [
     intel-media-driver # LIBVA_DRIVER_NAME=iHD
     intel-vaapi-driver # LIBVA_DRIVER_NAME=i965
     libvdpau-va-gl
   ];
-  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
+    GSK_RENDERER = "ngl";
+  };
 
   boot = {
     loader.systemd-boot.consoleMode = "max";
