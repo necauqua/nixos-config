@@ -87,6 +87,11 @@
                 add_header Access-Control-Allow-Origin *;
                 return 200 '${builtins.toJSON data}';
               '';
+            locations."= /.well-known/atproto-did".extraConfig = ''
+              types {} default_type "text/plain; charset=utf-8";
+              add_header Access-Control-Allow-Origin *;
+              return 200 'did:plc:5q3nxglkbatgvuvwcu4tnexs';
+            '';
           };
           "necauqua.dev" = {
             forceSSL = true;
