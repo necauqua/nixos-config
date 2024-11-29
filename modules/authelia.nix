@@ -45,7 +45,7 @@ in
       authentication_backend = {
         password_reset.disable = false;
         ldap = {
-          implementation = "custom";
+          implementation = "lldap";
           address = "ldaps://sso.necauq.ua";
           base_dn = "dc=necauq,dc=ua";
           additional_users_dn = "ou=users";
@@ -88,13 +88,18 @@ in
     locations."/".proxyPass = "http://127.0.0.1:9091";
   };
 
-  systemd.services.authelia-main = {
-    # Authelia requires LDAP and PostgreSQL to be running
-    bindsTo = [
-      "portunus.service"
-      "postgresql.service"
-    ];
-  };
+  systemd.services.authelia-main =
+    let
+      # Authelia needs LDAP and PostgreSQL
+      deps = [
+        "portunus.service"
+        "postgresql.service"
+      ];
+    in
+    {
+      requires = deps;
+      after = deps;
+    };
 
   nixpkgs.overlays = [
     (final: prev: {
