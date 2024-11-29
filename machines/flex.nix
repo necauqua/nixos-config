@@ -110,21 +110,6 @@
 
   fileSystems =
     let
-      mounts = {
-        "/boot" = {
-          device = "/dev/disk/by-label/boot";
-          fsType = "vfat";
-        };
-      };
-      zfs-mounts = {
-        "/" = "root";
-        "/nix" = "nix";
-        "/home" = "home";
-        "/saved" = "saved";
-        "/var/log" = "logs";
-        "/var/lib/docker" = "docker";
-        "/home/necauqua/.local/share/Steam/steamapps" = "games";
-      };
       persist-bind-mounts = {
         "/var/lib/bluetooth" = "bluetooth";
         "/var/lib/NetworkManager" = "network-manager/lib";
@@ -132,21 +117,20 @@
         "/var/lib/systemd/coredump" = "systemd/coredump";
         "/var/lib/systemd/backlight" = "systemd/backlight";
       };
+      extras = lib.mapAttrs
+        (_: name: {
+          device = "/saved/${name}";
+          options = [ "bind" "noauto" "x-systemd.automount" ];
+        })
+        persist-bind-mounts;
     in
-    mounts
-    // (lib.mapAttrs
-      (_: name: {
-        device = "rpool/${name}";
-        fsType = "zfs";
-        neededForBoot = name == "saved";
-      })
-      zfs-mounts)
-    // (lib.mapAttrs
-      (_: name: {
-        device = "/saved/${name}";
-        options = [ "bind" "noauto" "x-systemd.automount" ];
-      })
-      persist-bind-mounts);
+    {
+      "/" = { device = "rpool/root"; fsType = "zfs"; };
+      "/nix" = { device = "rpool/nix"; fsType = "zfs"; };
+      "/var/log" = { device = "rpool/var/log"; fsType = "zfs"; };
+      "/saved" = { device = "rpool/root/saved"; fsType = "zfs"; neededForBoot = true; };
+      "/boot" = { label = "boot"; fsType = "vfat"; };
+    } // extras;
 
   environment.etc."machine-id".source = "/saved/machine-id";
 
