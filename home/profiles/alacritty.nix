@@ -72,7 +72,7 @@
       keyboard.bindings = [
         {
           key = "T";
-          mods = "Control";
+          mods = "Control|Shift";
           command = {
             program = "bash";
             args = [
