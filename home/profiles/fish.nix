@@ -5,7 +5,6 @@
       la = "ls -lAh";
       ll = "ls -lh";
       f = "fuck";
-      sudo = "sudo -sE";
       gst = "git status";
       gco = "git checkout";
       gbd = "git branch -d";
