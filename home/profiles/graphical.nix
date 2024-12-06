@@ -1,4 +1,4 @@
-{ config, system-config, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   graphical = !config.headless;
 in
@@ -68,11 +68,11 @@ in
 
   services = {
     betterlockscreen = {
-      enable = graphical && system-config.services.xserver.enable;
+      enable = graphical && config.x11;
       arguments = [ "blur" ];
     };
     caffeine.enable = graphical;
-    swaync.enable = graphical;
+    swaync.enable = graphical && !config.x11;
   };
 
   home.packages = with pkgs; lib.optionals graphical [

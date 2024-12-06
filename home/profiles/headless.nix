@@ -4,6 +4,10 @@
     type = lib.types.bool;
     default = false;
   };
+  options.x11 = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
 
   config = {
 

@@ -1,34 +1,4 @@
-{ config, system-config, pkgs, lib, ... }: {
-
-  # make launching termapps work in KDE
-  # keep this thing here for history idk, maybe I'll run KDE again at some point
-  home.packages = lib.optionals system-config.services.xserver.desktopManager.plasma5.enable [
-    (pkgs.writeShellScriptBin "konsole" ''
-      new_args=()
-
-      while [[ $# -gt 0 ]]; do
-        case $1 in
-          -qwindowicon)
-            shift 2
-            ;;
-          -qwindowtitle)
-            new_args+=("--title" "$2")
-            shift 2
-            ;;
-          --workdir)
-            new_args+=("--working-directory" "$2")
-            shift 2
-            ;;
-          *)
-            new_args+=("$1")
-            shift
-            ;;
-        esac
-      done
-      alacritty "''${new_args[@]}"
-    '')
-  ];
-
+{ config, ... }: {
   programs.alacritty = {
     enable = !config.headless;
     settings = {

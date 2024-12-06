@@ -1,4 +1,4 @@
-{ config, flake-inputs, hm-profiles, pkgs-stable, ... }: {
+{ flake-inputs, hm-profiles, pkgs-stable, ... }: {
   imports = [
     flake-inputs.home-manager.nixosModules.home-manager
   ];
@@ -10,7 +10,6 @@
     extraSpecialArgs = {
       inherit flake-inputs pkgs-stable;
       profiles = hm-profiles;
-      system-config = config;
     };
   };
 }
