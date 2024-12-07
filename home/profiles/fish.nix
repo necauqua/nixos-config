@@ -1,7 +1,10 @@
 { pkgs, ... }: {
   programs.zellij = {
     enable = true;
-    settings.theme = "nord";
+    settings = {
+      theme = "nord";
+      pane_frames = false;
+    };
   };
   programs.fish = {
     enable = true;
