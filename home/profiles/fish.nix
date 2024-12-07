@@ -29,7 +29,8 @@
       if status is-interactive && \
          not set -q ZELLIJ && \
          not test "$TERMINAL_EMULATOR" = JetBrains-JediTerm && \
-         not test "$TERM_PROGRAM" = vscode
+         not test "$TERM_PROGRAM" = vscode && \
+         not test "$ZED_TERM" = true
         exec zellij
       end
 
