@@ -3,7 +3,15 @@
     enable = true;
     settings = {
       add_newline = false;
+      format = "$shlvl$character";
       right_format = "$directory";
+      shlvl = {
+        format = "$symbol";
+        symbol = "λ";
+        repeat = true;
+        repeat_offset = 1;
+        disabled = false;
+      };
       character = {
         success_symbol = "λ";
         error_symbol = "λ";
