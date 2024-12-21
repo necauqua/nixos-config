@@ -102,10 +102,11 @@
     ];
   };
 
+  programs.coolercontrol = {
+    enable = true;
+    nvidiaSupport = true;
+  };
   hardware = {
-    # cooler control stuff
-    gkraken.enable = true;
-
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
   };
