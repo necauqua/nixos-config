@@ -124,7 +124,7 @@
 
   fonts.packages = with pkgs; [
     jetbrains-mono
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    nerd-fonts.jetbrains-mono
 
     noto-fonts
     noto-fonts-cjk-sans
