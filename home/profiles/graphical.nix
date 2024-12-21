@@ -116,7 +116,7 @@ in
     android-studio
     godot3
     vscode
-    # logseq # depends on eol electron atm
+    zed-editor
     obsidian
     via
 
