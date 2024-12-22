@@ -1,0 +1,25 @@
+/* Hide Sidebery sidebar title */
+#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] > #sidebar-header {
+  visibility: collapse !important;
+}
+
+/* Configure autohide_sidebar (add stuff to :root for what follows) */
+:root, #sidebar-box {
+  --uc-sidebar-width: 34px !important;
+  --uc-sidebar-hover-width: 250px !important;
+  --uc-autohide-sidebar-delay: 100ms !important;
+}
+
+/* Force-hide sidebar when there's a single tab */
+/* Also set root width var to zero when sidebar is closed for the toolbar margins below */
+:root:has(#sidebar-box[hidden=true]),
+:root:not(:has(.tabbrowser-tab:nth-child(2))),
+:root:not(:has(.tabbrowser-tab:nth-child(2))) #sidebar-box {
+  --uc-sidebar-width: 0 !important;
+}
+
+/* Sidebar is "floating" over the UI even when minimized, move toolbar stuff from under it */
+.browser-toolbar {
+  padding-left: var(--uc-sidebar-width) !important;
+}
+
