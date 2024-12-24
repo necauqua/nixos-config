@@ -8,8 +8,12 @@ in
     user.name = git.userName;
     user.email = git.userEmail;
 
-    git.auto-local-branch = false;
-    git.push-bookmark-prefix = "necauqua/push-";
+    git = {
+      fetch = [ "upstream" "origin" ];
+      push-bookmark-prefix = "necauqua/push-";
+      private-commits = "description(glob:'wip:*') | description(glob:'private:*')";
+    };
+    snapshot.auto-track = "none()";
 
     signing = {
       backend = "gpg";
@@ -17,7 +21,10 @@ in
       sign-all = git.signing.signByDefault;
     };
 
-    ui.default-command = "log";
+    ui = {
+      default-command = "log";
+      diff-editor = ":builtin";
+    };
     diff.tool = "difft";
 
     merge-tools.difft = {
@@ -60,7 +67,7 @@ in
           if(current_working_copy, "@"),
           if(description.starts_with("nix flake update"), "❄️"),
           if(immutable, "◆"),
-          if(description.starts_with("wip: "), "⊘"),
+          if(description.starts_with("wip:") || description.starts_with("private:"), "⊘"),
           if(conflict, "×"),
           "○"
         )
@@ -82,7 +89,7 @@ in
             if(!self, label("elided", content)),
             if(root, content),
             if(immutable, label("immutable", content)),
-            if(description.starts_with("wip: "), label("wip", content)),
+            if(description.starts_with("wip:"), label("wip", content)),
             if(conflict, label("conflict", content)),
             if(current_working_copy, label("working_copy", content)),
             label("normal", content)
