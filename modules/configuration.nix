@@ -133,7 +133,7 @@
   programs = {
     adb.enable = true;
     fish.enable = true;
-    less.envVariables.LESS = "-FRX";
+    less.envVariables.LESS = "-FR --mouse";
     partition-manager.enable = true;
     steam.enable = true;
     wireshark.enable = true;
