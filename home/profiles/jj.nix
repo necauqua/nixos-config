@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 let
   git = config.programs.git;
-  private-revset = "~::bookmarks() & ::(description(glob:'wip:*') | description(glob:'private:*'))";
+  private-revset = "~::bookmarks() & ::(description(glob:'wip:*') | description(glob:'private:*') | description(exact:'megamerge\\n'))";
 in
 {
   programs.jujutsu.enable = true;
@@ -53,7 +53,7 @@ in
       "node elided".fg = "bright black";
       "node wcc".fg = "green";
       "node immutable".fg = "bright cyan";
-      "node wip".fg = "yellow";
+      "node private".fg = "#7b449c"; # purple
       "node normal".bold = false;
     };
 
@@ -67,6 +67,7 @@ in
           if(root, "┴"),
           if(current_working_copy, "@"),
           if(description.starts_with("nix flake update"), "❄️"),
+          if(description == "megamerge\n", "⊕"),
           if(immutable, "◆"),
           if(self.contained_in("${private-revset}"), "⊘"),
           if(conflict, "×"),
@@ -90,7 +91,7 @@ in
             if(!self, label("elided", content)),
             if(root, content),
             if(immutable, label("immutable", content)),
-            if(description.starts_with("wip:"), label("wip", content)),
+            if(self.contained_in("${private-revset}"), label("private", content)),
             if(conflict, label("conflict", content)),
             if(current_working_copy, label("working_copy", content)),
             label("normal", content)
