@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let
   git = config.programs.git;
+  private-revset = "~::bookmarks() & ::(description(glob:'wip:*') | description(glob:'private:*'))";
 in
 {
   programs.jujutsu.enable = true;
@@ -11,7 +12,7 @@ in
     git = {
       fetch = [ "upstream" "origin" ];
       push-bookmark-prefix = "necauqua/push-";
-      private-commits = "description(glob:'wip:*') | description(glob:'private:*')";
+      private-commits = private-revset;
     };
     snapshot.auto-track = "none()";
 
@@ -67,7 +68,7 @@ in
           if(current_working_copy, "@"),
           if(description.starts_with("nix flake update"), "❄️"),
           if(immutable, "◆"),
-          if(description.starts_with("wip:") || description.starts_with("private:"), "⊘"),
+          if(self.contained_in("${private-revset}"), "⊘"),
           if(conflict, "×"),
           "○"
         )
