@@ -15,12 +15,7 @@
     };
     languages = {
       language-server = with pkgs; {
-        nil.command = "${nil}/bin/nil";
-        zls.command = "${zls}/bin/zls";
-        rust-analyzer = {
-          command = "${rust-analyzer}/bin/rust-analyzer";
-          config.checkOnSave.command = "clippy";
-        };
+        rust-analyzer.config.checkOnSave.command = "clippy";
         pylsp = {
           config.pylsp.plugins.rope_autoimport.enabled = true;
           command =
@@ -40,25 +35,12 @@
         {
           name = "nix";
           indent = { tab-width = 2; unit = "  "; };
-          language-servers = [ "nil" ];
           formatter.command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
           auto-format = true;
         }
         {
-          name = "rust";
-          language-servers = [ "rust-analyzer" ];
-        }
-        {
-          name = "python";
-          language-servers = [ "pylsp" ];
-        }
-        {
           name = "lua";
           language-servers = [ "luals" ];
-        }
-        {
-          name = "zig";
-          language-servers = [ "zls" ];
         }
       ];
     };

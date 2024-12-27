@@ -2,6 +2,9 @@
 let
   # todo replace this with pkgs.symlinkJoin { ..; postBuild = "wrap" }
   wrap = pkg: flags:
+    let
+      name = pkg.meta.mainProgram or pkg.pname;
+    in
     pkgs.runCommand pkg { buildInputs = [ pkgs.makeWrapper ]; } ''
       mkdir $out
       # Link every top-level folder from pkg to our new target
@@ -12,9 +15,9 @@ let
       mkdir $out/bin
       ln -s ${pkg}/bin/* $out/bin
       # Except the binary
-      rm $out/bin/${pkg.pname}
+      rm $out/bin/${name}
       # Because we create it ourself, by creating a wrapper
-      makeWrapper ${pkg}/bin/${pkg.pname} $out/bin/${pkg.pname} --inherit-argv0 ${flags}
+      makeWrapper ${pkg}/bin/${name} $out/bin/${name} --inherit-argv0 ${flags}
 
       # Repeat the same thing to have real share/applications copied
       rm $out/share
@@ -44,6 +47,14 @@ in
         ];
       });
       tdesktop = (wrap prev.tdesktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome");
+
+      helix = (wrap prev.helix "--suffix PATH : ${with pkgs; lib.makeBinPath [
+        nil
+        rust-analyzer
+        zls
+        typescript-language-server        
+        vscode-langservers-extracted
+      ]}");
 
       pyhidra = with pkgs; python3.pkgs.buildPythonPackage rec {
         pname = "pyhidra";
