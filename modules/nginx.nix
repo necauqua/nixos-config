@@ -106,4 +106,6 @@
         }
       ];
   };
+
+  security.acme.certs."necauq.ua".extraDomainNames = [ "*.home.necauq.ua" ];
 }

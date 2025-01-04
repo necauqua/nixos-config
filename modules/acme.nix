@@ -11,10 +11,7 @@
         dnsProvider = "cloudflare";
         webroot = lib.mkForce null; # override all the nginx enableACME lines
         credentialsFile = config.age.secrets.cloudflare.path;
-        extraDomainNames = [
-          "*.necauq.ua"
-          "*.home.necauq.ua"
-        ];
+        extraDomainNames = [ "*.necauq.ua" ];
       };
     };
   };
