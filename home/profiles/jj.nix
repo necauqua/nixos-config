@@ -46,6 +46,8 @@ in
       sq = [ "squash" ];
       push = [ "git" "push" ];
       fetch = [ "git" "fetch" ];
+
+      count = [ "util" "exec" "--" "sh" "-c" "jj log -r \"\${1:-all()}\" -T '\".\"' --no-graph | wc -c" "--" ];
     };
 
     colors = {
