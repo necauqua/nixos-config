@@ -7,6 +7,8 @@
         cursorline = true;
         lsp.display-inlay-hints = true;
         indent-guides.render = true;
+        end-of-line-diagnostics = "hint";
+        inline-diagnostics.cursor-line = "warning";
       };
       keys.normal = {
         "C-q" = "hover";
