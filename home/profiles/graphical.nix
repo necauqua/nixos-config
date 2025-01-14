@@ -130,7 +130,6 @@ in
     solaar
     songrec
     ghidra
-    pyhidra
 
     (pkgs.writeShellScriptBin "prime-run" ''
       export __NV_PRIME_RENDER_OFFLOAD=1
