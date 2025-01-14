@@ -10,7 +10,7 @@ in
     user.email = git.userEmail;
 
     git = {
-      fetch = [ "upstream" "origin" ];
+      fetch = [ "origin" "upstream" ];
       push-bookmark-prefix = "necauqua/push-";
       private-commits = private-revset;
     };
