@@ -3,9 +3,9 @@ let
   graphical = !config.headless;
 in
 {
-  xsession.enable = graphical;
+  xsession.enable = pkgs.stdenv.isLinux && graphical;
 
-  home.pointerCursor = {
+  home.pointerCursor = lib.mkIf pkgs.stdenv.isLinux {
     package = pkgs.qogir-icon-theme;
     name = "Qogir";
     size = 16;
@@ -42,7 +42,7 @@ in
     "org/gnome/desktop/interface".color-scheme = "prefer-dark";
   };
 
-  xdg.mimeApps = {
+  xdg.mimeApps = lib.mkIf pkgs.stdenv.isLinux {
     enable = graphical;
     defaultApplications = {
       # gimp takes like two eternities to boot while all I need
@@ -58,7 +58,9 @@ in
   };
 
   # because things just override the link? huh
-  xdg.configFile."mimeapps.list".force = graphical;
+  xdg.configFile = lib.mkIf pkgs.stdenv.isLinux {
+    "mimeapps.list".force = graphical;
+  };
 
   # checkLinkTargets seems to happen before writeBoundary.. but this works
   # just setting home.file.".gtkrc-2.0".force = true results in a conflict sadly
@@ -71,7 +73,7 @@ in
       enable = graphical && config.x11;
       arguments = [ "blur" ];
     };
-    caffeine.enable = graphical;
+    caffeine.enable = pkgs.stdenv.isLinux && graphical;
     swaync.enable = graphical && !config.x11;
   };
 

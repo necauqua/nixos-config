@@ -13,7 +13,7 @@
 
     xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
-    xdg.userDirs = {
+    xdg.userDirs = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       createDirectories = true;
 
@@ -27,56 +27,61 @@
       videos = "$HOME/videos";
     };
 
-    home.packages = with pkgs; [
-      nix-tree
-      cachix
+    home.packages = with pkgs;
+      let
+        linuxOnly = [
+          iw
+          traceroute
+          usbutils
+          exfatprogs
+        ];
+      in
+      [
+        nix-tree
+        cachix
 
-      iw
-      ffmpeg
+        ffmpeg
 
-      man-db
-      tldr
-      expect
-      rlwrap
-      jq
-      ijq
-      jless
-      fzf
-      nmap
-      calc
-      traceroute
-      dig
-      zip
-      unzip
-      tree
-      usbutils
-      yt-dlp
-      pgcli
+        man-db
+        tldr
+        expect
+        rlwrap
+        jq
+        ijq
+        jless
+        fzf
+        nmap
+        calc
+        dig
+        zip
+        unzip
+        tree
+        yt-dlp
+        pgcli
 
-      gh
-      asciinema
-      ripgrep
-      ncspot
-      screenfetch
+        gh
+        asciinema
+        ripgrep
+        ncspot
+        screenfetch
 
-      weechat
+        weechat
 
-      exfatprogs
-      ntfs3g
-      smartmontools
+        ntfs3g
+        smartmontools
 
-      gifski
+        gifski
 
-      lua5_3.pkgs.luacheck
-      lua5_3.pkgs.tl
+        lua5_3.pkgs.luacheck
+        lua5_3.pkgs.tl
 
-      nixpkgs-fmt
+        nixpkgs-fmt
 
-      packwiz
+        packwiz
 
-      awscli2
-      ranger
-    ];
+        awscli2
+        ranger
+      ] ++ lib.optionals pkgs.stdenv.isLinux linuxOnly;
 
     programs = {
       broot.enable = true;
