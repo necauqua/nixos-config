@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   domain = "necauq.ua";
   certDir = config.security.acme.certs.${domain}.directory;
@@ -6,6 +6,11 @@ in
 {
   services.soju = {
     enable = true;
+    package = pkgs.soju.overrideAttrs (super: {
+      patches = [
+        ./0001-identd-make-my-special-ident.patch
+      ] ++ (super.patches or [ ]);
+    });
     hostName = domain;
     tlsCertificate = "${certDir}/full.pem";
     tlsCertificateKey = "${certDir}/key.pem";

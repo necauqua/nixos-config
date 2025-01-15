@@ -1,0 +1,28 @@
+From 00fabae88271dd974b157300edc660461eabe90d Mon Sep 17 00:00:00 2001
+From: Anton Bulakh <him@necauq.ua>
+Date: Wed, 15 Jan 2025 19:50:42 +0200
+Subject: [PATCH] identd: make my special ident
+
+Just hardcode this thing, ideally you'd add an Ident field to
+DatabaseUser and allow users to set their idents, but I was lazy
+---
+ user.go | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/user.go b/user.go
+index 44a16f8..87cafd6 100644
+--- a/user.go
++++ b/user.go
+@@ -208,6 +208,9 @@ func (net *network) equalCasemap(a, b string) bool {
+ }
+ 
+ func userIdent(u *database.User) string {
++	if u.Username == "necauqua" {
++		return "him"
++	}
+ 	// The ident is a string we will send to upstream servers in clear-text.
+ 	// For privacy reasons, make sure it doesn't expose any meaningful user
+ 	// metadata. We just use the base64-encoded hashed ID, so that people don't
+-- 
+2.47.0
+
