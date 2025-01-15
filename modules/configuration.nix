@@ -77,6 +77,7 @@
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0oajjYx0nt7A2zBWjnc5gxTs1nBcGHuGNyp0Al5rAz openpgp:0xA61191F9"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoNFwj1SN1LJGT6Pto7hp9kHhWF9RsF0tXMI95Jix5P phone"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGgGnuv1hYWQC1GJQdTqcZhM1qGbUNXx5GcRLif1Wrmn work"
       ];
     };
   };
