@@ -59,24 +59,35 @@ in
       "node normal".bold = false;
     };
 
-    templates.op_log_node = ''
-      if(current_operation, "@", "○")
-    '';
-    templates.log_node = ''
-      label_node(
-        coalesce(
-          if(!self, "~"),
-          if(root, "┴"),
-          if(current_working_copy, "@"),
-          if(description.starts_with("nix flake update"), "❄️"),
-          if(description == "megamerge\n", "⊕"),
-          if(immutable, "◆"),
-          if(self.contained_in("${private-revset}"), "⊘"),
-          if(conflict, "×"),
-          "○"
+    templates = {
+      op_log_node = "if(current_operation, \"@\", \"○\")";
+      log_node = ''
+        label_node(
+          coalesce(
+            if(!self, "~"),
+            if(root, "┴"),
+            if(current_working_copy, "@"),
+            if(description.starts_with("nix flake update"), "❄️"),
+            if(description == "megamerge\n", "⊕"),
+            if(immutable, "◆"),
+            if(self.contained_in("${private-revset}"), "⊘"),
+            if(conflict, "×"),
+            "○"
+          )
         )
-      )
-    '';
+      '';
+      draft_commit_description = ''
+        concat(
+          description,
+          surround(
+            "\nJJ: This commit contains the following changes:\n", "",
+            indent("JJ:     ", diff.stat(120)),
+          ),
+          "\nJJ: ignore-rest\n",
+          diff.git(),
+        )
+      '';
+    };
 
     template-aliases = {
       "format_timestamp(ts)" = "ts.ago()";
