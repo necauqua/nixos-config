@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
   domain = "necauq.ua";
   certDir = config.security.acme.certs.${domain}.directory;
@@ -14,7 +14,12 @@ in
     hostName = domain;
     tlsCertificate = "${certDir}/full.pem";
     tlsCertificateKey = "${certDir}/key.pem";
-    extraConfig = "listen ident://";
+    extraConfig = ''
+      listen ident://
+
+      title "necauq.ua bouncer"
+      motd ${pkgs.runCommand "soju-motd" {} "echo You have taken yourself too seriously. | ${lib.getExe pkgs.cowsay} > $out"}
+    '';
   };
 
   services.nginx.virtualHosts.${domain}.enableACME = true;
@@ -22,7 +27,7 @@ in
 
   systemd.services.soju.serviceConfig = {
     AmbientCapabilities = "CAP_NET_BIND_SERVICE"; # allow it to listen on 113
-    Group = config.services.nginx.group;
+    Group = config.services.nginx.group; # allow it to read certs
   };
 
   networking.firewall.allowedTCPPorts = [ 113 6697 ];
