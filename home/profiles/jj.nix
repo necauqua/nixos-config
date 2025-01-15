@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 let
   git = config.programs.git;
-  private-revset = "~::bookmarks() & ::(description(glob:'wip:*') | description(glob:'private:*') | description(exact:'megamerge\\n'))";
+  private-revset = "(bookmarks() | remote_bookmarks())..((description(glob:'wip:*') | description(glob:'private:*') | description(exact:'megamerge\\n')) ~ ::trunk())";
 in
 {
   programs.jujutsu.enable = true;
