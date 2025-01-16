@@ -25,6 +25,7 @@ in
     ui = {
       default-command = "log";
       diff-editor = ":builtin";
+      show-cryptographic-signatures = true;
     };
     diff.tool = "difft";
 
