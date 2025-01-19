@@ -13,7 +13,7 @@
       prowlarr = yup;
       radarr = yup // { user = "necauqua"; group = "users"; };
       sonarr = yup // { user = "necauqua"; group = "users"; };
-      jellyseerr = yup;
+      jellyseerr = yup // { configDir = "/var/lib/jellyseerr"; };
     };
 
   custom.services = [
