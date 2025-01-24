@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   programs.zellij = {
     enable = true;
     settings = {
@@ -25,14 +25,18 @@
       ci.setCursor = true;
     };
     shellInit = ''
-      # run zellij if applicable
-      if status is-interactive && \
-         not set -q ZELLIJ && \
-         not test "$TERMINAL_EMULATOR" = JetBrains-JediTerm && \
-         not test "$TERM_PROGRAM" = vscode && \
-         not test "$ZED_TERM" = true
-        exec zellij
-      end
+      ${
+        if config.programs.zellij.enable then ''
+          # run zellij if applicable
+          if status is-interactive && \
+             not set -q ZELLIJ && \
+             not test "$TERMINAL_EMULATOR" = JetBrains-JediTerm && \
+             not test "$TERM_PROGRAM" = vscode && \
+             not test "$ZED_TERM" = true
+            exec zellij
+          end
+        '' else ""
+      }
 
       # global last status for prompt, separate from $status or $pipestatus
       # to be easily clearable by Ctrl+L (see bindings)
