@@ -34,9 +34,7 @@ let
     ${domain} = {
       forceSSL = true;
       enableACME = true;
-      locations = wkdLocations "" hashes // {
-        "= /pgp.asc".extraConfig = keys;
-      };
+      locations = wkdLocations "" hashes;
     };
   };
 in

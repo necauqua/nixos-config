@@ -1,4 +1,4 @@
-{ flakeInputs, config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }: {
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
@@ -73,25 +73,12 @@
             useACMEHost = "necauq.ua";
             globalRedirect = "necauq.ua";
           };
-          "necauq.ua" = {
-            root = "/var/www/necauqua.dev";
-            locations."= /healthcheck".extraConfig =
-              let
-                data = {
-                  status = "ok";
-                  flakeRev = "${flakeInputs.self.rev or "dirty"}";
-                };
-              in
-              ''
-                types {} default_type "application/json; charset=utf-8";
-                add_header Access-Control-Allow-Origin *;
-                return 200 '${builtins.toJSON data}';
-              '';
-            locations."= /.well-known/atproto-did".extraConfig = ''
-              types {} default_type "text/plain; charset=utf-8";
-              add_header Access-Control-Allow-Origin *;
-              return 200 'did:plc:5q3nxglkbatgvuvwcu4tnexs';
-            '';
+          "noit.ing" = {
+            enableACME = true;
+            forceSSL = true;
+            globalRedirect = "www.twitch.tv/necauqua";
+            redirectCode = 302;
+            locations."/live".extraConfig = "return 302 https://necauq.ua/posts/twitch-plays-noita/;";
           };
           "necauqua.dev" = {
             forceSSL = true;
@@ -100,6 +87,11 @@
             locations."/.well-known/matrix".extraConfig = ''
               return 404;
             '';
+          };
+          "kibana.necauq.ua" = {
+            enableACME = true;
+            forceSSL = true;
+            locations."/".proxyPass = "http://127.0.0.1:5601";
           };
           "home.necauq.ua" = home-config;
           "~^(?<subdomain>.+)\.home\.necauq\.ua" = home-config;
