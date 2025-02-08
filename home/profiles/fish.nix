@@ -71,8 +71,9 @@
       zwj = "echo -ne '\\xe2\\x80\\x8d' | xclip -i";
 
       dmesg = "command dmesg --color=always | less -R +G";
+
       ls = {
-        body = "command ls --color=auto --classify=auto $argv";
+        body = "command ls -F --color=auto $argv";
         wraps = "ls";
       };
 
