@@ -9,9 +9,8 @@
   programs.fish = {
     enable = true;
     shellAbbrs = {
-      la = "ls -lAh";
-      ll = "ls -lh";
       f = "fuck";
+      jst = "jj st";
       gst = "git status";
       gco = "git checkout";
       gbd = "git branch -d";
@@ -71,11 +70,6 @@
       zwj = "echo -ne '\\xe2\\x80\\x8d' | xclip -i";
 
       dmesg = "command dmesg --color=always | less -R +G";
-
-      ls = {
-        body = "command ls -F --color=auto $argv";
-        wraps = "ls";
-      };
 
       launch = ''
         set -l fixed (string escape -- $argv)
