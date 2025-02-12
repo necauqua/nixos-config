@@ -10,7 +10,7 @@
     borg
     nginx
     obs
-    hyprland
+    xorg
     emulation
   ];
 

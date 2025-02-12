@@ -1,6 +1,7 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, osConfig, ... }:
 let
   graphical = !config.headless;
+  x11 = osConfig.services.xserver.enable;
 in
 {
   xsession.enable = pkgs.stdenv.isLinux && graphical;
@@ -70,11 +71,11 @@ in
 
   services = {
     betterlockscreen = {
-      enable = graphical && config.x11;
+      enable = graphical && x11;
       arguments = [ "blur" ];
     };
     caffeine.enable = pkgs.stdenv.isLinux && graphical;
-    swaync.enable = graphical && !config.x11;
+    swaync.enable = graphical && !x11;
   };
 
   home.packages = with pkgs; lib.optionals graphical [

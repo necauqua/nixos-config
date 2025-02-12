@@ -24,7 +24,7 @@
         # # ^ getting BadValue crashes in wine/lutris games without this
         # ^ but it prevents OBS from capturing the screen (obviously), lol
       };
-      windowManager.leftwm.enable = true;
+      windowManager.bspwm.enable = true;
 
       # Configure keymap in X11
       xkb = {
