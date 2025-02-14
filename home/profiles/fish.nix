@@ -10,18 +10,27 @@
     enable = true;
     shellAbbrs = {
       f = "fuck";
-      jst = "jj st";
-      gst = "git status";
-      gco = "git checkout";
-      gbd = "git branch -d";
-      ggr = "git log --all --decorate --oneline --graph";
+
+      j = "jj";
+      ja = "jj all";
+      jf = "jj fetch";
+      jp = "jj push";
+      jt = "jj tug";
+      jd = "jj desc -r @";
+      jst = "jj status";
+      jsq = "jj squash";
+      ci.expansion = " jj commit -m '%'";
+      ci.setCursor = true;
 
       ns.expansion = "nix shell nixpkgs#%";
       ns.setCursor = true;
       nr.expansion = "nix run nixpkgs#%";
       nr.setCursor = true;
-      ci.expansion = " jj commit -m '%'";
-      ci.setCursor = true;
+
+      gst = "git status";
+      gco = "git checkout";
+      gbd = "git branch -d";
+      ggr = "git log --exclude='refs/jj/keep/*' --all --decorate --oneline --graph";
     };
     shellInit = ''
       ${
