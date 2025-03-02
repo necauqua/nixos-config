@@ -1,6 +1,6 @@
 { pkgs, config, ... }: {
   programs.zellij = {
-    enable = true;
+    enable = false; # using just kitty for now
     settings = {
       theme = "nord";
       pane_frames = false;
