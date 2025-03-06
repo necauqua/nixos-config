@@ -1,5 +1,4 @@
 { pkgs, ... }: {
-  programs.dconf.enable = true;
   environment.systemPackages = with pkgs; [
     gnomeExtensions.appindicator
     adwaita-icon-theme
