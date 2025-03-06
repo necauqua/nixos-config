@@ -12,6 +12,8 @@
     obs
     xorg
     emulation
+
+    metrics
   ];
 
   networking = { hostName = "main"; hostId = "09e32be7"; };

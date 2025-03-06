@@ -24,7 +24,6 @@ in
   };
 
   config = {
-
     age.secrets =
       let
         mkSecret = name: {
@@ -60,15 +59,19 @@ in
             basicAuthFile = secret "homelab-auth";
             extraConfig = "ssl_stapling off;";
 
-            locations."/".extraConfig = ''
-              # specifically don't use proxyPass to avoid recommended proxy headers
-              # because of course they are applied AFTER extraConfig
-              proxy_pass http://127.0.0.1:${toString port};
+            locations."/" = {
+              proxyWebsockets = true;
+              extraConfig = ''
+                # specifically don't use proxyPass to avoid recommended proxy headers
+                # because of course they are applied AFTER extraConfig
+                proxy_pass http://127.0.0.1:${toString port};
+                proxy_set_header Host $host;
 
-              set_real_ip_from  necauq.ua;
-              real_ip_header    X-Forwarded-For;
-              real_ip_recursive on;
-            '';
+                set_real_ip_from  necauq.ua;
+                real_ip_header    X-Forwarded-For;
+                real_ip_recursive on;
+              '';
+            };
           };
         in
         lib.mkMerge
