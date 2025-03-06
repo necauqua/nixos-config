@@ -12,7 +12,7 @@ in
     size = 16;
   };
 
-  xresources.extraConfig = "Xft.dpi: 196";
+  xresources.extraConfig = "Xft.dpi: 96";
 
   gtk = {
     enable = graphical;
