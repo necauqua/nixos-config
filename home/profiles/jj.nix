@@ -47,6 +47,7 @@ in
       sq = [ "squash" ];
       push = [ "git" "push" ];
       fetch = [ "git" "fetch" ];
+      add = [ "file" "track" ];
 
       count = [ "util" "exec" "--" "sh" "-c" "jj log -r \"\${1:-all()}\" -T '\".\"' --no-graph | wc -c" "--" ];
     };
