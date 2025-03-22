@@ -19,7 +19,7 @@ in
     signing = {
       backend = "gpg";
       key = git.signing.key;
-      sign-all = git.signing.signByDefault;
+      signing.behavior = "own";
     };
 
     ui = {
