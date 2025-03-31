@@ -9,6 +9,7 @@
     nix-flakes
     nix-config
     tailscale
+    gnome
   ];
 
   boot = {
