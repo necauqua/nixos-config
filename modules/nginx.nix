@@ -93,6 +93,11 @@
             forceSSL = true;
             locations."/".proxyPass = "http://127.0.0.1:5601";
           };
+          "elastic.necauq.ua" = {
+            enableACME = true;
+            forceSSL = true;
+            locations."/".proxyPass = "http://127.0.0.1:9200";
+          };
           "home.necauq.ua" = home-config;
           "~^(?<subdomain>.+)\.home\.necauq\.ua" = home-config;
         }
