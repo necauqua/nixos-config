@@ -42,11 +42,19 @@
           global
           twitch-archiver.nixosModules.default
           catfeeder-bot.nixosModules.default
-          ({
+          {
             # secrets file is temp, todo move to agenix lol
             services.catfeeder-bot = { enable = true; secretsFile = "/opt/secrets.json"; };
-            services.twitch-archiver = { enable = true; channels = [ "necauqua" ]; };
-          })
+            services.twitch-archiver = {
+              enable = true;
+              channels = [ "necauqua" ];
+              elastic = {
+                url = "http://localhost:9200";
+                index = "twitch-logs";
+                apiKeyFile = "/opt/elastic-key"; # again move to agenix future me pleaseeee
+              };
+            };
+          }
         ] ++ (builtins.attrValues (load-modules ./modules));
         specialArgs.flakeInputs = inputs;
       };
