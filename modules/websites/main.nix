@@ -15,6 +15,7 @@ in
     home = dir;
     group = "rsync-restricted";
     openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEZgaJbL4/wHjKdgt0dtugl3nEEm0jKeRRULHjham7+N main-deployer"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0oajjYx0nt7A2zBWjnc5gxTs1nBcGHuGNyp0Al5rAz openpgp:0xA61191F9"
     ];
   };
