@@ -56,6 +56,10 @@
               include "${config.age.secrets.homelab-proxy.path}";
               proxy_ssl_trusted_certificate ${config.age.secrets.homelab-cert.path};
               proxy_ssl_verify off;
+              
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection $connection_upgrade;
             '';
           };
         };
