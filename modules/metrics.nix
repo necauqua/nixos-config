@@ -6,7 +6,6 @@ let
     prometheus-systemd = 3021;
     loki = 3030;
     promtail = 3031;
-    tempo = 3040;
   };
 in
 {
@@ -152,27 +151,6 @@ in
 
   users.users.promtail.extraGroups = [ "nginx" ];
 
-  services.tempo = {
-    enable = true;
-
-    settings = {
-      server.http_listen_port = ports.tempo;
-      server.grpc_listen_port = ports.tempo + 1;
-      auth_enabled = false;
-
-      distributor.receivers.otlp.protocols.http = { };
-      metrics_generator = {
-        storage.path = "/var/lib/tempo/generator/wal";
-        traces_storage.path = "/var/lib/tempo/generator/traces";
-      };
-      storage.trace = {
-        backend = "local";
-        wal.path = "/var/lib/tempo/wal";
-        local.path = "/var/lib/tempo/blocks";
-      };
-    };
-  };
-
   services.grafana = {
     enable = true;
 
@@ -199,12 +177,6 @@ in
           type = "loki";
           access = "proxy";
           url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
-        }
-        {
-          name = "Tempo";
-          type = "tempo";
-          access = "proxy";
-          url = "http://127.0.0.1:${toString config.services.tempo.settings.server.http_listen_port}";
         }
       ];
     };
