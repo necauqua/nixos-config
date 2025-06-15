@@ -10,7 +10,7 @@
     borg
     nginx
     obs
-    xorg
+    hyprland
     emulation
 
     metrics
