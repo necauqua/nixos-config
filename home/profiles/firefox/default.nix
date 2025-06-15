@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, flake-inputs, ... }: {
   programs.firefox = {
     enable = !config.headless;
     profiles = {
@@ -23,10 +23,19 @@
         };
         userChrome =
           let
-            css-files = with builtins; filter
-              (file: match ".*\\.css$" file != null)
-              (attrNames (readDir ./css));
-            css-snippets = map (file: builtins.readFile ./css/${file}) css-files;
+            css-remote = map (name: "${flake-inputs.csshacks}/chrome/${name}.css") [
+              "autohide_toolbox"
+              "autohide_sidebar"
+              "hide_tabs_toolbar_v2"
+            ];
+
+            css-local = with builtins;
+              map (file: ./css/${file})
+                (filter
+                  (file: match ".*\\.css$" file != null)
+                  (attrNames (readDir ./css)));
+
+            css-snippets = map builtins.readFile (css-remote ++ css-local);
           in
           builtins.concatStringsSep "\n" css-snippets;
       };

@@ -12,6 +12,9 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    csshacks.url = "github:MrOtherGuy/firefox-csshacks";
+    csshacks.flake = false;
   };
 
   outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-future, agenix, ... }:

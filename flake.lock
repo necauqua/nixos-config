@@ -38,6 +38,22 @@
         "type": "github"
       }
     },
+    "csshacks": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1749053961,
+        "narHash": "sha256-iTMRvEhkQ+uj+UywSLnKLS2pg5AEN3tyog3f1Tc+rtk=",
+        "owner": "MrOtherGuy",
+        "repo": "firefox-csshacks",
+        "rev": "b8e0cb847e60087dc7cb831d778bcc05099cd36a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MrOtherGuy",
+        "repo": "firefox-csshacks",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -258,6 +274,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "csshacks": "csshacks",
         "home-manager": "home-manager_2",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
