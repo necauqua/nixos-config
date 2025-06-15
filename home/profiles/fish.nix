@@ -67,7 +67,7 @@
     '';
     functions = {
       fish_title = "echo $_";
-      fish_greeting = "set -q IN_NIX_SHELL || ${pkgs.fortune}/bin/fortune -s | ${pkgs.lolcat}/bin/lolcat -t";
+      fish_greeting = "set -q IN_NIX_SHELL || ${pkgs.fortune}/bin/fortune -s | ${pkgs.lolcat}/bin/lolcat -t 2>/dev/null";
       fish_right_prompt = "prompt_pwd";
       bool = "and echo true; or echo false";
       fuck = ''
