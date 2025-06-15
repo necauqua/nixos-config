@@ -51,6 +51,11 @@ let
 
     c-o = "©";
     p-h = "💜";
+
+    e-s = "😭";
+    e-j = "😂";
+    e-t = "🤔";
+    e-f = "🤦";
   };
 
   transform = key: value:
