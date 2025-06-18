@@ -109,6 +109,7 @@
     nvidiaSupport = true;
   };
   hardware = {
+    nvidia.open = false;
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
   };
