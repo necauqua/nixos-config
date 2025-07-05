@@ -28,9 +28,6 @@ in
       hostname = domain;
       inherit domain;
 
-      sslCert = "${config.security.acme.certs.${domain}.directory}/full.pem";
-      sslKey = "${config.security.acme.certs.${domain}.directory}/key.pem";
-
       config =
         let
           # echo "$password" | ${pkgs.cyrus_sasl}/bin/saslpasswd2 -f sasl.db -u "$domain" -c -p "$username"
@@ -52,6 +49,11 @@ in
 
           smtpd_milters = milter;
           non_smtpd_milters = milter;
+
+          smtpd_tls_chain_files = [
+            "${config.security.acme.certs.${domain}.directory}/key.pem"
+            "${config.security.acme.certs.${domain}.directory}/cert.pem"
+          ];
         };
     };
 
