@@ -47,10 +47,9 @@
             services.catfeeder-bot = { enable = true; secretsFile = "/opt/secrets.json"; };
             services.twitch-archiver = {
               enable = true;
-              channels = [ "necauqua" ];
+              channels = [ "necauqua" "dunkorslam" "snekgregory" "nutty_mitchell" ];
               elastic = {
                 url = "http://localhost:9200";
-                index = "twitch-logs";
                 apiKeyFile = "/opt/elastic-key"; # again move to agenix future me pleaseeee
               };
             };
