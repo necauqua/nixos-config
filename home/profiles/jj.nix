@@ -10,8 +10,8 @@ in
     user.email = git.userEmail;
 
     git = {
-      fetch = [ "origin" "upstream" ];
-      push-bookmark-prefix = "necauqua/push-";
+      fetch = [ "glob:*" ];
+      sign-on-push = true;
       private-commits = private-revset;
     };
     snapshot.auto-track = "none()";
@@ -19,7 +19,7 @@ in
     signing = {
       backend = "gpg";
       key = git.signing.key;
-      signing.behavior = "own";
+      signing.behavior = "drop";
     };
 
     ui = {
@@ -43,7 +43,7 @@ in
       mine = [ "log" "-r" "mine()" ];
       tug = [ "bookmark" "move" "--from" "heads(::@- & bookmarks())" "--to" "@-" ];
       diffp = [ "diff" "-r" "@-" ];
-      hide = [ "abandon" ];
+      drop = [ "abandon" ];
       sq = [ "squash" ];
       push = [ "git" "push" ];
       fetch = [ "git" "fetch" ];
@@ -62,6 +62,7 @@ in
     };
 
     templates = {
+      git_push_bookmark = "\"necauqua/push-\" ++ change_id.short()";
       op_log_node = "if(current_operation, \"@\", \"○\")";
       log_node = ''
         label_node(
