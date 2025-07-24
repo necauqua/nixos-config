@@ -15,4 +15,6 @@ in
   "authelia-storage-key.age".publicKeys = keys;
   "authelia-jwt-key.age".publicKeys = keys;
   "authelia-smtp-password.age".publicKeys = keys;
+  "catfeeder-secrets.age".publicKeys = keys;
+  "elastic-key.age".publicKeys = keys;
 }

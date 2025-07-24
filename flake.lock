@@ -31,11 +31,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1751743015,
-        "narHash": "sha256-eKbjYdpvQ3mupeXhmDACEQGbHRDEVRRc65HG0RBGpPQ=",
+        "lastModified": 1753360381,
+        "narHash": "sha256-izSylSy14CxXA8YRoR+ossp5M7b2iNhpJgGp67nq2SA=",
         "owner": "~necauqua",
         "repo": "catfeeder-bot",
-        "rev": "00d782a74145d2c73da454c56d480471c66b7e7a",
+        "rev": "1f97369d174351f09629e2e9755d9ae74f4b48ac",
         "type": "sourcehut"
       },
       "original": {
@@ -275,11 +275,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1751745222,
-        "narHash": "sha256-OvL6DvRbdKpZ9enmLatr3fmkVGERhLIvo8JfKsVgZjo=",
+        "lastModified": 1753359534,
+        "narHash": "sha256-TcoJ4ojAhGncbeP3AiIti0SoOitp0wgUbIceJXaTNYc=",
         "owner": "necauqua",
         "repo": "twitch-archiver",
-        "rev": "6a6b77270c9ec3bdc608ef554d535ab6b13c14fb",
+        "rev": "d46edeafbe44f5d36b4655fd9cae5d91340a5fd9",
         "type": "github"
       },
       "original": {

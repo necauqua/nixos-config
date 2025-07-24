@@ -1,15 +1,15 @@
-{ pkgs, flakeInputs, ... }: {
+{ flake-inputs, pkgs, lib, ... }: {
 
   imports = [
-    flakeInputs.agenix.nixosModules.age
+    flake-inputs.agenix.nixosModules.age
   ];
 
   nix = {
-    nixPath = [ "nixpkgs=${flakeInputs.nixpkgs}" ];
+    nixPath = [ "nixpkgs=${flake-inputs.nixpkgs}" ];
     extraOptions = "experimental-features = nix-command flakes";
     registry.nixos = {
       from = { id = "nixos"; type = "indirect"; };
-      flake = flakeInputs.nixpkgs;
+      flake = flake-inputs.nixpkgs;
     };
   };
 
@@ -47,4 +47,5 @@
   ];
 
   system.stateVersion = "23.11";
+  system.configurationRevision = lib.mkIf (flake-inputs.self ? rev) flake-inputs.self.rev;
 }
