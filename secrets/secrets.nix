@@ -19,4 +19,5 @@ in
   "elastic-key.age".publicKeys = keys;
   "tangled-knot-secret.age".publicKeys = keys;
   "pds-env.age".publicKeys = keys;
+  "tg-bot.age".publicKeys = keys;
 }
