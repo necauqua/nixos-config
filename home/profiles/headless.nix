@@ -30,6 +30,7 @@
           traceroute
           usbutils
           exfatprogs
+          mold
         ];
       in
       [
@@ -77,6 +78,17 @@
 
         awscli2
         ranger
+
+        figlet
+        basez
+        gdb
+        just
+        pass
+        atproto-goat
+        websocat
+        yq-go
+        mmv-go
+        radicle-node
       ] ++ lib.optionals pkgs.stdenv.isLinux linuxOnly;
 
     programs = {

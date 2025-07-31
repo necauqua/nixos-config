@@ -132,6 +132,26 @@ in
     songrec
     ghidra
 
+    playerctl
+    zenity
+    kitty # todo configure through nix
+
+    feh
+    imhex
+    quickemu
+    fractal
+    kdePackages.dolphin
+
+    # wayland-only, todo maybe check that x11 boolean
+    #  could also move to the hyprland module or something
+    grim
+    slurp
+    wf-recorder
+    wl-clipboard-rs
+    waybar
+    swaylock-effects
+
+
     (pkgs.writeShellScriptBin "prime-run" ''
       export __NV_PRIME_RENDER_OFFLOAD=1
       export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
