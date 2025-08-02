@@ -82,7 +82,6 @@
             forceSSL = true;
             globalRedirect = "www.twitch.tv/necauqua";
             redirectCode = 302;
-            locations."/live".extraConfig = "return 302 https://necauq.ua/posts/twitch-plays-noita/;";
           };
           "necauqua.dev" = {
             forceSSL = true;
