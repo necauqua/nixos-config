@@ -43,26 +43,6 @@ in
     "org/gnome/desktop/interface".color-scheme = "prefer-dark";
   };
 
-  xdg.mimeApps = lib.mkIf pkgs.stdenv.isLinux {
-    enable = graphical;
-    defaultApplications = {
-      # gimp takes like two eternities to boot while all I need
-      # is to see the image lol
-      "image/bmp" = "nsxiv.desktop";
-      "image/gif" = "nsxiv.desktop";
-      "image/jpeg" = "nsxiv.desktop";
-      "image/jpg" = "nsxiv.desktop";
-      "image/png" = "nsxiv.desktop";
-      "image/webp" = "nsxiv.desktop";
-      "image/heic" = "nsxiv.desktop";
-    };
-  };
-
-  # because things just override the link? huh
-  xdg.configFile = lib.mkIf pkgs.stdenv.isLinux {
-    "mimeapps.list".force = graphical;
-  };
-
   # checkLinkTargets seems to happen before writeBoundary.. but this works
   # just setting home.file.".gtkrc-2.0".force = true results in a conflict sadly
   home.activation.resetGtkrc2 = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
@@ -91,7 +71,6 @@ in
     tdesktop
     (makeAutostartItem { name = "org.telegram.desktop"; package = tdesktop; })
 
-    nsxiv
     maim
     d-spy
     pavucontrol

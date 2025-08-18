@@ -1,0 +1,33 @@
+From 3d25a7457d2a6f701a1f62f8884df531af650e1d Mon Sep 17 00:00:00 2001
+From: Anton Bulakh <him@necauq.ua>
+Date: Mon, 18 Aug 2025 21:18:02 +0300
+Subject: [PATCH] config: add more zoom levels and disable AA by default
+
+Most often I am looking at some pixel art and/or textures, for which the
+800% max zoom default is inadequate, and constantly pressing A to toggle
+antialias is annoying as well.
+---
+ config.def.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/config.def.h b/config.def.h
+index ead1509a7a..906adcbb25 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -28,6 +28,7 @@
+ static const float zoom_levels[] = {
+ 	 12.5,  25.0,  50.0,  75.0,
+ 	100.0, 150.0, 200.0, 400.0, 800.0
++	, 1600.0, 3200.0, 6400.0, 12800.0, 25600.0, 51200.0
+ };
+ 
+ /* default slideshow delay (in sec, overwritten via -S option): */
+@@ -63,7 +64,7 @@
+ /* if false, pixelate images at zoom level != 100%,
+  * toggled with 'a' key binding (overwritten via `--anti-alias` option)
+  */
+-static const bool ANTI_ALIAS = true;
++static const bool ANTI_ALIAS = false;
+ 
+ /* if true, use a checkerboard background for alpha layer,
+  * toggled with 'A' key binding (overwritten via `--alpha-layer` option)
