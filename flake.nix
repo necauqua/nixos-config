@@ -62,17 +62,8 @@
       };
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = [
+          pkgs.just
           agenix.packages.${system}.default
-          (pkgs.writeShellScriptBin "deploy" ''
-            flake=$1
-            impure=""
-            if [[ -z "$flake" ]]; then
-              flake=local
-              impure=--impure
-            fi
-            ulimit -n 65535 # well this is a thing now
-            sudo nixos-rebuild switch --flake $flake $impure
-          '')
         ];
       };
     };
