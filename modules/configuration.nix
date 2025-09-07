@@ -112,13 +112,6 @@
       lua-lsp.source = sumneko-lua-language-server;
       nix-lsp.source = nil;
     };
-
-    plasma5.excludePackages = with pkgs.libsForQt5; [
-      oxygen
-      khelpcenter
-      konsole
-      print-manager
-    ];
   };
 
   fonts.packages = with pkgs; [
