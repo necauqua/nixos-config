@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  cfg = config.services.pds.settings;
+  cfg = config.services.bluesky-pds.settings;
 in
 {
 
@@ -10,7 +10,7 @@ in
     group = "pds";
   };
 
-  services.pds = {
+  services.bluesky-pds = {
     enable = true;
     settings = {
       PDS_HOSTNAME = "pds.necauq.ua";

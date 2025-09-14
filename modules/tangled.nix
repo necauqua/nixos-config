@@ -3,13 +3,11 @@
     flake-inputs.tangled.nixosModules.knot
   ];
 
-  age.secrets.tangled-knot-secret.file = ../secrets/tangled-knot-secret.age;
-
   services.tangled-knot = {
     enable = true;
     server = {
+      owner = "did:plc:5q3nxglkbatgvuvwcu4tnexs";
       hostname = "knot.necauq.ua";
-      secretFile = config.age.secrets.tangled-knot-secret.path;
       listenAddr = "127.0.0.1:5443";
       internalListenAddr = "127.0.0.1:5444";
     };

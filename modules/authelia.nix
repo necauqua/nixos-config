@@ -75,7 +75,7 @@ in
         }
       ];
       notifier.smtp = {
-        address = "smtp://necauq.ua:${toString config.services.postfix.relayPort}";
+        address = "smtp://necauq.ua:587";
         username = "matrix-noreply";
         sender = "authelia@necauq.ua";
       };

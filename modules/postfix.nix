@@ -21,14 +21,8 @@ in
       enable = true;
       enableSubmission = true;
       enableSubmissions = true;
-      relayPort = 587;
-      destination = [ "localhost" ];
-      # ^ we're send-only, so send stuff to necauq.ua externally to be received by what's configured in dns
 
-      hostname = domain;
-      inherit domain;
-
-      config =
+      settings.main =
         let
           # echo "$password" | ${pkgs.cyrus_sasl}/bin/saslpasswd2 -f sasl.db -u "$domain" -c -p "$username"
           # and then encrypt it into the agenix thing somehow
@@ -42,6 +36,11 @@ in
           milter = config.services.opendkim.socket;
         in
         {
+          relayhost = [ "${domain}:587" ];
+          mydestination = [ "localhost" ];
+          myhostname = domain;
+          mydomain = domain;
+          # ^ we're send-only, so send stuff to necauq.ua externally to be received by what's configured in dns
           cyrus_sasl_config_path = "${sasl-conf-dir}";
           smtpd_sasl_auth_enable = true;
           smtpd_tls_auth_only = true;
@@ -63,5 +62,5 @@ in
   security.acme.certs.${domain}.postRun = "systemctl restart postfix.service";
   users.users.postfix.extraGroups = [ config.services.nginx.group ];
 
-  networking.firewall.allowedTCPPorts = [ cfg.relayPort ];
+  networking.firewall.allowedTCPPorts = [ 587 ];
 }
