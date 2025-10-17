@@ -133,7 +133,7 @@
     k3b.enable = true;
     nix-ld = {
       enable = true;
-      libraries = [ ];
+      libraries = with pkgs; [ openssl ];
     };
   };
 
