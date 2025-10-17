@@ -125,5 +125,5 @@
   systemd.services.ollama.serviceConfig.DynamicUser = lib.mkForce false;
 
   # cat likes to warm its butt on the radiator and keeps pressing the button omfg
-  services.logind.powerKey = "ignore";
+  services.logind.settings.Login.HandlePowerKey = "ignore";
 }

@@ -9,7 +9,7 @@
         user = "necauqua";
       };
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks -rtg 'hello' -c Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --asterisks -rtg 'hello' -c Hyprland";
         user = "necauqua";
       };
     };

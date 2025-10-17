@@ -78,7 +78,7 @@ in
     barrier
 
     transmission_4-gtk
-    carla
+    # carla
     noise-repellent
     peek
     chatterino2
@@ -87,7 +87,7 @@ in
     mumble
     element-desktop
     emote
-    lmms
+    # lmms
     evince
     file-roller
 
