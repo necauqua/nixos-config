@@ -68,7 +68,7 @@
     mutableUsers = false;
     users.necauqua = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "docker" "dialout" "adbusers" "networkmanager" "wireshark" ];
+      extraGroups = [ "wheel" "docker" "dialout" "adbusers" "networkmanager" "wireshark" "cdrom" ];
       # lol
       hashedPassword = "$6$.fpv9TmqXoHSfmj/$ql9VtGHMsyJssreJY0lTINfQkYZSZZnDzAozje4R1jWiih92I.QlHbjmfPeRexBjEM4VfZseEo4R5id/OkK9a1";
       openssh.authorizedKeys.keys = [
@@ -130,6 +130,7 @@
     partition-manager.enable = true;
     steam.enable = true;
     wireshark.enable = true;
+    k3b.enable = true;
     nix-ld = {
       enable = true;
       libraries = [ ];
