@@ -41,11 +41,12 @@
     # Everything else is mounted by zfs
     "/" = { device = "main/root"; fsType = "zfs"; };
     "/nix" = { device = "main/nix"; fsType = "zfs"; };
-    "/var" = { device = "main/var/_"; fsType = "zfs"; };
+    "/var" = { device = "main/var"; fsType = "zfs"; };
+    # todo: not sure if log and lib are needed here specifically
     "/var/log" = { device = "main/var/log"; fsType = "zfs"; };
-    "/var/lib" = { device = "main/var/lib/_"; fsType = "zfs"; };
+    "/var/lib" = { device = "main/var/lib"; fsType = "zfs"; };
 
-    # and boot of course is out-of-zfs on a separate partition
+    # and boot of course is on a separate vfat partition as well
     "/boot" = { label = "boot"; fsType = "vfat"; };
   };
 
