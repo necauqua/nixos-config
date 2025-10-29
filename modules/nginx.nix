@@ -79,7 +79,9 @@ in
             [{
               # heimdall (hub) running in docker, todo move to nix
               "home.necauq.ua" = hostDef 9999;
-            }] ++ (map (s: { "${s.name}.home.necauq.ua" = hostDef s.port; }) config.custom.services)
+            }]
+            ++ (map (s: { "${s.name}.home.necauq.ua" = hostDef s.port; }) config.custom.services)
+            ++ (map (s: { "${s.name}.home.lan" = hostDef s.port; }) config.custom.services)
           );
     };
 
