@@ -5,19 +5,27 @@
     # can be updated separately with `nix flake update nixpkgs-future`
     # or even set to latest master with `nix flake lock --override-input nixpkgs-future github:NixOS/nixpkgs/master`
     nixpkgs-future.url = "nixpkgs/nixos-unstable";
+
     nixpkgs.url = "nixpkgs/nixos-unstable";
+
     nixpkgs-stable.url = "nixpkgs/nixos-24.05";
+
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 
     csshacks.url = "github:MrOtherGuy/firefox-csshacks";
     csshacks.flake = false;
   };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-future, agenix, ... }:
+  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-future, agenix, deploy-rs, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -50,6 +58,7 @@
     in
     {
       nixosConfigurations = nixpkgs.lib.mapAttrs machine (load-modules ./machines);
+
       homeModules = {
         main = {
           imports = hm-roles.all;
@@ -60,10 +69,23 @@
           home.stateVersion = "22.11";
         };
       };
+
+      deploy.nodes.home = {
+        hostname = "home.lan";
+        profiles.system = {
+          path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.home;
+          sshUser = "root";
+          fastConnection = true;
+        };
+      };
+
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = [
           pkgs.just
           agenix.packages.${system}.default
+          deploy-rs.packages.${system}.default
         ];
       };
     };
