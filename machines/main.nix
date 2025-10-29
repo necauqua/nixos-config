@@ -29,6 +29,7 @@
     kernelModules = [ "kvm-amd" ];
     kernelParams = [ "libata.allow_tpm=1" ];
     zfs.extraPools = [ "bulk" ];
+    supportedFilesystems = [ "nfs" ];
   };
 
   # fix stupid steam hidpi
@@ -48,6 +49,8 @@
 
     # and boot of course is on a separate vfat partition as well
     "/boot" = { label = "boot"; fsType = "vfat"; };
+
+    "/new-storage" = { device = "home.lan:/storage"; fsType = "nfs"; };
   };
 
   nixpkgs.hostPlatform = "x86_64-linux";
