@@ -130,6 +130,7 @@
       "/var/log" = { device = "rpool/var/log"; fsType = "zfs"; };
       "/saved" = { device = "rpool/root/saved"; fsType = "zfs"; neededForBoot = true; };
       "/boot" = { label = "boot"; fsType = "vfat"; };
+      "/storage" = { device = "home.lan:/storage"; fsType = "nfs"; };
     } // extras;
 
   environment.etc."machine-id".source = "/saved/machine-id";
