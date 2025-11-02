@@ -46,7 +46,7 @@ in
           })
         ];
       });
-      tdesktop = (wrap prev.tdesktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome");
+      telegram-desktop = (wrap prev.telegram-desktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome");
 
       helix = (wrap prev.helix "--suffix PATH : ${with pkgs; lib.makeBinPath [
         nil

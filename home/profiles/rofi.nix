@@ -1,7 +1,6 @@
-{ config, pkgs, osConfig, ... }: {
+{ config, pkgs, ... }: {
   programs.rofi = {
     enable = pkgs.stdenv.isLinux && !config.headless;
-    package = if osConfig.services.xserver.enable then pkgs.rofi else pkgs.rofi-wayland;
     font = "JetBrains Mono 12";
     terminal = "kitty";
     theme =

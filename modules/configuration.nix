@@ -109,7 +109,7 @@
       jdk21.source = jdk21;
 
       # static lsp locations for vscode
-      lua-lsp.source = sumneko-lua-language-server;
+      lua-lsp.source = lua-language-server;
       nix-lsp.source = nil;
     };
   };
@@ -120,7 +120,7 @@
 
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
   ];
   programs = {
     adb.enable = true;
@@ -184,7 +184,6 @@
 
   networking.firewall = {
     allowedTCPPorts = [
-      24800 # barrier server
       24274 # my nearby-share project wip thing
       5173 # svelte dev server
       9091 # transmission remote

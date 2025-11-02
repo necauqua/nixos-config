@@ -5,7 +5,7 @@
     scdaemonSettings.disable-ccid = true;
   };
 
-  programs.git.extraConfig = {
+  programs.git.settings = {
     commit.gpgSign = true;
     tag.gpgSign = true;
   };

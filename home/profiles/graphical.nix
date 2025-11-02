@@ -68,21 +68,20 @@ in
 
     thunderbird
 
-    tdesktop
-    (makeAutostartItem { name = "org.telegram.desktop"; package = tdesktop; })
+    telegram-desktop
+    (makeAutostartItem { name = "org.telegram.desktop"; package = telegram-desktop; })
 
     maim
     d-spy
     pavucontrol
     qpwgraph
-    barrier
 
     transmission_4-gtk
     # carla
     noise-repellent
     peek
     chatterino2
-    bitwarden
+    bitwarden-desktop
     (discord.override { withOpenASAR = true; })
     mumble
     element-desktop

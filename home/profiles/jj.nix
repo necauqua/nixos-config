@@ -6,8 +6,8 @@ in
 {
   programs.jujutsu.enable = true;
   programs.jujutsu.settings = {
-    user.name = git.userName;
-    user.email = git.userEmail;
+    user.name = git.settings.user.name;
+    user.email = git.settings.user.email;
 
     git = {
       fetch = [ "glob:*" ];
