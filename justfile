@@ -9,4 +9,4 @@ deploy flake="local":
         impure=--impure
     fi
     ulimit -n 65535 # well this is a thing
-    sudo nixos-rebuild switch --flake "{{flake}}" "$impure"
+    sudo nixos-rebuild switch --flake "{{flake}}" $impure
