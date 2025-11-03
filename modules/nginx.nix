@@ -50,13 +50,21 @@ in
 
       proxyResolveWhileRunning = true;
 
+      appendHttpConfig = ''
+        map $https $auth_realm {
+            default off;
+            on      "secured";
+        }
+        auth_basic $auth_realm;
+        auth_basic_user_file ${secret "homelab-auth"};
+      '';
+
       virtualHosts =
         let
           hostDef = port: {
             onlySSL = true;
             sslCertificate = secret "selfsig-cert";
             sslCertificateKey = secret "selfsig-key";
-            basicAuthFile = secret "homelab-auth";
             extraConfig = "ssl_stapling off;";
 
             locations."/" = {
