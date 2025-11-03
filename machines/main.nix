@@ -50,7 +50,7 @@
     # and boot of course is on a separate vfat partition as well
     "/boot" = { label = "boot"; fsType = "vfat"; };
 
-    "/new-storage" = { device = "home.lan:/storage"; fsType = "nfs"; };
+    "/storage" = { device = "home.lan:/storage"; fsType = "nfs"; };
   };
 
   nixpkgs.hostPlatform = "x86_64-linux";
