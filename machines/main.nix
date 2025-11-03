@@ -28,7 +28,6 @@
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
     kernelModules = [ "kvm-amd" "zenpower" ];
     kernelParams = [ "libata.allow_tpm=1" ];
-    zfs.extraPools = [ "bulk" ];
     supportedFilesystems = [ "nfs" ];
     extraModulePackages = with pkgs.linuxPackages; [ zenpower ];
   };
