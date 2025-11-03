@@ -26,10 +26,11 @@
       pkiBundle = "/etc/secureboot";
     };
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-    kernelModules = [ "kvm-amd" ];
+    kernelModules = [ "kvm-amd" "zenpower" ];
     kernelParams = [ "libata.allow_tpm=1" ];
     zfs.extraPools = [ "bulk" ];
     supportedFilesystems = [ "nfs" ];
+    extraModulePackages = with pkgs.linuxPackages; [ zenpower ];
   };
 
   # fix stupid steam hidpi
@@ -108,10 +109,8 @@
     ];
   };
 
-  programs.coolercontrol = {
-    enable = true;
-    nvidiaSupport = true;
-  };
+  programs.coolercontrol.enable = true;
+
   hardware = {
     nvidia.open = false;
     enableRedistributableFirmware = true;
@@ -127,6 +126,7 @@
   };
   # same
   systemd.services.ollama.serviceConfig.DynamicUser = lib.mkForce false;
+  services.hardware.deepcool-digital-linux.enable = true;
 
   # cat likes to warm its butt on the radiator and keeps pressing the button omfg
   services.logind.settings.Login.HandlePowerKey = "ignore";
