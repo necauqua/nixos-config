@@ -96,6 +96,9 @@
             return 1
         end
       '';
+      mkshell = ''
+        nix develop --impure --expr "with import <nixpkgs> {}; mkShell { packages = [ $argv ]; }" -c $SHELL
+      '';
     };
   };
 }
