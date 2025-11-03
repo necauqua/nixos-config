@@ -12,7 +12,7 @@
     obs
     hyprland
     emulation
-
+    ollama
     metrics
   ];
 
@@ -116,15 +116,6 @@
     cpu.amd.updateMicrocode = true;
   };
 
-  # todo: maybe move this somewheree
-  services.ollama = {
-    enable = true;
-    acceleration = "cuda";
-    # /var/lib/ollama is a zfs dataset, dont do the whole `private` symlink thing with DynamicUser
-    user = "ollama";
-  };
-  # same
-  systemd.services.ollama.serviceConfig.DynamicUser = lib.mkForce false;
   services.hardware.deepcool-digital-linux.enable = true;
 
   # cat likes to warm its butt on the radiator and keeps pressing the button omfg
