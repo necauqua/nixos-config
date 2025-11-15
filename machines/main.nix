@@ -26,10 +26,9 @@
       pkiBundle = "/etc/secureboot";
     };
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-    kernelModules = [ "kvm-amd" "zenpower" ];
+    kernelModules = [ "kvm-amd" ];
     kernelParams = [ "libata.allow_tpm=1" ];
     supportedFilesystems = [ "nfs" ];
-    extraModulePackages = with pkgs.linuxPackages; [ zenpower ];
   };
 
   # fix stupid steam hidpi

@@ -1,4 +1,4 @@
-{ pkgs, flake-inputs, features, ... }:
+{ pkgs, flake-inputs, features, lib, ... }:
 let
   # wpa_supplicant reads the PSKs from here, the `wifi` script below writes them
   secrets-file = "/run/wifi-psk";
@@ -45,12 +45,15 @@ in
 
   programs.fish.enable = true;
 
-  networking.wireless = {
-    enable = true;
-    secretsFile = secrets-file;
-    networks = {
-      anton.pskRaw = "ext:psk_anton";
-      anton-5g.pskRaw = "ext:psk_anton_5g";
+  networking = {
+    networkmanager.enable = lib.mkForce false;
+    wireless = {
+      enable = true;
+      secretsFile = secrets-file;
+      networks = {
+        anton.pskRaw = "ext:psk_anton";
+        anton-5g.pskRaw = "ext:psk_anton_5g";
+      };
     };
   };
 
