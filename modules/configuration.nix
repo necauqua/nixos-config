@@ -177,9 +177,13 @@
     };
   };
 
-  virtualisation.docker = {
-    enable = true;
-    autoPrune.enable = true;
+  virtualisation = {
+    containers.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
   };
 
   networking.firewall = {
