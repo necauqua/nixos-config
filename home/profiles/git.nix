@@ -2,8 +2,9 @@
   programs.git = {
     enable = true;
     signing = {
-      key = "29511C06755C211BB3D3419342997635A54BA55B";
+      key = "/home/necauqua/.ssh/id_ed25519_sk.pub";
       signByDefault = true;
+      format = "ssh";
     };
     settings = {
       user = {

@@ -17,7 +17,7 @@ in
     snapshot.auto-track = "none()";
 
     signing = {
-      backend = "gpg";
+      backend = "ssh";
       key = git.signing.key;
       signing.behavior = "drop";
     };
