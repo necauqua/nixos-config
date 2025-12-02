@@ -3,7 +3,7 @@
     flake-inputs.tangled.nixosModules.knot
   ];
 
-  services.tangled-knot = {
+  services.tangled.knot = {
     enable = true;
     server = {
       owner = "did:plc:5q3nxglkbatgvuvwcu4tnexs";
@@ -17,7 +17,7 @@
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://${config.services.tangled-knot.server.listenAddr}";
+      proxyPass = "http://${config.services.tangled.knot.server.listenAddr}";
       proxyWebsockets = true;
     };
   };
