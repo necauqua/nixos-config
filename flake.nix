@@ -16,7 +16,7 @@
     catfeeder-bot.url = "sourcehut:~necauqua/catfeeder-bot";
     catfeeder-bot.inputs.nixpkgs.follows = "nixpkgs";
 
-    tangled.url = "git+https://tangled.sh/@tangled.sh/core";
+    tangled.url = "git+https://tangled.org/tangled.org/core";
     tangled.inputs.nixpkgs.follows = "nixpkgs";
   };
 
