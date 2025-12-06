@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, lib, ... }: {
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
@@ -43,26 +43,26 @@
             };
           in
           if countDots host == 1 then base // (www host) else base;
-        home-config = {
-          forceSSL = true;
-          useACMEHost = "necauq.ua";
-          extraConfig = "include \"${pkgs.authelia-location}\";";
-          locations."/" = {
-            # overriden by the homelab-proxy include
-            # needs to not be null for recommendedProxySettings to be applied
-            proxyPass = "dummy";
-            extraConfig = ''
-              include "${pkgs.authelia-authrequest}";
-              include "${config.age.secrets.homelab-proxy.path}";
-              proxy_ssl_trusted_certificate ${config.age.secrets.homelab-cert.path};
-              proxy_ssl_verify off;
-              
-              proxy_http_version 1.1;
-              proxy_set_header Upgrade $http_upgrade;
-              proxy_set_header Connection $connection_upgrade;
-            '';
-          };
-        };
+        # home-config = {
+        #   forceSSL = true;
+        #   useACMEHost = "necauq.ua";
+        #   extraConfig = "include \"${pkgs.authelia-location}\";";
+        #   locations."/" = {
+        #     # overriden by the homelab-proxy include
+        #     # needs to not be null for recommendedProxySettings to be applied
+        #     proxyPass = "dummy";
+        #     extraConfig = ''
+        #       include "${pkgs.authelia-authrequest}";
+        #       include "${config.age.secrets.homelab-proxy.path}";
+        #       proxy_ssl_trusted_certificate ${config.age.secrets.homelab-cert.path};
+        #       proxy_ssl_verify off;
+
+        #       proxy_http_version 1.1;
+        #       proxy_set_header Upgrade $http_upgrade;
+        #       proxy_set_header Connection $connection_upgrade;
+        #     '';
+        #   };
+        # };
       in
       lib.mkMerge [
         (basic "ld47.necauqua.dev")
@@ -76,6 +76,7 @@
             forceSSL = true; # forceSSL is important so a default https vhost is created too
             useACMEHost = "necauq.ua";
             globalRedirect = "necauq.ua";
+            redirectCode = 302;
           };
           "noit.ing" = {
             enableACME = true;
@@ -101,8 +102,8 @@
             forceSSL = true;
             locations."/".proxyPass = "http://127.0.0.1:9200";
           };
-          "home.necauq.ua" = home-config;
-          "~^(?<subdomain>.+)\.home\.necauq\.ua" = home-config;
+          # "home.necauq.ua" = home-config;
+          # "~^(?<subdomain>.+)\.home\.necauq\.ua" = home-config;
         }
       ];
   };

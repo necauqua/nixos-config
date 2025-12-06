@@ -10,11 +10,6 @@ in
   "cloudflare.age".publicKeys = keys;
   "homelab-proxy.age".publicKeys = keys;
   "homelab-cert.age".publicKeys = keys;
-  "ldap-bind-password.age".publicKeys = keys;
-  "ldap-anton-password.age".publicKeys = keys;
-  "authelia-storage-key.age".publicKeys = keys;
-  "authelia-jwt-key.age".publicKeys = keys;
-  "authelia-smtp-password.age".publicKeys = keys;
   "catfeeder-secrets.age".publicKeys = keys;
   "elastic-key.age".publicKeys = keys;
   "pds-env.age".publicKeys = keys;
