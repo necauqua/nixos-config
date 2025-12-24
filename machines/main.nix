@@ -119,4 +119,9 @@
 
   # cat likes to warm its butt on the radiator and keeps pressing the button omfg
   services.logind.settings.Login.HandlePowerKey = "ignore";
+
+  services.acpid.handlers.power = {
+    event = "button/power.*";
+    action = ""; # noop
+  };
 }
