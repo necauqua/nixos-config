@@ -1,7 +1,7 @@
-{ lib, ... }: {
+{ lib, pkgs, ... }: {
   services.ollama = {
     enable = true;
-    acceleration = "cuda";
+    package = pkgs.ollama-cuda;
     # /var/lib/ollama is a zfs dataset, dont do the whole `private` symlink thing with DynamicUser
     user = "ollama";
   };

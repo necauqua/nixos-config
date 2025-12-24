@@ -92,7 +92,7 @@ in
     audacity
     gimp
     blender
-    jetbrains.idea-ultimate
+    jetbrains.idea
     android-studio
     godot3
     vscode
