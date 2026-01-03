@@ -98,6 +98,26 @@
         "type": "github"
       }
     },
+    "docker-zfs-plugin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1734886463,
+        "narHash": "sha256-vUcRc/42MVac8xgSomcVgBe9G3KdofwJLqyUFqrtvGc=",
+        "owner": "ReneHollander",
+        "repo": "docker-zfs-plugin",
+        "rev": "a44d83734803200838b08910be2ba45bc066cb37",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ReneHollander",
+        "repo": "docker-zfs-plugin",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -288,6 +308,7 @@
         "agenix": "agenix",
         "csshacks": "csshacks",
         "deploy-rs": "deploy-rs",
+        "docker-zfs-plugin": "docker-zfs-plugin",
         "home-manager": "home-manager_2",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",

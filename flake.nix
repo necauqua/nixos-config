@@ -23,6 +23,9 @@
 
     csshacks.url = "github:MrOtherGuy/firefox-csshacks";
     csshacks.flake = false;
+
+    docker-zfs-plugin.url = "github:ReneHollander/docker-zfs-plugin";
+    docker-zfs-plugin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-future, agenix, deploy-rs, ... }:

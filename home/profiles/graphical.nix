@@ -76,7 +76,6 @@ in
     pavucontrol
     qpwgraph
 
-    transmission_4-gtk
     # carla
     noise-repellent
     peek

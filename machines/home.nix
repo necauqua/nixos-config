@@ -1,10 +1,10 @@
-{ pkgs, features, ... }: {
+{ pkgs, features, flake-inputs, ... }: {
 
   imports = with features; [
     nix-flakes
     nix-config
-    nginx
-    immich
+    nvidia
+    flake-inputs.docker-zfs-plugin.nixosModules.docker-zfs-plugin
   ];
 
   boot = {
@@ -19,11 +19,13 @@
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-label/nix";
+      # device = "/dev/disk/by-label/nix";
+      device = "/dev/disk/by-uuid/0b2f87a7-e43d-4139-b11d-9bc2db393100";
       fsType = "ext4";
     };
     "/boot" = {
-      device = "/dev/disk/by-label/BOOT";
+      # device = "/dev/disk/by-label/BOOT";
+      device = "/dev/disk/by-uuid/F514-94ED";
       fsType = "vfat";
       options = [ "fmask=0077" ];
     };
@@ -34,7 +36,7 @@
     hostName = "home";
     networkmanager.enable = true;
 
-    firewall.allowedTCPPorts = [ 2049 ]; # nfs
+    firewall.allowedTCPPorts = [ 80 443 2049 ]; # http(s) and nfs
   };
 
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -66,9 +68,18 @@
   };
 
   environment.systemPackages = with pkgs; [
+    git
     helix
     htop
   ];
+
+  hardware.graphics.enable32Bit = true;
+  hardware.nvidia.open = false; # 1650 SUPER
+
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings.features.cdi = true;
+  };
 
   services = {
     openssh = {
@@ -76,11 +87,11 @@
       settings.PasswordAuthentication = false;
     };
     zfs.autoScrub.enable = true;
-    nfs.server = {
+    nfs.server.enable = true;
+    docker-zfs-plugin = {
       enable = true;
-      # exports = ''
-      #   /storage 192.168.1.0/24(rw,sync,no_subtree_check,no_root_squash,fsid=0)
-      # '';
+      datasets = [ "storage/volumes" ];
+      mountDir = "/storage/volumes"; # docker-zfs-plugin (this fork of it) manages mounts itself to avoid boot ordering issues
     };
   };
 

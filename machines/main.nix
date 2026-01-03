@@ -6,14 +6,11 @@
     nvidia
     lan-audio
     samba
-    arr
     borg
-    nginx
     obs
     hyprland
     emulation
     ollama
-    metrics
   ];
 
   networking = { hostName = "main"; hostId = "09e32be7"; };
@@ -49,7 +46,16 @@
     # and boot of course is on a separate vfat partition as well
     "/boot" = { label = "boot"; fsType = "vfat"; };
 
-    "/storage" = { device = "home.lan:/storage"; fsType = "nfs"; };
+    "/storage" = {
+      device = "home.lan:/storage";
+      fsType = "nfs";
+      options = [
+        "_netdev"
+        "x-systemd.requires=network-online.target"
+        "x-systemd.after=network-online.target"
+        "nofail"
+      ];
+    };
   };
 
   nixpkgs.hostPlatform = "x86_64-linux";
