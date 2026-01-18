@@ -23,10 +23,13 @@
       pkiBundle = "/etc/secureboot";
     };
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-    kernelModules = [ "kvm-amd" ];
-    kernelParams = [ "libata.allow_tpm=1" ];
+    kernelModules = [ "kvm-amd" "msr" ];
+    kernelParams = [ "libata.allow_tpm=1" "msr.allow_writes=on" ];
     supportedFilesystems = [ "nfs" ];
   };
+
+  security.allowUserNamespaces = true;
+  boot.kernel.sysctl = { "vm.nr_hugepages" = 3072; };
 
   # fix stupid steam hidpi
   environment.sessionVariables.STEAM_FORCE_DESKTOPUI_SCALING = "2";
