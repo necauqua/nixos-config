@@ -10,7 +10,7 @@
     obs
     hyprland
     emulation
-    ollama
+    # ollama
   ];
 
   networking = { hostName = "main"; hostId = "09e32be7"; };

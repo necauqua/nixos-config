@@ -94,7 +94,6 @@ in
     blender
     jetbrains.idea
     android-studio
-    godot3
     vscode
     zed-editor
     obsidian
