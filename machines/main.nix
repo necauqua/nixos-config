@@ -25,6 +25,7 @@
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
     kernelModules = [ "kvm-amd" "msr" ];
     kernelParams = [ "libata.allow_tpm=1" "msr.allow_writes=on" ];
+    zfs.extraPools = [ "games" ];
     supportedFilesystems = [ "nfs" ];
     binfmt = {
       emulatedSystems = [ "aarch64-linux" ];
