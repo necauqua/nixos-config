@@ -39,6 +39,9 @@ let
     a-e = "æ";
     A-E = "Æ";
 
+    a-colon = "ä";
+    o-colon = "ö";
+
     h-h = "←";
     j-j = "↓";
     k-k = "↑";
@@ -61,7 +64,7 @@ let
   transform = key: value:
     let
       keys = lib.splitString "-" key;
-      mapped = builtins.map (k: "<${k}>") keys;
+      mapped = map (k: "<${k}>") keys;
       joined = lib.concatStringsSep " " mapped;
     in
     "<Multi_key> ${joined} : \"${value}\"";
