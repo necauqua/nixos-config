@@ -26,6 +26,11 @@
     kernelModules = [ "kvm-amd" "msr" ];
     kernelParams = [ "libata.allow_tpm=1" "msr.allow_writes=on" ];
     supportedFilesystems = [ "nfs" ];
+    binfmt = {
+      emulatedSystems = [ "aarch64-linux" ];
+      registrations.aarch64-linux.fixBinary = true;
+      preferStaticEmulators = true;
+    };
   };
 
   security.allowUserNamespaces = true;
