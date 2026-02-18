@@ -97,7 +97,16 @@
         end
       '';
       mkshell = ''
-        nix develop --impure --expr "with import <nixpkgs> {}; mkShell { packages = [ $argv ]; }" -c $SHELL
+         nix develop --impure --expr "
+            with import (builtins.getFlake \"nixpkgs\") {};
+            let pkgs = [ $argv ];
+            in mkShell {
+                packages = pkgs;
+                shellHook = '''
+                    export LD_LIBRARY_PATH=\''${lib.makeLibraryPath pkgs}:\$LD_LIBRARY_PATH
+                ''';
+            }
+        " -c $SHELL
       '';
     };
   };
