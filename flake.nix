@@ -2,7 +2,7 @@
   description = "Deployment for my server cluster";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
 
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
@@ -24,20 +24,20 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      load-modules = path:
+      load-modules = p:
         let
           pred = name: type:
             let
               isNix = type == "regular" && pkgs.lib.hasSuffix ".nix" name;
-              isNixDir = type == "directory" && builtins.pathExists (path + "/${name}/default.nix");
+              isNixDir = type == "directory" && builtins.pathExists (p + "/${name}/default.nix");
             in
             isNix || isNixDir;
           transform = name: _: {
             name = pkgs.lib.removeSuffix ".nix" name;
-            value = path + "/${name}";
+            value = "${p}/${name}";
           };
         in
-        pkgs.lib.mapAttrs' transform (pkgs.lib.filterAttrs pred (builtins.readDir path));
+        pkgs.lib.mapAttrs' transform (pkgs.lib.filterAttrs pred (builtins.readDir p));
     in
     {
       nixosConfigurations.offsite = nixpkgs.lib.nixosSystem {
