@@ -7,6 +7,7 @@ in
   "murmur-password.age".publicKeys = keys;
   "reposilite-password.age".publicKeys = keys;
   "smtp-server-sasl.age".publicKeys = keys;
+  "dkim-key.age".publicKeys = keys;
   "cloudflare.age".publicKeys = keys;
   "homelab-proxy.age".publicKeys = keys;
   "homelab-cert.age".publicKeys = keys;
