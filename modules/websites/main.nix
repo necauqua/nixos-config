@@ -41,7 +41,7 @@ in
         in
         mkResponse "application/json" "return 200 '${builtins.toJSON data}'";
 
-      "= /pgp.asc".extraConfig = mkResponse "application/pgp-keys" "alias ${../../site/pgp.asc}";
+      "= /pgp.asc".extraConfig = mkResponse "application/pgp-keys" "alias ${../site/pgp.asc}";
 
       "= /.well-known/atproto-did".extraConfig = mkResponse "text/plain" "return 200 'did:plc:5q3nxglkbatgvuvwcu4tnexs'";
 

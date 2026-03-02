@@ -5,7 +5,7 @@ let
     add_header Access-Control-Allow-Origin *;
     ${stmt};
   '';
-  keys = mkResponse "application/pgp-keys" "alias ${../site/pgp.bin}";
+  keys = mkResponse "application/pgp-keys" "alias ${./site/pgp.bin}";
   policy = mkResponse "text/plain" "return 200 ''";
 
   ids = [
@@ -15,7 +15,7 @@ let
     { hashes = [ "eyhyzoqumnuxo315g6773ddh3tsdtkdb" ]; domain = "necauqua.dev"; }
   ];
 
-  mapMerge = f: xs: lib.attrsets.mergeAttrsList (builtins.map f xs);
+  mapMerge = f: xs: lib.attrsets.mergeAttrsList (map f xs);
 
   wkdKey = infix: hash: {
     "= /.well-known/openpgpkey/${infix}hu/${hash}".extraConfig = keys;
