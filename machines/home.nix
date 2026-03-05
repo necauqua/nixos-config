@@ -8,6 +8,7 @@
   ];
 
   boot = {
+    kernelParams = [ "zfs.zfs_arc_max=17179869184" ]; # limit ARC to 16GB
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
     kernelModules = [ "kvm-intel" ];
     supportedFilesystems = [ "zfs" ];
