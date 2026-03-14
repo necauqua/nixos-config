@@ -30,5 +30,5 @@
   nixpkgs.config.allowUnfree = true;
 
   # this takes forever and only needed by some fish completions
-  documentation.man.generateCaches = false;
+  documentation.man.cache.enable = false;
 }
