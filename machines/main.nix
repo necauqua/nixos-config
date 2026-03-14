@@ -8,7 +8,7 @@
     samba
     borg
     obs
-    hyprland
+    niri
     emulation
     # ollama
   ];
