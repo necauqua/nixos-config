@@ -50,7 +50,7 @@
     extraConfig = {
       modi = "window,run,ssh,combi";
       combi-hide-mode-prefix = true;
-      dpi = 1;
+      dpi = 96;
     };
   };
 }
