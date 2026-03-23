@@ -9,6 +9,10 @@
 
   boot = {
     kernelParams = [ "zfs.zfs_arc_max=17179869184" ]; # limit ARC to 16GB
+    kernel.sysctl = {
+      "kernel.panic" = 10; # reboot after 10s instead of freezing
+      "vm.overcommit_memory" = 1; # redis wants this
+    };
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
     kernelModules = [ "kvm-intel" ];
     supportedFilesystems = [ "zfs" ];
