@@ -3,7 +3,7 @@
     inputs.catfeeder-bot.nixosModules.default
   ];
 
-  age.secrets.catfeeder-secrets.file = ../secrets/catfeeder-secrets.age;
+  secrets.catfeeder-secrets = { };
 
   services.catfeeder-bot = {
     enable = true;

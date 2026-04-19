@@ -4,15 +4,8 @@ let
   cfg = config.services.postfix;
 in
 {
-  age.secrets.smtp-server-sasl = {
-    file = ../secrets/smtp-server-sasl.age;
-    owner = cfg.user;
-  };
-
-  age.secrets.dkim-key = {
-    file = ../secrets/dkim-key.age;
-    owner = config.services.rspamd.user;
-  };
+  secrets.smtp-server-sasl.owner = cfg.user;
+  secrets.dkim-key.owner = config.services.rspamd.user;
 
   services = {
     rspamd = {

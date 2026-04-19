@@ -3,7 +3,7 @@
     inputs.twitch-archiver.nixosModules.default
   ];
 
-  age.secrets.elastic-key.file = ../secrets/elastic-key.age;
+  secrets.elastic-key = { };
 
   services.twitch-archiver = {
     enable = true;

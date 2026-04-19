@@ -1,6 +1,6 @@
 { config, lib, ... }: {
 
-  age.secrets.cloudflare.file = ../secrets/cloudflare.age;
+  secrets.cloudflare = { };
 
   security.acme = {
     acceptTerms = true;

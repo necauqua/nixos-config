@@ -1,9 +1,5 @@
 { inputs, pkgs, lib, ... }: {
 
-  imports = [
-    inputs.agenix.nixosModules.age
-  ];
-
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     extraOptions = "experimental-features = nix-command flakes";

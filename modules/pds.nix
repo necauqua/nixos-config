@@ -4,8 +4,7 @@ let
 in
 {
 
-  age.secrets.pds-env = {
-    file = ../secrets/pds-env.age;
+  secrets.pds-env = {
     owner = "pds";
     group = "pds";
   };

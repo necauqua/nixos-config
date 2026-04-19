@@ -4,7 +4,7 @@ let
 in
 {
 
-  age.secrets.murmur-password.file = ../secrets/murmur-password.age;
+  secrets.murmur-password = { };
 
   services.murmur = {
     enable = true;

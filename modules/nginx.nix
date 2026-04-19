@@ -2,14 +2,8 @@
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
-  age.secrets.homelab-proxy = {
-    file = ../secrets/homelab-proxy.age;
-    owner = config.services.nginx.user;
-  };
-  age.secrets.homelab-cert = {
-    file = ../secrets/homelab-cert.age;
-    owner = config.services.nginx.user;
-  };
+  secrets.homelab-proxy.owner = config.services.nginx.user;
+  secrets.homelab-cert.owner = config.services.nginx.user;
 
   services.nginx = {
     enable = true;

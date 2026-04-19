@@ -1,9 +1,6 @@
 { config, pkgs, ... }: {
 
-  age.secrets.tg-bot = {
-    file = ../secrets/tg-bot.age;
-    mode = "644";
-  };
+  secrets.tg-bot.mode = "644";
 
   nixpkgs.overlays = [
     (final: prev: {
