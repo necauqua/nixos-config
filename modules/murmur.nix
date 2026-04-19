@@ -16,9 +16,10 @@ in
     registerName = "necauqua";
     # registerUrl = "https://${domain}";
     # registerHostname = domain;
-
-    sslCert = "${config.security.acme.certs.${domain}.directory}/full.pem";
-    sslKey = "${config.security.acme.certs.${domain}.directory}/key.pem";
+    tls = {
+      certPath = "${config.security.acme.certs.${domain}.directory}/full.pem";
+      keyPath = "${config.security.acme.certs.${domain}.directory}/key.pem";
+    };
   };
 
   security.acme.certs.${domain}.postRun = "systemctl restart murmur.service";
