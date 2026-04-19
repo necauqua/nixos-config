@@ -8,7 +8,7 @@
   ];
 
   boot = {
-    kernelParams = [ "zfs.zfs_arc_max=17179869184" ]; # limit ARC to 16GB
+    kernelParams = [ "zfs.zfs_arc_max=12884901888" ]; # limit ARC to 12GB
     kernel.sysctl = {
       "kernel.panic" = 10; # reboot after 10s instead of freezing
       "vm.overcommit_memory" = 1; # redis wants this
