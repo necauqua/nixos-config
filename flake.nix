@@ -43,7 +43,7 @@
       nixosConfigurations.offsite = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = builtins.attrValues (load-modules ./modules);
-        specialArgs.flake-inputs = inputs;
+        specialArgs = { inherit inputs; };
       };
 
       deploy.nodes.offsite = {

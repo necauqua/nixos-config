@@ -1,6 +1,6 @@
-{ config, flake-inputs, ... }: {
+{ inputs, config, ... }: {
   imports = [
-    flake-inputs.tangled.nixosModules.knot
+    inputs.tangled.nixosModules.knot
   ];
 
   services.tangled.knot = {

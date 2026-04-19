@@ -1,4 +1,4 @@
-{ pkgs, flake-inputs, ... }:
+{ inputs, pkgs, ... }:
 let
   dir = "/var/www/necauq.ua";
   mkResponse = type: stmt: ''
@@ -36,7 +36,7 @@ in
         let
           data = {
             status = "ok";
-            flakeRev = "${flake-inputs.self.rev or "dirty"}";
+            flakeRev = "${inputs.self.rev or "dirty"}";
           };
         in
         mkResponse "application/json" "return 200 '${builtins.toJSON data}'";

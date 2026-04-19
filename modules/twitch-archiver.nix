@@ -1,6 +1,6 @@
-{ config, flake-inputs, ... }: {
+{ inputs, config, ... }: {
   imports = [
-    flake-inputs.twitch-archiver.nixosModules.default
+    inputs.twitch-archiver.nixosModules.default
   ];
 
   age.secrets.elastic-key.file = ../secrets/elastic-key.age;

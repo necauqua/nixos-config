@@ -1,6 +1,6 @@
-{ config, flake-inputs, ... }: {
+{ inputs, config, ... }: {
   imports = [
-    flake-inputs.catfeeder-bot.nixosModules.default
+    inputs.catfeeder-bot.nixosModules.default
   ];
 
   age.secrets.catfeeder-secrets.file = ../secrets/catfeeder-secrets.age;
