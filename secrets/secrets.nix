@@ -9,8 +9,6 @@ in
   "smtp-server-sasl.age".publicKeys = keys;
   "dkim-key.age".publicKeys = keys;
   "cloudflare.age".publicKeys = keys;
-  "homelab-proxy.age".publicKeys = keys;
-  "homelab-cert.age".publicKeys = keys;
   "catfeeder-secrets.age".publicKeys = keys;
   "elastic-key.age".publicKeys = keys;
   "pds-env.age".publicKeys = keys;
