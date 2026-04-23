@@ -91,20 +91,20 @@
         preLVM = true;
       };
 
-      # zfs is so completely stupid, apparently they made it so
-      # you cannot rollback to an older snapshot without deleting
-      # all the newer ones.. FOR SOME REASON??..?
-      #
-      # And no, there is NO *ACTUAL* REASON for it to be required, only
-      # some semantics about how the rollback does not roll back just the
-      # file state but the entire dataset and that includes latter snapshots..
-      #
-      # Haven't figured out a clean way to make snapshots of old roots here,
-      # clone promotion does not do the trick (and aint the clones just as
-      # useless because of a stupid implicit semantic dependencies lol)
-      postDeviceCommands = lib.mkAfter ''
-        zfs rollback -r rpool/root@blank
-      '';
+      # # zfs is so completely stupid, apparently they made it so
+      # # you cannot rollback to an older snapshot without deleting
+      # # all the newer ones.. FOR SOME REASON??..?
+      # #
+      # # And no, there is NO *ACTUAL* REASON for it to be required, only
+      # # some semantics about how the rollback does not roll back just the
+      # # file state but the entire dataset and that includes latter snapshots..
+      # #
+      # # Haven't figured out a clean way to make snapshots of old roots here,
+      # # clone promotion does not do the trick (and aint the clones just as
+      # # useless because of a stupid implicit semantic dependencies lol)
+      # postDeviceCommands = lib.mkAfter ''
+      #   zfs rollback -r rpool/root@blank
+      # '';
     };
   };
 
@@ -120,6 +120,7 @@
       extras = lib.mapAttrs
         (_: name: {
           device = "/saved/${name}";
+          fsType = "none";
           options = [ "bind" "noauto" "x-systemd.automount" ];
         })
         persist-bind-mounts;
@@ -139,11 +140,12 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
-  programs.light = {
-    enable = true;
-    brightnessKeys = {
-      enable = true;
-      step = 5;
-    };
-  };
+  # todo: replace with something that was not removed
+  # programs.light = {
+  #   enable = true;
+  #   brightnessKeys = {
+  #     enable = true;
+  #     step = 5;
+  #   };
+  # };
 }
