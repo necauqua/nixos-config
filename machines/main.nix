@@ -60,9 +60,10 @@
       fsType = "nfs";
       options = [
         "_netdev"
-        "x-systemd.requires=network-online.target"
-        "x-systemd.after=network-online.target"
-        "nofail"
+        "noauto"
+        "x-systemd.automount"
+        "x-systemd.idle-timeout=600"
+        "x-systemd.mount-timeout=5s"
       ];
     };
   };
