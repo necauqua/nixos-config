@@ -18,19 +18,19 @@
     languages = {
       language-server = with pkgs; {
         rust-analyzer.config.checkOnSave.command = "clippy";
-        pylsp = {
-          config.pylsp.plugins.rope_autoimport.enabled = true;
-          command =
-            let
-              combined = python3.withPackages (p: with p; [
-                python-lsp-server
-                python-lsp-black
-                pylsp-rope
-                python-lsp-ruff
-              ]);
-            in
-            "${combined}/bin/pylsp";
-        };
+        # pylsp = {
+        #   config.pylsp.plugins.rope_autoimport.enabled = true;
+        #   command =
+        #     let
+        #       combined = python3.withPackages (p: with p; [
+        #         python-lsp-server
+        #         python-lsp-black
+        #         pylsp-rope
+        #         python-lsp-ruff
+        #       ]);
+        #     in
+        #     "${combined}/bin/pylsp";
+        # };
         luals.command = "${lua-language-server}/bin/lua-language-server";
       };
       language = [

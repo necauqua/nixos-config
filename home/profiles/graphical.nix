@@ -20,6 +20,8 @@ in
       name = "Adwaita-dark";
       package = pkgs.gnome-themes-extra;
     };
+    # set explicitly because of old stateVersion, this is the new default
+    gtk4.theme = null;
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = true;
       gtk-decoration-layout = "menu:";

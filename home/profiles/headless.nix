@@ -12,6 +12,8 @@
     xdg.userDirs = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       createDirectories = true;
+      # set explicitly because of old stateVersion, this is the new default
+      setSessionVariables = false;
 
       desktop = "$HOME/";
       documents = "$HOME/documents";

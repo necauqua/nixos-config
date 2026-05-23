@@ -32,6 +32,8 @@
       v4l2loopback.out
     ];
     supportedFilesystems = [ "zfs" "ntfs" "btrfs" ];
+    # set explicitly because of old stateVersion, this is the new default
+    zfs.forceImportRoot = false;
   };
 
   console = {

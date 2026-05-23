@@ -1,6 +1,8 @@
 { config, flake-inputs, ... }: {
   programs.firefox = {
     enable = !config.headless;
+    # set explicitly because of old stateVersion, this is the new default
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
     profiles = {
       default = {
         path = "profiles/default";
