@@ -76,32 +76,30 @@ in
     pavucontrol
     qpwgraph
 
-    # carla
-    noise-repellent
-    peek
     chatterino2
     bitwarden-desktop
     (discord.override { withOpenASAR = true; })
+    vesktop
     mumble
-    element-desktop
     emote
     # lmms
     evince
     file-roller
+    keepassxc
+    ungoogled-chromium
 
     audacity
     gimp
     blender
-    jetbrains.idea
-    android-studio
-    vscode
+    # jetbrains.idea
+    # android-studio
     zed-editor
     obsidian
-    via
 
     starsector
     prismlauncher # multimc fork that works on Nix from the box
     lutris
+    wineWow64Packages.staging
     winetricks # needed for lutris among other things
 
     solaar
@@ -112,10 +110,9 @@ in
     zenity
     kitty # todo configure through nix
 
-    feh
+    # feh
     imhex
     quickemu
-    fractal
     kdePackages.dolphin
 
     # wayland-only, todo maybe check that x11 boolean
@@ -125,6 +122,8 @@ in
     wf-recorder
     wl-clipboard-rs
     waybar
+    wayscriber
+    swaybg
     swaylock-effects
 
 

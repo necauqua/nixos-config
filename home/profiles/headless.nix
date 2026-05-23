@@ -51,19 +51,24 @@
         calc
         dig
         zip
+        pv
         unzip
         tree
         yt-dlp
         pgcli
+        libsecret
+        gopass
 
         gh
         asciinema
         ripgrep
         ncspot
-        screenfetch
+        fastfetch
+        semver
 
         weechat
 
+        nfs-utils
         ntfs3g
         smartmontools
 
@@ -73,9 +78,12 @@
         lua5_3.pkgs.tl
 
         nixpkgs-fmt
+        nil
+        nixd
 
         packwiz
 
+        twitch-cli
         awscli2
         ranger
 
@@ -89,6 +97,14 @@
         yq-go
         mmv-go
         radicle-node
+        opencode
+
+        gcc
+        pkg-config
+        rustup
+        uv
+        zig
+        zls # idk move this somewhere?
       ] ++ lib.optionals pkgs.stdenv.isLinux linuxOnly;
 
     programs = {
