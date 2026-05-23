@@ -55,6 +55,11 @@ in
         typescript-language-server        
         vscode-langservers-extracted
       ]}");
+
+      # todo remove this someday
+      openldap = prev.openldap.overrideAttrs {
+        doCheck = !prev.stdenv.hostPlatform.isi686;
+      };
     })
   ];
 }
