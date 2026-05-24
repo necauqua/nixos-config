@@ -32,81 +32,90 @@
           traceroute
           usbutils
           exfatprogs
-          mold
         ];
       in
       [
+        # nix tools
         nix-tree
         cachix
-
-        ffmpeg
-
-        man-db
-        tldr
-        expect
-        rlwrap
-        jq
-        ijq
-        jless
-        fzf
-        nmap
-        calc
-        dig
-        zip
-        pv
-        unzip
-        tree
-        yt-dlp
-        pgcli
-        libsecret
-        gopass
-
-        gh
-        asciinema
-        ripgrep
-        ncspot
-        fastfetch
-        semver
-
-        weechat
-
-        nfs-utils
-        ntfs3g
-        smartmontools
-
-        gifski
-
-        lua5_3.pkgs.luacheck
-        lua5_3.pkgs.tl
-
         nixpkgs-fmt
         nil
         nixd
 
-        packwiz
-
-        twitch-cli
-        awscli2
+        # shell/cli utilities
+        man-db
+        tldr
+        expect
+        rlwrap
+        fzf
+        ripgrep
+        tree
         ranger
-
+        calc
+        pv
         figlet
         basez
-        gdb
-        just
-        pass
-        atproto-goat
-        websocat
+        fastfetch
+
+        # data/file processing
+        jq
+        ijq
+        jless
         yq-go
         mmv-go
-        radicle-node
-        opencode
+        zip
+        unzip
 
+        # networking
+        nmap
+        dig
+        websocat
+
+        # media
+        ffmpeg
+        gifski
+        yt-dlp
+        ncspot
+
+        # filesystem/hardware
+        nfs-utils
+        ntfs3g
+        smartmontools
+
+        # dev toolchains
         gcc
         pkg-config
+        mold
         rustup
         uv
         zig
-        zls # idk move this somewhere?
+        zls
+        gdb
+        just
+        lua5_3.pkgs.luacheck
+        lua5_3.pkgs.tl
+
+        # dev services/vcs
+        gh
+        radicle-node
+        opencode
+        pgcli
+        semver
+
+        # secrets/auth
+        pass
+        libsecret
+        gopass
+
+        # cloud/services
+        awscli2
+        twitch-cli
+        packwiz
+
+        # social/comms
+        weechat
+        asciinema
+        atproto-goat
       ] ++ lib.optionals pkgs.stdenv.isLinux linuxOnly;
 
     programs = {
