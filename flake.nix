@@ -86,7 +86,6 @@
 
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = [
-          pkgs.just
           agenix.packages.${system}.default
           deploy-rs.packages.${system}.default
         ];
