@@ -1,4 +1,4 @@
-{ config, flake-inputs, ... }: {
+{ config, flake-inputs, pkgs, lib, ... }: {
   programs.firefox = {
     enable = !config.headless;
     # set explicitly because of old stateVersion, this is the new default
@@ -54,5 +54,18 @@
         inherit (config.programs.firefox.profiles.default) settings userChrome;
       };
     };
+  };
+
+  xdg.mimeApps = lib.mkIf pkgs.stdenv.isLinux {
+    enable = !config.headless;
+    defaultApplications = {
+      "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
+      "text/html" = "firefox.desktop";
+    };
+  };
+
+  xdg.configFile = lib.mkIf pkgs.stdenv.isLinux {
+    "mimeapps.list".force = !config.headless;
   };
 }
