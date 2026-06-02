@@ -9,18 +9,33 @@
   ];
 
   boot = {
-    kernelParams = [ "zfs.zfs_arc_max=12884901888" ]; # limit ARC to 12GB
+    kernelParams = [
+      "zfs.zfs_arc_max=12884901888" # limit ARC to 12GB
+
+      # those two params *probably* help with weird traceless complete lockups I've been getting,
+      # at least according to LLMs
+      "pcie_aspm=off"
+      "intel_idle.max_cstate=1"
+    ];
     kernel.sysctl = {
       "kernel.panic" = 10; # reboot after 10s instead of freezing
       "vm.overcommit_memory" = 1; # redis wants this
     };
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [ "kvm-intel" "netconsole" ];
     supportedFilesystems = [ "zfs" ];
     zfs.extraPools = [ "storage" ];
 
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
+  };
+
+  # enable hardware watchdog to reset the box once one of those stupid hangs happen
+  # while still no clue what exactly causes those (fixing fans helped a lot, but it still happens sometimes)
+  # the watchdog resets reduced downtime from "many hours/days until I manually reset it" to ~90s
+  systemd.watchdog = {
+    runtimeTime = "30s";
+    rebootTime = "30s";
   };
 
   fileSystems = {
