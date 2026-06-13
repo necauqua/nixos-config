@@ -8,7 +8,6 @@
     usbip
     nix-flakes
     nix-config
-    tailscale
     gnome
   ];
 
