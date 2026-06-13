@@ -11,6 +11,7 @@
     niri
     emulation
     ollama
+    mullvad
   ];
 
   networking = { hostName = "main"; hostId = "09e32be7"; };

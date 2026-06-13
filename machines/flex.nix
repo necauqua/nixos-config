@@ -4,6 +4,7 @@
     configuration
     nvidia
     hyprland
+    mullvad
   ];
 
   networking = { hostName = "flex"; hostId = "ea6a1608"; };
