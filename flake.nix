@@ -43,10 +43,7 @@
       nixosConfigurations.offsite = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = builtins.attrValues (load-modules ./modules);
-        specialArgs = {
-          inherit inputs;
-          secret = name: "${self}/secrets/${name}.age";
-        };
+        specialArgs = { inherit inputs; };
       };
 
       deploy.nodes.offsite = {
