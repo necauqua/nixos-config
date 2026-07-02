@@ -7,6 +7,8 @@
     config.services.borgbackup.package
   ];
 
+  systemd.services.borgbackup-job-offsite.serviceConfig.WorkingDirectory = "/home/necauqua";
+
   services.borgbackup.jobs.offsite = {
     archiveBaseName = "home";
     dateFormat = "+1%Y-%m-%dT%H:%M:%S";
@@ -15,10 +17,13 @@
     encryption.passCommand = "cat ${config.age.secrets.borg-pass.path}";
     environment.BORG_RSH = "ssh -i ${config.age.secrets.borg-key.path} -p 5555";
 
-    preHook = ''
-      extraCreateArgs=--exclude-caches # nix-side extraCreateArgs are broken atm
-      cd /home/necauqua # ugh patterns are relative to cwd
-    '';
+    extraCreateArgs = [
+      "--exclude-caches"
+      "--upload-ratelimit"
+      "5120" # 5 MiB/s
+    ];
+
+    # patterns are relative to cwd, see WorkingDirectory above
     paths = [ "." ];
 
     startAt = "daily";
