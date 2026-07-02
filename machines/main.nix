@@ -38,8 +38,12 @@
   security.allowUserNamespaces = true;
   boot.kernel.sysctl = { "vm.nr_hugepages" = 3072; };
 
-  # fix stupid steam hidpi
-  environment.sessionVariables.STEAM_FORCE_DESKTOPUI_SCALING = "2";
+  environment.sessionVariables = {
+    # fix stupid steam hidpi
+    STEAM_FORCE_DESKTOPUI_SCALING = "2";
+    # fix firefox+nvidia hwaccel
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+  };
 
   fileSystems = {
     # Those folders (so, their datasets) are needed in initrd,
