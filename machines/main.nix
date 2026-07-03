@@ -73,6 +73,18 @@
     };
   };
 
+  services.samba.settings.public = {
+    path = "/storage/public";
+    browseable = "yes";
+    "read only" = "no";
+    "guest ok" = "yes";
+    "create mask" = "0644";
+    "directory mask" = "0755";
+    "force user" = "samba-guest";
+    "force group" = "samba-guest";
+    "write list" = "samba-guest";
+  };
+
   nixpkgs.hostPlatform = "x86_64-linux";
 
   services.zfs.autoScrub.enable = true;

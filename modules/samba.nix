@@ -3,36 +3,23 @@
     samba = {
       enable = true;
       openFirewall = true;
-      settings = {
-        global = {
-          security = "user";
-          workgroup = "WORKGROUP";
+      settings.global = {
+        security = "user";
+        workgroup = "WORKGROUP";
 
-          "server string" = config.networking.hostName;
-          "netbios name" = config.networking.hostName;
+        "server string" = config.networking.hostName;
+        "netbios name" = config.networking.hostName;
 
-          "create mask" = "0664";
-          "force create mode" = "0664";
-          "directory mask" = "0775";
-          "follow symlinks" = "yes";
+        "create mask" = "0664";
+        "force create mode" = "0664";
+        "directory mask" = "0775";
+        "follow symlinks" = "yes";
 
-          # note: localhost is the ipv6 localhost ::1
-          "hosts allow" = "192.168.0.0/16 127.0.0.1 localhost";
-          "hosts deny" = "0.0.0.0/0";
-          "guest account" = "nobody";
-          "map to guest" = "bad user";
-        };
-        public = {
-          path = "/storage/public";
-          browseable = "yes";
-          "read only" = "no";
-          "guest ok" = "yes";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-          "force user" = "samba-guest";
-          "force group" = "samba-guest";
-          "write list" = "samba-guest";
-        };
+        # note: localhost is the ipv6 localhost ::1
+        "hosts allow" = "192.168.0.0/16 127.0.0.1 localhost";
+        "hosts deny" = "0.0.0.0/0";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
       };
     };
     samba-wsdd = {
