@@ -41,7 +41,7 @@
     packages = [ pkgs.terminus_font ];
   };
 
-  time.timeZone = "Europe/Kiev";
+  time.timeZone = "Europe/Kyiv";
 
   networking = {
     useDHCP = false;
