@@ -85,6 +85,15 @@
     "write list" = "samba-guest";
   };
 
+  # password-protected samba share (set the password with: sudo smbpasswd -a necauqua)
+  services.samba.settings.stuff = {
+    path = "/storage/stuff";
+    browseable = "yes";
+    "read only" = "no";
+    "guest ok" = "no";
+    "valid users" = "necauqua";
+  };
+
   nixpkgs.hostPlatform = "x86_64-linux";
 
   services.zfs.autoScrub.enable = true;
