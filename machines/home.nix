@@ -1,4 +1,4 @@
-{ pkgs, features, flake-inputs, ... }: {
+{ pkgs, lib, features, flake-inputs, ... }: {
 
   imports = with features; [
     nix-flakes
@@ -68,6 +68,20 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   programs.fish.enable = true;
+
+  # Pull from main's /nix/store first: main is a beefy desktop that builds a
+  # lot, so query it as a fast LAN substituter before hitting the public caches.
+  # No signing key is set up, so only paths that already carry a trusted
+  # signature (e.g. cache.nixos.org origin) are accepted; main's own local
+  # builds won't be fetched. If main is offline the substitution just fails
+  # silently and the next substituter is used.
+  nix.settings.substituters = lib.mkBefore [
+    "ssh-ng://necauqua@main.lan?ssh-key=/etc/ssh/ssh_host_ed25519_key&priority=10"
+  ];
+  # trust main's host key so the nix-daemon's ssh connection isn't blocked on
+  # interactive host-key verification (value from secrets/secrets.nix)
+  programs.ssh.knownHosts."main.lan".publicKey =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICX06Kpfqdi67PsxLTKPZaBeXhMp4rAV1ea2m3KDbuo+";
 
   users = {
     defaultUserShell = pkgs.fish;

@@ -108,6 +108,7 @@
       jdk11.source = jdk11;
       jdk17.source = jdk17;
       jdk21.source = jdk21;
+      jdk25.source = jdk25;
 
       # static lsp locations for vscode
       lua-lsp.source = lua-language-server;

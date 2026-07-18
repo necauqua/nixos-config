@@ -16,6 +16,12 @@
 
   networking = { hostName = "main"; hostId = "09e32be7"; };
 
+  # let the home server use this machine's /nix/store as a substituter over ssh
+  # (its nix-daemon connects as necauqua using home's ssh host key)
+  users.users.necauqua.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINtulqkUsFZG7wQOzZmG0K/fQzRGC5J1u7NY0zOmyqF+ home"
+  ];
+
   boot = {
     bootspec.enable = true;
     loader.systemd-boot.enable = lib.mkForce false;
