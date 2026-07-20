@@ -18,6 +18,13 @@
   programs.niri.enable = true;
   programs.waybar.enable = true;
 
+  # niri-session does an unfiltered `systemctl --user import-environment`, which
+  # leaks SHLVL from its login-shell wrapper into the systemd user manager and
+  # thus into niri itself. Everything niri spawns (kitty, ...) then inherits
+  # SHLVL=1 and shells start at 2. Strip it off the compositor so children start
+  # clean at SHLVL=1.
+  systemd.user.services.niri.serviceConfig.UnsetEnvironment = "SHLVL";
+
   environment.systemPackages = [
     pkgs.xwayland-satellite
   ];
