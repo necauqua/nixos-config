@@ -1,5 +1,5 @@
 { pkgs, features, ... }: {
-  imports = [ features.gnome ];
+  imports = [ features.gnome features.fcitx ];
 
   services.greetd = {
     enable = true;
