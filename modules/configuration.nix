@@ -88,6 +88,7 @@
       openssl
 
       polkit_gnome
+      alsa-plugins
     ];
     shells = [ pkgs.bashInteractive pkgs.fish ];
     variables = {
