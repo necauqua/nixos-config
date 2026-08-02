@@ -59,6 +59,11 @@ in
       "node immutable".fg = "bright cyan";
       "node private".fg = "#7b449c"; # purple
       "node normal".bold = false;
+      "change_offset" = {
+        fg = "red";
+        bold = false;
+        dim = false;
+      };
     };
 
     templates = {
@@ -96,7 +101,15 @@ in
       "format_timestamp(ts)" = "ts.ago()";
       "format_short_commit_id(id)" = "id.shortest(7)";
       "format_short_change_id(id)" = ''
-        "(" ++ id.shortest().prefix() ++ ")"
+        "(" ++ label("change_id prefix", id.shortest().prefix()) ++ ")"
+      '';
+      "format_short_change_id_with_change_offset(commit)" = ''
+        if(commit.hidden() || commit.divergent(),
+          "(" ++ label("change_id prefix", commit.change_id().shortest().prefix())
+            ++ surround(label("change_offset", "/"), "", commit.change_offset())
+            ++ ")",
+          format_short_change_id(commit.change_id()),
+        )
       '';
       "builtin_log_root(a,b)" = ''
         "(" ++ label("change_id prefix", "root") ++ ")"
