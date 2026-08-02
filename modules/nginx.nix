@@ -50,6 +50,13 @@
         (www "necauqua.dev")
         (www "necauq.ua")
         {
+          "streaks.necauq.ua" = {
+            forceSSL = true;
+            useACMEHost = "necauq.ua";
+            root = "/var/www/streaks.necauq.ua";
+          };
+        }
+        {
           "default" = {
             default = true;
             forceSSL = true; # forceSSL is important so a default https vhost is created too
