@@ -26,7 +26,7 @@
     # patterns are relative to cwd, see WorkingDirectory above
     paths = [ "." ];
 
-    startAt = "daily";
+    startAt = "05:00";
     persistentTimer = true;
     inhibitsSleep = true;
 
