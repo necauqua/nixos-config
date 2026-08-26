@@ -69,6 +69,9 @@
             forceSSL = true;
             globalRedirect = "www.twitch.tv/necauqua";
             redirectCode = 302;
+            locations."/brine".extraConfig = ''
+              return 302 https://twitch.tv/team/brinesquad;
+            '';
           };
           "necauqua.dev" = {
             forceSSL = true;
