@@ -33,9 +33,9 @@
   # enable hardware watchdog to reset the box once one of those stupid hangs happen
   # while still no clue what exactly causes those (fixing fans helped a lot, but it still happens sometimes)
   # the watchdog resets reduced downtime from "many hours/days until I manually reset it" to ~90s
-  systemd.watchdog = {
-    runtimeTime = "30s";
-    rebootTime = "30s";
+  systemd.settings.Manager = {
+    RuntimeWatchdogSec = "30s";
+    RebootWatchdogSec = "30s";
   };
 
   fileSystems = {
