@@ -56,7 +56,7 @@
     };
   };
 
-  xdg.mimeApps = lib.mkIf pkgs.stdenv.isLinux {
+  xdg.mimeApps = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     enable = !config.headless;
     defaultApplications = {
       "x-scheme-handler/http" = "firefox.desktop";
@@ -65,7 +65,7 @@
     };
   };
 
-  xdg.configFile = lib.mkIf pkgs.stdenv.isLinux {
+  xdg.configFile = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     "mimeapps.list".force = !config.headless;
   };
 }

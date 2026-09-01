@@ -1,6 +1,6 @@
 { config, pkgs, ... }: {
   programs.fuzzel = {
-    enable = pkgs.stdenv.isLinux && !config.headless;
+    enable = pkgs.stdenv.hostPlatform.isLinux && !config.headless;
     settings = {
       main = {
         font = "JetBrains Mono:size=12";

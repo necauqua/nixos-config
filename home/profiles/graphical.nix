@@ -4,9 +4,10 @@ let
   x11 = osConfig.services.xserver.enable;
 in
 {
-  xsession.enable = pkgs.stdenv.isLinux && graphical;
+  xsession.enable = pkgs.stdenv.hostPlatform.isLinux && graphical;
 
-  home.pointerCursor = lib.mkIf pkgs.stdenv.isLinux {
+  home.pointerCursor = {
+    enable = pkgs.stdenv.hostPlatform.isLinux;
     package = pkgs.qogir-icon-theme;
     name = "Qogir";
     size = 16;
@@ -56,7 +57,7 @@ in
       enable = graphical && x11;
       arguments = [ "blur" ];
     };
-    caffeine.enable = pkgs.stdenv.isLinux && graphical;
+    caffeine.enable = pkgs.stdenv.hostPlatform.isLinux && graphical;
     swaync.enable = graphical && !x11;
   };
 

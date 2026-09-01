@@ -9,7 +9,7 @@
 
     xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
-    xdg.userDirs = lib.mkIf pkgs.stdenv.isLinux {
+    xdg.userDirs = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       enable = true;
       createDirectories = true;
       # set explicitly because of old stateVersion, this is the new default
@@ -117,7 +117,7 @@
         weechat
         asciinema
         atproto-goat
-      ] ++ lib.optionals pkgs.stdenv.isLinux linuxOnly;
+      ] ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux linuxOnly;
 
     programs = {
       broot.enable = true;

@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }: {
   options.safe-rm = with lib; mkOption {
     type = types.bool;
-    default = pkgs.stdenv.isLinux;
+    default = pkgs.stdenv.hostPlatform.isLinux;
   };
   config = {
     home.packages = with pkgs; lib.optionals config.safe-rm [

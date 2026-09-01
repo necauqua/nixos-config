@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }: {
-  xdg.mimeApps = lib.mkIf pkgs.stdenv.isLinux {
+  xdg.mimeApps = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     enable = !config.headless;
     defaultApplications = {
       # gimp takes like two eternities to boot while all I need
@@ -15,7 +15,7 @@
   };
 
   # because things just override the link? huh
-  xdg.configFile = lib.mkIf pkgs.stdenv.isLinux {
+  xdg.configFile = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     "mimeapps.list".force = !config.headless;
   };
 
