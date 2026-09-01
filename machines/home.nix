@@ -25,6 +25,8 @@
     kernelModules = [ "kvm-intel" "netconsole" ];
     supportedFilesystems = [ "zfs" ];
     zfs.extraPools = [ "storage" ];
+    # set explicitly because of old stateVersion, this is the new default
+    zfs.forceImportRoot = false;
 
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
