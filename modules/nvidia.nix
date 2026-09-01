@@ -11,8 +11,7 @@
   # huh
   environment.variables.LIBVA_DRIVER_NAME = lib.mkDefault "nvidia";
 
+  # containers get the GPU through CDI, so they need an explicit
+  # `--device=nvidia.com/gpu=all` - there is no nvidia default runtime
   hardware.nvidia-container-toolkit.enable = config.virtualisation.docker.enable || config.virtualisation.podman.enable;
-
-  # seems like the above enable actually does nothing without this, upstream oopsie?
-  virtualisation.docker.enableNvidia = config.virtualisation.docker.enable || config.virtualisation.podman.enable;
 }
