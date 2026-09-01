@@ -76,6 +76,14 @@ let
     };
 
   obs-localvocal = pkgs.callPackage obs-localvocal-pkg { withCuda = true; };
+
+  # obs-studio 32 marks several APIs that some plugins still use as deprecated,
+  # and those plugins build with -Werror
+  allow-deprecated = plugin: plugin.overrideAttrs (old: {
+    env = (old.env or { }) // {
+      NIX_CFLAGS_COMPILE = (old.env.NIX_CFLAGS_COMPILE or "") + " -Wno-error=deprecated-declarations";
+    };
+  });
 in
 {
   programs.obs-studio = {
@@ -84,14 +92,14 @@ in
     enableVirtualCamera = true;
     plugins = with pkgs.obs-studio-plugins; [
       obs-composite-blur
-      obs-move-transition
       obs-pipewire-audio-capture
       obs-scale-to-sound
-      obs-shaderfilter
       pkgs-stable.obs-studio-plugins.obs-transition-table
       obs-tuna
       obs-vkcapture
       obs-localvocal
+      (allow-deprecated obs-move-transition)
+      (allow-deprecated obs-shaderfilter)
     ];
   };
 }
