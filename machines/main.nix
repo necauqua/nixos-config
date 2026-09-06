@@ -12,6 +12,7 @@
     emulation
     ollama
     mullvad
+    sanoid
   ];
 
   networking = { hostName = "main"; hostId = "09e32be7"; };
@@ -102,6 +103,35 @@
   nixpkgs.hostPlatform = "x86_64-linux";
 
   services.zfs.autoScrub.enable = true;
+
+  services.sanoid.datasets = {
+    # the pool root holds no data of its own (canmount=off)
+    "main" = {
+      useTemplate = [ "frequent" ];
+      recursive = true;
+      processChildrenOnly = true;
+    };
+
+    # the nix store is fully reproducible
+    "main/nix".useTemplate = [ "excluded" ];
+
+    # scratch/regenerable data
+    "main/cache".useTemplate = [ "excluded" ];
+    "main/tmp".useTemplate = [ "excluded" ];
+
+    # blockchains and disk images, all write-heavy and mostly re-downloadable
+    "main/bitcoin".useTemplate = [ "excluded" ];
+    "main/monero".useTemplate = [ "excluded" ];
+    "main/vms".useTemplate = [ "excluded" ];
+
+    "main/home/root".useTemplate = [ "excluded" ];
+
+    # service state, logs, container and model storage
+    "main/var" = {
+      useTemplate = [ "excluded" ];
+      recursive = true;
+    };
+  };
 
   # free up some cores to keep consuming that content
   # from the second monitor while packages are rebuilt
