@@ -73,14 +73,22 @@
         };
       };
 
-      deploy.nodes.home = {
-        hostname = "home.lan";
-        profiles.system = {
-          path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.home;
-          sshUser = "root";
-          fastConnection = true;
+      deploy.nodes = nixpkgs.lib.mapAttrs
+        (name: { hostname, port ? 22, local ? false }: {
+          inherit hostname;
+          sshOpts = [ "-p" (toString port) ];
+          profiles.system = {
+            # on a LAN it's faster to push the whole closure than to let the node substitute
+            fastConnection = local;
+            path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.${name};
+            sshUser = "root";
+          };
+        })
+        {
+          home = { hostname = "home.lan"; local = true; };
+          micro1 = { hostname = "79.76.115.225"; port = 5555; };
+          micro2 = { hostname = "130.61.249.154"; port = 5555; };
         };
-      };
 
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
