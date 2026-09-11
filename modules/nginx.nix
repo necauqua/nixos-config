@@ -81,6 +81,36 @@
               return 404;
             '';
           };
+          "uq.rs" = {
+            forceSSL = true;
+            enableACME = true;
+            globalRedirect = "necauq.ua";
+            redirectCode = 302;
+            locations =
+              let
+                redirect = target: {
+                  extraConfig = "return 302 ${target};";
+                };
+              in
+              {
+                "= /last-reply" = redirect "https://necauq.ua/limatoukka/last-reply";
+                "= /last-bet" = redirect "https://necauq.ua/limatoukka/last-bet";
+
+                "= /help" = redirect "https://necauq.ua/tpn-script-reference/";
+                "= /playlist" = redirect "https://music.youtube.com/playlist?list=PLocUClmbybrZVBKmkrEylwSIDq8H6tq4m";
+                "= /wands" = redirect "https://dev.onlywands.com/streamer/necauqua";
+                "= /box" = redirect "https://github.com/necauqua/noita-utility-box";
+                "= /-streak" = redirect "https://github.com/necauqua/negative-streak";
+
+                "~ ^/s/?([a-zA-Z0-9_-]+)$" = redirect "https://necauq.ua/images/screenshots/$1.png";
+                "~ ^/i/?([a-zA-Z0-9_-]+)$" = redirect "https://necauq.ua/images/$1.png";
+
+                "/lexer".extraConfig = ''
+                  root /var/www/lexer;
+                  try_files $uri $uri/ $uri/index.html =404;
+                '';
+              };
+          };
           "kibana.necauq.ua" = {
             enableACME = true;
             forceSSL = true;
