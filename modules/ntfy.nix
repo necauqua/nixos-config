@@ -13,7 +13,7 @@ in
     };
   };
   services.nginx.virtualHosts."${subdomain}.necauq.ua" = {
-    enableACME = true;
+    useACMEHost = "necauq.ua";
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://${config.services.ntfy-sh.settings.listen-http}";

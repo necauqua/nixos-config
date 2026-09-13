@@ -14,7 +14,7 @@
   };
 
   services.nginx.virtualHosts."knot.necauq.ua" = {
-    enableACME = true;
+    useACMEHost = "necauq.ua";
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://${config.services.tangled.knot.server.listenAddr}";

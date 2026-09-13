@@ -112,12 +112,12 @@
               };
           };
           "kibana.necauq.ua" = {
-            enableACME = true;
+            useACMEHost = "necauq.ua";
             forceSSL = true;
             locations."/".proxyPass = "http://127.0.0.1:5601";
           };
           "elastic.necauq.ua" = {
-            enableACME = true;
+            useACMEHost = "necauq.ua";
             forceSSL = true;
             locations."/".proxyPass = "http://127.0.0.1:9200";
           };

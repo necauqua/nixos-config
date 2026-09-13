@@ -22,7 +22,7 @@ in
   };
 
   services.nginx.virtualHosts.${cfg.PDS_HOSTNAME} = {
-    enableACME = true;
+    useACMEHost = "necauq.ua";
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://${cfg.PDS_HOST}:${toString cfg.PDS_PORT}";
