@@ -5,6 +5,7 @@
     home-manager
     keyring
     overlays
+    tg-alert
     usbip
     nix-flakes
     nix-config

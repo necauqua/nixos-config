@@ -26,6 +26,12 @@
 
     docker-zfs-plugin.url = "github:ReneHollander/docker-zfs-plugin";
     docker-zfs-plugin.inputs.nixpkgs.follows = "nixpkgs";
+
+    twitch-archiver.url = "github:necauqua/twitch-archiver";
+    twitch-archiver.inputs.nixpkgs.follows = "nixpkgs";
+
+    tangled.url = "git+https://tangled.org/tangled.org/core";
+    tangled.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixpkgs-future, agenix, deploy-rs, ... }:
@@ -42,7 +48,9 @@
 
       global = {
         system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-        imports = [ agenix.nixosModules.age ];
+        # `secrets` is an option definition every machine may use, so it is
+        # global rather than an opt-in feature
+        imports = [ agenix.nixosModules.age features.secrets ];
       };
 
       machine = _: machine: nixpkgs.lib.nixosSystem {
@@ -88,6 +96,7 @@
           home = { hostname = "home.lan"; local = true; };
           micro1 = { hostname = "79.76.115.225"; port = 5555; };
           micro2 = { hostname = "130.61.249.154"; port = 5555; };
+          offsite = { hostname = "necauq.ua"; port = 5555; };
         };
 
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;

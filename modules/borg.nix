@@ -1,7 +1,7 @@
 { config, ... }: {
 
-  age.secrets.borg-key.file = ../secrets/borg-key;
-  age.secrets.borg-pass.file = ../secrets/borg-pass;
+  secrets.borg-key = { };
+  secrets.borg-pass = { };
 
   environment.systemPackages = [
     config.services.borgbackup.package

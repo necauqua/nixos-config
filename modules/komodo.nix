@@ -1,4 +1,6 @@
 { pkgs, ... }: {
+  environment.systemPackages = [ pkgs.openssl ];
+
   services.komodo-periphery = {
     enable = true;
     inbound.ssl.enable = false;
