@@ -6,7 +6,7 @@
     nvidia
     lan-audio
     samba
-    borg
+    restic
     obs
     niri
     emulation
