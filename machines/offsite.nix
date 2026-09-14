@@ -19,6 +19,7 @@
     postfix
     postgresql
     reposilite
+    restic-server
     rsync-restricted-group
     soju
     ssh
@@ -73,7 +74,8 @@
     useRoutingFeatures = "server";
   };
 
-  # the other end of modules/borg.nix
+  # frozen: modules/restic-server.nix took over, these archives only stay
+  # readable until the restic history is long enough to drop them
   services.borgbackup.repos.offsite = {
     authorizedKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcjRPhZIYK5f7zv93AN+6klqfb6Tku12XIKTKsqcEQL"

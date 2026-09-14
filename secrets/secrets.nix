@@ -5,7 +5,7 @@ let
   home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINtulqkUsFZG7wQOzZmG0K/fQzRGC5J1u7NY0zOmyqF+ home";
   offsite = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIATmTop5IhHPpDQUS5l/HA+LgvLtecby0+97Pu/+PI+P offsite";
 
-  # the desktop machines run the borg job, offsite only serves the repo
+  # the desktop machines ran the borg job, offsite only serves the repo
   desktops = [ secrets main flex home ];
   offsite-only = [ secrets offsite ];
   # tg-alert is part of the shared config, so every machine needs tg-bot
@@ -14,6 +14,10 @@ in
 {
   "borg-key.age".publicKeys = desktops;
   "borg-pass.age".publicKeys = desktops;
+
+  # main writes the backups and offsite serves and prunes the repository
+  "restic.age".publicKeys = [ secrets main offsite ];
+  "restic-htpasswd.age".publicKeys = offsite-only;
 
   "cloudflare.age".publicKeys = offsite-only;
   "dkim-key.age".publicKeys = offsite-only;
