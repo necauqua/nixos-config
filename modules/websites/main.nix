@@ -13,15 +13,15 @@ in
     isNormalUser = true;
     shell = pkgs.dash;
     home = dir;
+    # nginx must be able to traverse and read the served files; the default
+    # 0700 home mode is re-applied by user activation after systemd-tmpfiles
+    homeMode = "755";
     group = "rsync-restricted";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEZgaJbL4/wHjKdgt0dtugl3nEEm0jKeRRULHjham7+N main-deployer"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0oajjYx0nt7A2zBWjnc5gxTs1nBcGHuGNyp0Al5rAz openpgp:0xA61191F9"
     ];
   };
-  systemd.tmpfiles.rules = [
-    "d ${dir} 0755 main-deployer rsync-restricted"
-  ];
 
   services.nginx.virtualHosts."necauq.ua" = {
     root = dir;
