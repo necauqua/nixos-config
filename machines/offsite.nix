@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, features, flake-inputs, ... }: {
+{ config, lib, pkgs, modulesPath, features, flake-inputs, ... }: {
 
   imports = with features; [
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -49,6 +49,13 @@
       device = "/dev/disk/by-uuid/ec50ec1f-538c-4561-8c4c-989c1c70233c";
       fsType = "ext4";
     };
+  };
+
+  security.acme.certs."necauq.ua" = {
+    dnsProvider = "cloudflare";
+    webroot = lib.mkForce null; # override all the nginx enableACME lines
+    environmentFile = config.age.secrets.cloudflare.path;
+    extraDomainNames = [ "*.necauq.ua" ];
   };
 
   networking = {

@@ -1,10 +1,12 @@
-{ pkgs, lib, features, flake-inputs, ... }: {
+{ config, pkgs, lib, features, flake-inputs, ... }: {
 
   imports = with features; [
     nix-flakes
     nix-config
     nvidia
     flake-inputs.docker-zfs-plugin.nixosModules.docker-zfs-plugin
+    komodo-core
+    traefik
     vpn
   ];
 
@@ -59,7 +61,7 @@
     hostName = "home";
     networkmanager.enable = true;
 
-    firewall.allowedTCPPorts = [ 80 443 2049 ]; # http(s) and nfs
+    firewall.allowedTCPPorts = [ 2049 ]; # nfs, http(s) comes with traefik
   };
 
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -130,6 +132,20 @@
       datasets = [ "storage/volumes" ];
       mountDir = "/storage/volumes"; # docker-zfs-plugin (this fork of it) manages mounts itself to avoid boot ordering issues
     };
+  };
+
+  # the stacks under /storage/komodo belong to root, from the time the agent
+  # ran as a container
+  secrets.komodo-periphery-key = { };
+  services.komodo-periphery = {
+    rootDirectory = "/storage/komodo";
+    user = "root";
+    group = "root";
+    auth.privateKey = "file:${config.age.secrets.komodo-periphery-key.path}";
+    # core runs on this very machine
+    inbound.bindIp = "127.0.0.1";
+    # the whole pool reports as one disk otherwise
+    includeDiskMounts = [ "/etc/hostname" ];
   };
 
   system.stateVersion = "24.11";

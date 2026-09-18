@@ -20,7 +20,7 @@
   # let the home server use this machine's /nix/store as a substituter over ssh
   # (its nix-daemon connects as necauqua using home's ssh host key)
   users.users.necauqua.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINtulqkUsFZG7wQOzZmG0K/fQzRGC5J1u7NY0zOmyqF+ home"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL40mSZlb9JLfZVt5pAH9K5CPtxHTpDH+PjMttVkkmSw home"
   ];
 
   boot = {

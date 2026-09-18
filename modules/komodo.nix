@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, lib, pkgs, ... }: {
   environment.systemPackages = [ pkgs.openssl ];
 
   services.komodo-periphery = {
@@ -17,5 +17,8 @@
     git
   ];
 
-  networking.firewall.allowedTCPPorts = [ 8120 ];
+  # core reaches the agent from the outside here, but on the machine that runs
+  # core itself the agent stays on the loopback interface
+  networking.firewall.allowedTCPPorts =
+    lib.optional (config.services.komodo-periphery.inbound.bindIp != "127.0.0.1") 8120;
 }
