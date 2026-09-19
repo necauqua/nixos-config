@@ -9,7 +9,7 @@
         forceSSL = true;
         useACMEHost = "necauq.ua";
         locations."/".proxyPass = with config.services.goatcounter;
-          "http://${address}:${builtins.toString port}";
+          "http://${address}:${toString port}";
       };
     in
     {

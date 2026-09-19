@@ -606,11 +606,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782271078,
-        "narHash": "sha256-Ukpyd+syDTr+ky+nI+SbUnWySfiqNRzA3gzFZYWepeg=",
+        "lastModified": 1789802016,
+        "narHash": "sha256-QVFfArbYaQMGK4dFV+5RUL72Ci+hNHVhaF/R9qJfDhs=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "b7286019daa89e4e192c8913c3ec7002976034d0",
+        "rev": "26a71e661c47bd21a05d06fec749f3f7c75e9d12",
         "type": "github"
       },
       "original": {
@@ -767,11 +767,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1782350644,
-        "narHash": "sha256-yKC+Y9xGVD92ndunWZBjYcSVKvwFJTdC1w/Abc+xQ1E=",
+        "lastModified": 1789831157,
+        "narHash": "sha256-/CV1Y3IMImuGI/EUJ2Chpf0tW0k388nRhPqrbl5fR68=",
         "owner": "necauqua",
         "repo": "twitch-archiver",
-        "rev": "3dfaa99e03dfd2ea1eeef2a28b9b4f8f4b04f516",
+        "rev": "92e9a892faa55173db2c46df8b6fe5884392a08c",
         "type": "github"
       },
       "original": {

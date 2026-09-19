@@ -1,4 +1,4 @@
-{ ... }: {
+_: {
 
   # This only sets up the schedule and the templates,
   # each machine declares its own datasets

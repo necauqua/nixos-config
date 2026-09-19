@@ -34,9 +34,9 @@ in
   programs.mpv = {
     inherit enable;
 
-    package = (pkgs.mpv.override {
+    package = pkgs.mpv.override {
       scripts = [ pkgs.mpvScripts.mpris ]; # add an essential script lol
-    });
+    };
     config = {
       volume = 60;
       volume-max = 200;

@@ -23,7 +23,7 @@ in
 
   services.restic.server = {
     enable = true;
-    dataDir = dataDir;
+    inherit dataDir;
     listenAddress = "127.0.0.1:${toString port}";
     appendOnly = true;
     htpasswd-file = config.age.secrets.restic-htpasswd.path;

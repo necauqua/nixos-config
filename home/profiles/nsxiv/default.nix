@@ -21,10 +21,9 @@
 
   home.packages =
     let
-      nsxiv =
-        (pkgs.nsxiv.overrideAttrs (final: super: {
-          patches = (super.patches or [ ]) ++ [ ./config.patch ];
-        }));
+      nsxiv = pkgs.nsxiv.overrideAttrs (super: {
+        patches = (super.patches or [ ]) ++ [ ./config.patch ];
+      });
     in
     lib.optionals (!config.headless) [ nsxiv ];
 }

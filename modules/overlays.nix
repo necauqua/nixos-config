@@ -35,7 +35,7 @@ let
 in
 {
   nixpkgs.overlays = [
-    (final: prev: {
+    (_: prev: {
       xserver-bug865 = prev.xorg.xorgserver.overrideAttrs (super: {
         pname = "xorgserver-bug865";
         patches = super.patches ++ [
@@ -46,15 +46,15 @@ in
           })
         ];
       });
-      telegram-desktop = (wrap prev.telegram-desktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome");
+      telegram-desktop = wrap prev.telegram-desktop "--set LC_TIME C --set XDG_CURRENT_DESKTOP gnome";
 
-      helix = (wrap prev.helix "--suffix PATH : ${with pkgs; lib.makeBinPath [
+      helix = wrap prev.helix "--suffix PATH : ${with pkgs; lib.makeBinPath [
         nil
         rust-analyzer
         zls
-        typescript-language-server        
+        typescript-language-server
         vscode-langservers-extracted
-      ]}");
+      ]}";
 
       # todo remove this someday
       openldap = prev.openldap.overrideAttrs {

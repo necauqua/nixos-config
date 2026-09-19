@@ -1,4 +1,4 @@
-{ ... }: {
+_: {
   # fcitx5 as the input method framework. On Wayland (niri) it plugs into the
   # text-input-v3 protocol, which lets it intercept the compose key and drive
   # Unicode input for apps that would otherwise handle input themselves.

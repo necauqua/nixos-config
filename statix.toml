@@ -1,0 +1,5 @@
+disabled = [
+  # the machine and profile files group options by topic, so the same
+  # top-level key legitimately appears more than once per file
+  "repeated_keys",
+]

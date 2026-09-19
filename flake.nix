@@ -76,7 +76,7 @@
     in
     {
       nixosConfigurations =
-        nixpkgs.lib.mapAttrs (_: m: machine [ m ]) (builtins.removeAttrs machines [ "micro" ])
+        nixpkgs.lib.mapAttrs (_: m: machine [ m ]) (removeAttrs machines [ "micro" ])
         // micros;
 
       homeModules = {
@@ -108,12 +108,14 @@
           offsite = { hostname = "necauq.ua"; port = 5555; };
         };
 
-      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+      checks = builtins.mapAttrs (_: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = [
           agenix.packages.${system}.default
           deploy-rs.packages.${system}.default
+          pkgs.statix
+          pkgs.deadnix
         ];
       };
     };
