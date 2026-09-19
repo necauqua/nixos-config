@@ -4,15 +4,15 @@
     flake-inputs.lanzaboote.nixosModules.lanzaboote
     configuration
     nvidia
-    lan-audio
     samba
-    restic
     obs
     niri
-    emulation
-    ollama
     mullvad
-    sanoid
+
+    ./lan-audio.nix
+    ./ollama.nix
+    ./restic.nix
+    ./sanoid.nix
   ];
 
   networking = { hostName = "main"; hostId = "09e32be7"; };
@@ -40,6 +40,10 @@
       preferStaticEmulators = true;
     };
   };
+
+  # spice guest integration for the local vms
+  services.spice-vdagentd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
 
   security.allowUserNamespaces = true;
   boot.kernel.sysctl = { "vm.nr_hugepages" = 3072; };

@@ -5,9 +5,10 @@
     nix-config
     nvidia
     flake-inputs.docker-zfs-plugin.nixosModules.docker-zfs-plugin
-    komodo-core
-    traefik
-    vpn
+
+    ./komodo-core.nix
+    ./traefik.nix
+    ./vpn.nix
   ];
 
   boot = {

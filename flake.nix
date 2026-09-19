@@ -53,7 +53,9 @@
         imports = [ agenix.nixosModules.age features.secrets ];
       };
 
-      machine = _: machine: nixpkgs.lib.nixosSystem {
+      machines = load-modules ./machines;
+
+      machine = modules: nixpkgs.lib.nixosSystem {
         inherit system;
 
         specialArgs = {
@@ -64,11 +66,18 @@
           hm-profiles = profiles;
         };
 
-        modules = [ global machine ];
+        modules = [ global ] ++ modules;
       };
+
+      # the two Oracle Cloud boxes share one machine definition and differ
+      # only by host name
+      micros = nixpkgs.lib.genAttrs [ "micro1" "micro2" ] (name:
+        machine [ machines.micro { networking.hostName = name; } ]);
     in
     {
-      nixosConfigurations = nixpkgs.lib.mapAttrs machine (load-modules ./machines);
+      nixosConfigurations =
+        nixpkgs.lib.mapAttrs (_: m: machine [ m ]) (builtins.removeAttrs machines [ "micro" ])
+        // micros;
 
       homeModules = {
         main = {

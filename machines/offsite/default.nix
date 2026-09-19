@@ -6,30 +6,41 @@
     nix-flakes
 
     acme
-    fail2ban
-    goatcounter
     komodo
-    matrix
-    murmur
-    nas-mount
-    nginx
-    ntfy
-    pds
-    pgp
-    postfix
-    postgresql
-    reposilite
-    restic-server
     rsync-restricted-group
-    soju
     ssh
-    stupid-fichub-api
-    tangled
     tg-alert
-    twitch-archiver
-    vpn-server
-    websites
+
+    ./fail2ban.nix
+    ./goatcounter.nix
+    ./matrix.nix
+    ./murmur.nix
+    ./nas-mount.nix
+    ./nginx.nix
+    ./ntfy.nix
+    ./pds.nix
+    ./pgp.nix
+    ./postfix.nix
+    ./reposilite.nix
+    ./restic-server.nix
+    ./soju
+    ./stupid-fichub-api.nix
+    ./tangled.nix
+    ./twitch-archiver.nix
+    ./vpn-server.nix
+    ./websites
   ];
+
+  services.postgresql = {
+    # every module that needs it sets `enable = true` itself
+
+    # pin the major version
+    package = pkgs.postgresql_16;
+    # setup peer auth
+    authentication = lib.mkOverride 10 ''
+      local all all trust
+    '';
+  };
 
   boot = {
     tmp.cleanOnBoot = true;
@@ -81,7 +92,7 @@
     useRoutingFeatures = "server";
   };
 
-  # frozen: modules/restic-server.nix took over, these archives only stay
+  # frozen: restic-server.nix took over, these archives only stay
   # readable until the restic history is long enough to drop them
   services.borgbackup.repos.offsite = {
     authorizedKeys = [

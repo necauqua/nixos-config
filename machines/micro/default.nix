@@ -1,6 +1,16 @@
-{ pkgs, lib, modulesPath, ... }: {
+{ pkgs, lib, modulesPath, features, ... }: {
 
-  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
+  # the two Always Free Oracle Cloud boxes are identical apart from the host
+  # name, which the flake sets per `nixosConfigurations` entry
+
+  imports = with features; [
+    (modulesPath + "/profiles/qemu-guest.nix")
+
+    nix-flakes
+    nix-config
+    komodo
+    ssh
+  ];
 
   boot = {
     initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "sd_mod" ];
@@ -79,43 +89,22 @@
     };
   };
 
-  services = {
-    endlessh = {
-      enable = true;
-      port = 22;
-      openFirewall = true;
-      extraOptions = [ "-vd" "999999" ];
-    };
-    openssh = {
-      enable = true;
-      ports = [ 5555 ];
-      openFirewall = true;
-      settings.PasswordAuthentication = false;
-    };
-    journald.extraConfig = "SystemMaxUse=100M";
-  };
+  services.journald.extraConfig = "SystemMaxUse=100M";
 
   programs.fish.enable = true;
 
   users = {
     mutableUsers = false;
     defaultUserShell = pkgs.fish;
-    users =
-      let
-        keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0oajjYx0nt7A2zBWjnc5gxTs1nBcGHuGNyp0Al5rAz openpgp:0xA61191F9"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoNFwj1SN1LJGT6Pto7hp9kHhWF9RsF0tXMI95Jix5P phone"
-        ];
-      in
-      {
-        root.openssh.authorizedKeys.keys = keys;
-        necauqua = {
-          isNormalUser = true;
-          extraGroups = [ "wheel" "docker" ];
-          hashedPassword = "$6$.fpv9TmqXoHSfmj/$ql9VtGHMsyJssreJY0lTINfQkYZSZZnDzAozje4R1jWiih92I.QlHbjmfPeRexBjEM4VfZseEo4R5id/OkK9a1";
-          openssh.authorizedKeys.keys = keys;
-        };
-      };
+    users.necauqua = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" "docker" ];
+      hashedPassword = "$6$.fpv9TmqXoHSfmj/$ql9VtGHMsyJssreJY0lTINfQkYZSZZnDzAozje4R1jWiih92I.QlHbjmfPeRexBjEM4VfZseEo4R5id/OkK9a1";
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0oajjYx0nt7A2zBWjnc5gxTs1nBcGHuGNyp0Al5rAz openpgp:0xA61191F9"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoNFwj1SN1LJGT6Pto7hp9kHhWF9RsF0tXMI95Jix5P phone"
+      ];
+    };
   };
 
   environment.systemPackages = with pkgs; [
