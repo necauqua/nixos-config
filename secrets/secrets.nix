@@ -29,6 +29,13 @@ in
   "smtp-server-sasl.age".publicKeys = offsite-only;
   "tg-bot.age".publicKeys = everywhere;
 
+  # ssh key that the git server on home pushes its mirrors with
+  "git-mirror.age".publicKeys = [ secrets home ];
+
+  # node key of the radicle node on home, which is also the key that signs the
+  # refs it mirrors
+  "radicle-key.age".publicKeys = [ secrets home ];
+
   # core env file, plus the two noise keys of the core/agent pair on home
   "komodo.age".publicKeys = [ secrets home ];
   "komodo-core-key.age".publicKeys = [ secrets home ];

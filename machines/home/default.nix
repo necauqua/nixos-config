@@ -6,7 +6,9 @@
     nvidia
     flake-inputs.docker-zfs-plugin.nixosModules.docker-zfs-plugin
 
+    ./git.nix
     ./komodo-core.nix
+    ./radicle.nix
     ./traefik.nix
     ./wireguard.nix
   ];

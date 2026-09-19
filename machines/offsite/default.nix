@@ -21,6 +21,7 @@
     ./pds.nix
     ./pgp.nix
     ./postfix.nix
+    ./radicle-relay.nix
     ./reposilite.nix
     ./restic-server.nix
     ./soju
