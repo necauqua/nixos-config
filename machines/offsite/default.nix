@@ -27,7 +27,7 @@
     ./stupid-fichub-api.nix
     ./tangled.nix
     ./twitch-archiver.nix
-    ./vpn-server.nix
+    ./wireguard.nix
     ./websites
   ];
 

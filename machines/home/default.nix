@@ -8,7 +8,7 @@
 
     ./komodo-core.nix
     ./traefik.nix
-    ./vpn.nix
+    ./wireguard.nix
   ];
 
   boot = {
