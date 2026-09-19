@@ -9,7 +9,6 @@
     niri
     mullvad
 
-    ./lan-audio.nix
     ./ollama.nix
     ./restic.nix
     ./sanoid.nix

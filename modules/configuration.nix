@@ -1,12 +1,10 @@
 { config, pkgs, features, ... }: {
 
   imports = with features; [
-    automount
     home-manager
     keyring
     overlays
     tg-alert
-    usbip
     nix-flakes
     nix-config
     gnome
@@ -178,6 +176,9 @@
       enable = true;
       nssmdns4 = true;
     };
+
+    devmon.enable = true;
+    udisks2.mountOnMedia = true;
   };
 
   virtualisation = {
