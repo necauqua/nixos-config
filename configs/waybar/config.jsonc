@@ -1,0 +1,262 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": [
+    "custom/logo",
+    "niri/workspaces",
+    "niri/window"
+    // "hyprland/workspaces",
+    // "hyprland/window",
+  ],
+  "modules-center": [],
+  "modules-right": [
+    "idle_inhibitor",
+    "niri/language",
+    // "hyprland/language",
+    "tray",
+    // "disk",
+    // "memory",
+    "cpu",
+    "temperature",
+    "backlight",
+    // "bluetooth",
+    "pulseaudio",
+    "network",
+    "battery",
+    "custom/weather",
+    "custom/notification",
+    "clock"
+  ],
+  "reload_style_on_change": true,
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": " <span foreground='red'><sup> </sup></span>",
+      "none": " ",
+      "dnd-notification": " <span foreground='red'><sup> </sup></span>",
+      "dnd-none": " ",
+      "inhibited-notification": " <span foreground='red'><sup> </sup></span>",
+      "inhibited-none": " ",
+      "dnd-inhibited-notification": " <span foreground='red'><sup> </sup></span>",
+      "dnd-inhibited-none": " "
+    },
+    "return-type": "json",
+    "exec-if": "command -v swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  "mpris": {
+    "format": "{dynamic}",
+    "format-paused": "<i>{dynamic}</i>"
+  },
+  "custom/logo": {
+    "format": "<span font='16'></span>",
+    "tooltip": false
+  },
+  "niri/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "default": "",
+      "active": ""
+    }
+    // "current-only": true,
+    // "disable:click": true,
+    // "format": "({index}) {name}"
+  },
+  "hyprland/workspaces": {
+    "format": "{icon} {name}",
+    "format-icons": {
+      "default": " ",
+      "active": " "
+    },
+    "persistent-workspaces": {
+      "DP-2": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+      ],
+      "DP-3": [
+        6
+      ]
+    }
+  },
+  "idle_inhibitor": {
+    "format": "<span font='12'>{icon}</span>",
+    "format-icons": {
+      "activated": "󰈈 ",
+      "deactivated": "󰈉 "
+    }
+  },
+  "custom/weather": {
+    "format": " {}°C",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/weather.sh",
+    "interval": 15
+  },
+  "clock": {
+    "format": "1{:%F/%T %Z}",
+    "interval": 1,
+    "tooltip-format": "\n<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "calendar-weeks-pos": "right",
+    "today-format": "<span color='#7645AD'><b><u>{}</u></b></span>",
+    "format-calendar": "<span color='#aeaeae'><b>{}</b></span>",
+    "format-calendar-weeks": "<span color='#aeaeae'><b>W{:%V}</b></span>",
+    "format-calendar-weekdays": "<span color='#aeaeae'><b>{}</b></span>"
+  },
+  "bluetooth": {
+    "format-on": " ",
+    "format-off": "",
+    "format-disabled": "󰂲 ",
+    "format-connected": "󰂴 ",
+    "format-connected-battery": "{device_battery_percentage}% 󰂴 ",
+    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
+    // "on-click": "rofi-bluetooth",
+  },
+  "network": {
+    "format-wifi": " ",
+    "format-ethernet": " ",
+    "format-disconnected": "",
+    "tooltip-format": "{ipaddr}",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)  | {ipaddr}",
+    "tooltip-format-ethernet": "{ifname} 🖧 | {ipaddr}"
+    // "on-click": "networkmanager_dmenu",
+  },
+  "battery": {
+    "interval": 1,
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 20
+    },
+    "format": "{capacity}%  {icon} ",
+    "format-charging": "{capacity}% 󰂄 ",
+    "format-plugged": "{capacity}% 󰂄 ",
+    "format-alt": "{time} {icon}",
+    "format-icons": [
+      "󰁻",
+      "󰁼",
+      "󰁾",
+      "󰂀",
+      "󰂂",
+      "󰁹"
+    ]
+  },
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "<span font='12'>{icon}</span>",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "on-scroll-down": "light -A 10",
+    "on-scroll-up": "light -U 10",
+    "smooth-scrolling-threshold": 1
+  },
+  "disk": {
+    "interval": 30,
+    "format": "  {percentage_used}%",
+    "path": "/"
+  },
+  "cpu": {
+    "interval": 1,
+    "format": " {usage}%",
+    "min-length": 6,
+    "max-length": 6,
+    "format-icons": [
+      "▁",
+      "▂",
+      "▃",
+      "▄",
+      "▅",
+      "▆",
+      "▇",
+      "█"
+    ]
+  },
+  "memory": {
+    "format": " {percentage}%"
+  },
+  "hyprland/window": {
+    "format": "( {} )",
+    "rewrite": {
+      "\\( (.*) — Mozilla Firefox \\)": "( 🌎 $1 )",
+      "\\( (.*) - Discord \\)": "(   $1 )"
+    },
+    "separate-outputs": true
+  },
+  "niri/window": {
+    "format": "( {} )",
+    "rewrite": {
+      "\\( (.*) — Mozilla Firefox \\)": "( 🌎 $1 )",
+      "\\( (.*) - Discord \\)": "(   $1 )"
+    },
+    "separate-outputs": true
+  },
+  "hyprland/language": {
+    "format": "{}",
+    "format-en": "en",
+    "format-ru": "ru"
+  },
+  "niri/language": {
+    "format": "{}",
+    "format-en": "en",
+    "format-ru": "ru"
+  },
+  "temperature": {
+    "format": " {temperatureC}°C",
+    "format-critical": " {temperatureC}°C",
+    "interval": 1,
+    "critical-threshold": 80,
+    "on-click": "foot btop"
+  },
+  "pulseaudio": {
+    "format": "{volume}% {icon}",
+    "format-bluetooth": "󰂰",
+    "format-muted": "<span font='12'></span>",
+    "format-icons": {
+      "headphones": " ",
+      "bluetooth": "󰥰 ",
+      "handsfree": " ",
+      "headset": "󱡬",
+      "phone": " ",
+      "portable": " ",
+      "car": " ",
+      "default": [
+        "🕨 ",
+        "🕩 ",
+        "🕪 "
+      ]
+    },
+    "justify": "center",
+    "on-click": "amixer sset Master toggle",
+    "on-click-right": "pavucontrol",
+    "tooltip-format": "{icon} {volume}%"
+  },
+  "tray": {
+    "icon-size": 14,
+    "spacing": 10
+  },
+  "upower": {
+    "show-icon": false,
+    "hide-if-empty": true,
+    "tooltip": true,
+    "tooltip-spacing": 20
+  }
+}

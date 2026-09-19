@@ -52,6 +52,42 @@ in
     run rm -f $VERBOSE_ARG $HOME/.gtkrc-2.0
   '';
 
+  # these configs live in configs/ of the flake and are linked, not generated,
+  # so that a tweak applies without a rebuild
+  custom.config-links.links = lib.optionals graphical [
+    { name = "niri"; dest = ".config/niri"; }
+    { name = "waybar"; dest = ".config/waybar"; }
+    { name = "kitty"; dest = ".config/kitty"; }
+  ];
+
+  # niri and kitty watch their own config, waybar needs a signal
+  systemd.user = lib.mkIf graphical {
+    paths.waybar-reload = {
+      Unit.Description = "Watch the waybar config for changes";
+      Path = {
+        PathChanged = "%h/.config/waybar";
+        Unit = "waybar-reload.service";
+      };
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
+    services.waybar-reload = {
+      Unit.Description = "Reload waybar";
+      Service = {
+        Type = "oneshot";
+        # a broken config kills waybar, and enough fast restarts put the unit
+        # in the failed state, where systemd refuses to start it again. So drop
+        # that state first (the `-` ignores the failure when there is none) and
+        # use reload-or-restart, which, unlike the `try-` form, also starts a
+        # unit that is not running - that is what brings waybar back once the
+        # config is valid again.
+        ExecStart = [
+          "-${pkgs.systemd}/bin/systemctl --user reset-failed waybar.service"
+          "${pkgs.systemd}/bin/systemctl --user reload-or-restart waybar.service"
+        ];
+      };
+    };
+  };
+
   services = {
     betterlockscreen = {
       enable = graphical && x11;
