@@ -3,11 +3,13 @@ let
   subdomain = "ntfy";
 in
 {
+  ports.ntfy = { };
+
   services.ntfy-sh = {
     enable = true;
     settings = {
       base-url = "https://${subdomain}.necauq.ua";
-      listen-http = "127.0.0.1:2586";
+      listen-http = "127.0.0.1:${toString config.ports.ntfy}";
       behind-proxy = true;
       auth-default-access = "deny-all";
     };

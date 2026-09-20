@@ -10,10 +10,10 @@ let
   web-domain = "git.home.necauq.ua";
 
   # nginx serves the bundle here, traefik is the only thing that reaches it
-  web-port = 8083;
+  web-port = config.ports.radicle-explorer;
   # radicle-httpd, which traefik reaches straight away: the seed has no path
   # to split, so no web server sits in front of it
-  httpd-port = 8082;
+  httpd-port = config.ports.radicle-httpd;
   # the native radicle protocol. The machine is behind NAT, so offsite listens
   # on this port in public and forwards it here over wireguard
   node-port = 8776;
@@ -111,6 +111,10 @@ in
     owner = "radicle";
     mode = "0400";
   };
+
+  # both are behind traefik, so the numbers themselves do not matter
+  ports.radicle-httpd = { };
+  ports.radicle-explorer = { };
 
   services.radicle = {
     enable = true;

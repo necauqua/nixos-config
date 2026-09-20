@@ -48,9 +48,9 @@
 
       global = {
         system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-        # `secrets` is an option definition every machine may use, so it is
-        # global rather than an opt-in feature
-        imports = [ agenix.nixosModules.age features.secrets ];
+        # `secrets` and `ports` are option definitions every machine may use,
+        # so they are global rather than opt-in features
+        imports = [ agenix.nixosModules.age features.secrets features.ports ];
       };
 
       machines = load-modules ./machines;

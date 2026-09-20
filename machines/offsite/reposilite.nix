@@ -1,8 +1,11 @@
 { config, ... }:
 let
-  port = 7000;
+  # the host side of the container, which nginx alone reaches
+  port = config.ports.reposilite;
 in
 {
+  ports.reposilite = { };
+
   virtualisation.oci-containers = {
     backend = "docker";
     containers.reposilite = {

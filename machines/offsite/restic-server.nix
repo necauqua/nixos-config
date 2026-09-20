@@ -1,11 +1,14 @@
 { config, pkgs, ... }:
 let
   domain = "backup.necauq.ua";
-  port = 8000;
+  # nginx is the only thing that reaches it
+  port = config.ports.restic-server;
   dataDir = "/storage/restic";
   repo = "${dataDir}/main";
 in
 {
+  ports.restic-server = { };
+
   secrets = {
     restic-htpasswd = {
       mode = "400";
