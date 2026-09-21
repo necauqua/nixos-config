@@ -18,6 +18,11 @@ nid() {
   rad self --nid 2>/dev/null
 }
 
+description() {
+  rad inspect "$1" --payload \
+    | jq -r '."xyz.radicle.project".description // empty'
+}
+
 # Declares a repository of the git user safe to open as the radicle user.
 #
 # radicle reads git through libgit2, which refuses a repository that another
@@ -54,6 +59,45 @@ case ${1:-} in
     rid=$(grep -oE 'rad:z[a-zA-Z0-9]+' "$tmp/log" | head -n1)
     [ -n "$rid" ] || { cat "$tmp/log" >&2; die "rad init printed no rid"; }
     printf '%s\n' "$rid"
+    ;;
+
+  # The description that the identity of a repository carries. Two arguments
+  # read it, for a bare repository that is created around a rid and has none of
+  # its own, and three write it. The identity is what the seed and every web
+  # client show, so a write is a signed revision of it, and the node tells the
+  # network about it.
+  #
+  # A revision needs an accept from the majority of the delegates, which is not
+  # the `threshold` of the document: that one governs the canonical branch. A
+  # repository with a second delegate therefore holds the revision until that
+  # delegate accepts it, and the revision is printed for whoever asked.
+  describe)
+    case $# in
+      2)
+        description "$2"
+        ;;
+
+      3)
+        if [ "$(description "$2")" = "$3" ]; then
+          exit 0
+        fi
+        rad id update --repo "$2" \
+          --title 'Update the description' \
+          --description 'The description of the git server changed' \
+          --payload xyz.radicle.project description "$(jq -n --arg d "$3" '$d')" \
+          --no-confirm > "$tmp/log" 2>&1 \
+          || { cat "$tmp/log" >&2; die "rad id update failed"; }
+        rad sync --announce "$2" > /dev/null \
+          || printf 'warning: %s could not be announced\n' "$2" >&2
+        if [ "$(description "$2")" != "$3" ]; then
+          sed -n 's/.*Revision \([0-9a-f]\{40\}\).*/\1/p' "$tmp/log" | head -n1
+        fi
+        ;;
+
+      *)
+        die "usage: rad-mirror describe <rid> [text]"
+        ;;
+    esac
     ;;
 
   # Seeds a repository that already exists on the network, so that the push

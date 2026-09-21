@@ -23,7 +23,7 @@ let
   # mirror runs as that user and the git user reaches it through sudo
   rad-mirror = pkgs.writeShellApplication {
     name = "rad-mirror";
-    runtimeInputs = [ pkgs.git pkgs.radicle-node ];
+    runtimeInputs = [ pkgs.git pkgs.jq pkgs.radicle-node ];
     text = ''
       export RAD_HOME=${rad-home}
       # rad refuses to run if it cannot stat $HOME/.gitconfig

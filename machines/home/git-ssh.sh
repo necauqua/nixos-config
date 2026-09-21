@@ -12,6 +12,7 @@ usage() {
 git@$GIT_DOMAIN understands:
 
   list                      list the repositories
+  create <repo> [text]      create a repository, with its description
   describe <repo> <text>    set the description of a repository
   mirror list <repo>        show the mirrors of a repository
   mirror add <repo> <url>   add a mirror
@@ -20,12 +21,15 @@ git@$GIT_DOMAIN understands:
   rad list                  show the radicle id of every repository
   rad nid                   show the node id of this machine
   rad init <repo>           create the radicle repository
-  rad link <repo> <rid>     adopt a radicle repository that exists already
+  rad link <repo> <rid>     adopt a radicle repository that exists already,
+                            and create the repository if the name is free
   rad unlink <repo>         stop mirroring a repository to radicle
   rad sync <repo>           push a repository to radicle now
 
 A push to a name that does not exist creates the repository, and its first
-push puts it on radicle.
+push puts it on radicle. The description that radicle is given comes from
+create, which saves describe a revision of the radicle identity. Such a
+revision needs an accept from every delegate of the repository.
 EOF
   exit 1
 }
@@ -106,14 +110,20 @@ add_knot_mirror() {
   add_mirror "$repo" "$url"
 }
 
-create() {
-  local repo=$1 name=$2
+# A rid makes the repository a mirror of a radicle repository that exists
+# already. Without one, radicle needs a branch, which only the push that
+# follows brings, so the hook creates the radicle repository and clears the
+# marker that this leaves behind
+create_repo() {
+  local repo=$1 name=$2 rid=${3:-} description=${4:-}
   git init --bare --quiet --initial-branch=main "$repo"
   git -C "$repo" config core.hooksPath "$GIT_HOOKS"
-  printf '%s\n' "$name" > "$repo/description"
-  # radicle needs a branch, which only the push that follows brings, so the
-  # hook creates the radicle repository and clears this marker
-  git -C "$repo" config rad.auto true
+  printf '%s\n' "${description:-$name}" > "$repo/description"
+  if [ -n "$rid" ]; then
+    set_rad_id "$repo" "$rid"
+  else
+    git -C "$repo" config rad.auto true
+  fi
   printf 'created %s\n' "$name" >&2
   add_mirror "$repo" "git@github.com:$GITHUB_USER/$name.git"
   add_knot_mirror "$repo" "$name"
@@ -143,7 +153,7 @@ case ${argv[0]} in
 
     if [ ! -d "$repo" ]; then
       [ "${argv[0]}" = git-receive-pack ] || die "no such repository: $name"
-      create "$repo" "$name"
+      create_repo "$repo" "$name"
     fi
 
     exec git "${argv[0]#git-}" "$repo"
@@ -156,10 +166,38 @@ case ${argv[0]} in
     done
     ;;
 
+  # the repository is created here and not by the first push, so that radicle
+  # is given the description of the repository from the start
+  create)
+    [ ${#argv[@]} -ge 2 ] || usage
+    repo=$(resolve "${argv[1]}")
+    name=$(basename "$repo")
+    [ ! -d "$repo" ] || die "$name exists already"
+    create_repo "$repo" "$name" "" "${argv[*]:2}"
+    ;;
+
   describe)
     [ ${#argv[@]} -ge 3 ] || usage
     repo=$(existing "${argv[1]}")
-    printf '%s\n' "${argv[*]:2}" > "$repo/description"
+    text=${argv[*]:2}
+    printf '%s\n' "$text" > "$repo/description"
+    # the identity of the repository is what the seed and every web client
+    # show, and the description of a repository that is not on radicle yet
+    # travels there with `rad init`
+    rid=$(rad_id "$repo")
+    if [ -n "$rid" ]; then
+      # a revision that a second delegate has to accept comes back named, and
+      # what the network shows stays as it was until then
+      rev=$(rad_mirror describe "$rid" "$text")
+      if [ -n "$rev" ]; then
+        cat >&2 <<EOF
+the description of $rid is a revision of its identity now, and a second
+delegate has to accept it before the network shows it. On that machine:
+
+  rad id accept $rev --repo $rid
+EOF
+      fi
+    fi
     ;;
 
   mirror)
@@ -208,13 +246,24 @@ case ${argv[0]} in
 
       # the repository was made on another machine, so this one only starts to
       # replicate it. It can write the canonical branch once its node is a
-      # delegate, which `rad id update` on that other machine decides
+      # delegate, which `rad id update` on that other machine decides.
+      #
+      # A name that no repository holds yet gets one here, because the other
+      # road to a bare repository is the first push, and that one puts the
+      # repository on radicle itself
       link)
         [ ${#argv[@]} -eq 4 ] || usage
-        repo=$(existing "${argv[2]}")
+        repo=$(resolve "${argv[2]}")
         rid=${argv[3]}
+        # before the repository, so that a rid the node refuses leaves nothing
         rad_mirror link "$rid"
-        set_rad_id "$repo" "$rid"
+        if [ -d "$repo" ]; then
+          set_rad_id "$repo" "$rid"
+        else
+          # the identity of the repository already says what it is
+          create_repo "$repo" "$(basename "$repo")" "$rid" \
+            "$(rad_mirror describe "$rid" || true)"
+        fi
         rad_reload
         printf 'linked %s\n' "$rid" >&2
         ;;
