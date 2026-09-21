@@ -25,7 +25,10 @@ let
   # sandbox because both run the code of the package
   jobs-install = pkgs.writeShellApplication {
     name = "jobs-install";
-    runtimeInputs = with pkgs; [ jq nodejs ];
+    # a lifecycle script of a package, and the build script, expect a shell and
+    # the usual file utilities under it, which the sandbox does not have on its
+    # own. This is the whole of what a deploy may run
+    runtimeInputs = with pkgs; [ bash coreutils findutils gnugrep gnused jq nodejs ];
     text = builtins.readFile ./install.sh;
   };
 
@@ -133,9 +136,9 @@ in
 
       # Every job runs as the same unix user, so the file modes cannot keep
       # one user away from another. The mount namespace does: the worktrees
-      # of the others are behind an empty tmpfs and the repositories, which
-      # no job ever needs, are not there at all
-      InaccessiblePaths = [ root ];
+      # of the others are behind an empty tmpfs, and the repositories and the
+      # key file, which no job ever needs, are not there at all
+      InaccessiblePaths = [ root keys ];
       TemporaryFileSystem = [ "${work}:ro" ];
       BindPaths = [ "${work}/%I" ];
 

@@ -67,7 +67,7 @@ case $action in
       --property=NoNewPrivileges=yes \
       --property=RestrictSUIDSGID=yes \
       --property=RuntimeMaxSec=900 \
-      --property=InaccessiblePaths="$ROOT" \
+      --property=InaccessiblePaths="$ROOT $KEYS" \
       --property=TemporaryFileSystem="$WORK:ro" \
       --property=BindPaths="$tree $cache" \
       --property=RestrictAddressFamilies="AF_UNIX AF_INET AF_INET6 AF_NETLINK" \
