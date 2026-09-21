@@ -1,4 +1,5 @@
-{ flake-inputs, config, ... }: {
+{ flake-inputs, config, ... }:
+{
   imports = [
     flake-inputs.twitch-archiver.nixosModules.default
   ];
@@ -22,4 +23,11 @@
       apiKeyFile = config.age.secrets.elastic-key.path;
     };
   };
+
+  # an instance reads the key once when it starts, so a rotated key needs a
+  # new instance: the trigger changes the unit, and with it the generation
+  # tag, which makes the switcher cut over to an instance with the new key
+  systemd.services."twitch-archiver@".restartTriggers = [
+    config.secrets.elastic-key.hash
+  ];
 }
