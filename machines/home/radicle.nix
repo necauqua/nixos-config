@@ -128,6 +128,11 @@ in
     settings = {
       preferredSeeds = public-seeds;
 
+      web = {
+        avatarUrl = "https://necauq.ua/avatar.jpg";
+        description = "Self-hosting my git repos with radicle because of it's epic UI";
+      };
+
       node = {
         alias = "necauqua/home";
         # what peers are told to dial, which is the relay and not this machine
