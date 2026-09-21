@@ -13,6 +13,7 @@
 
     ./fail2ban.nix
     ./goatcounter.nix
+    ./jobs
     ./matrix.nix
     ./murmur.nix
     ./nas-mount.nix
