@@ -12,7 +12,7 @@
       "necauqua"
       "dunkorslam"
       "snekgregory"
-      "nutty_mitchell"
+      "nuttyssa"
       "lasiace"
       "yolksyb13"
       "vexilus_"
