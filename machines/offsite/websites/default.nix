@@ -1,6 +1,6 @@
 {
   imports = [
-    ./main.nix
+    ./main
     ./fics.nix
   ];
 }

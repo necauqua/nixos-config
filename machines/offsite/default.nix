@@ -19,7 +19,7 @@
     ./nginx.nix
     ./ntfy.nix
     ./pds.nix
-    ./pgp.nix
+    ./pgp
     ./postfix.nix
     ./radicle-relay.nix
     ./reposilite.nix

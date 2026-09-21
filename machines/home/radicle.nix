@@ -18,10 +18,10 @@ let
   # on this port in public and forwards it here over wireguard
   node-port = 8776;
   # the state directory of radicle-node, which doubles as its RAD_HOME. The
-  # upstream module fixes both, rad-mirror in git.nix expects the same path
+  # upstream module fixes both, rad-mirror in git/ expects the same path
   rad-home = "/var/lib/radicle";
 
-  # the bare repositories of the git server, which git.nix owns. Each one that
+  # the bare repositories of the git server, which git/ owns. Each one that
   # is on radicle carries its rid in `rad.id`
   git-root = "/storage/git";
 
@@ -155,7 +155,7 @@ in
   # makes `git clone https://${seed-domain}/<name>` work. The list is built at
   # every start of the gateway, so a repository that the git server puts on
   # radicle needs a restart of radicle-httpd to show up, which the gateway in
-  # git.nix asks for
+  # git/ asks for
   systemd.services.radicle-httpd-aliases = {
     description = "Collect the repository aliases of radicle-httpd";
     after = [ "git-repos.service" ];
