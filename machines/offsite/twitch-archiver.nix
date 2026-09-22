@@ -24,9 +24,8 @@
     };
   };
 
-  # an instance reads the key once when it starts, so a rotated key needs a
-  # new instance: the trigger changes the unit, and with it the generation
-  # tag, which makes the switcher cut over to an instance with the new key
+  # LLM said that the service wont restart if the key is rotated
+  # because agenix path is stable 🤷
   systemd.services."twitch-archiver@".restartTriggers = [
     config.secrets.elastic-key.hash
   ];

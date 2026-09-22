@@ -1,6 +1,4 @@
-_: {
-
-  # every certificate here uses the cloudflare dns-01 challenge
+{
   secrets.cloudflare = { };
 
   security.acme = {

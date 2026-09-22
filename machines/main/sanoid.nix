@@ -1,8 +1,6 @@
-_: {
-
-  # This only sets up the schedule and the templates,
-  # each machine declares its own datasets
-
+# This only sets up the schedule and the templates,
+# each machine declares its own datasets
+{
   services.sanoid = {
     enable = true;
 
