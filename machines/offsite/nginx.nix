@@ -98,7 +98,7 @@
 
                 "= /help" = redirect "https://necauq.ua/tpn-script-reference/";
                 "= /playlist" = redirect "https://music.youtube.com/playlist?list=PLocUClmbybrZVBKmkrEylwSIDq8H6tq4m";
-                "= /wands" = redirect "https://dev.onlywands.com/streamer/necauqua";
+                "= /wands" = redirect "https://onlywands.com/streamer/necauqua";
                 "= /box" = redirect "https://github.com/necauqua/noita-utility-box";
                 "= /-streak" = redirect "https://github.com/necauqua/negative-streak";
 
