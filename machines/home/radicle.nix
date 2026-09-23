@@ -53,13 +53,17 @@ let
   # the seed next to it. radicle-httpd answers every origin, so the bundle
   # reads the seed from its own name, and a foreign client can read this seed
   # under the very same name
-  explorer = pkgs.radicle-explorer.withConfig {
+  explorer = (pkgs.radicle-explorer.withConfig {
     preferredSeeds = [{
       hostname = seed-domain;
       port = 443;
       scheme = "https";
     }];
-  };
+  }).overrideAttrs (old: {
+    # every repository here is also on github and on tangled, so the header of
+    # a repository carries a link to each of them
+    patches = (old.patches or [ ]) ++ [ ./radicle-explorer-mirror-links.patch ];
+  });
 
   # Writes the alias list. This runs unconfined, because the git root belongs
   # to the git user and is not part of the radicle world.
