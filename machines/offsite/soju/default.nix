@@ -23,7 +23,7 @@ in
   };
 
   services.nginx.virtualHosts.${domain}.enableACME = true;
-  security.acme.certs.${domain}.postRun = "systemctl restart soju.service";
+  security.acme.certs.${domain}.reloadServices = [ "soju.service" ];
 
   systemd.services.soju.serviceConfig = {
     AmbientCapabilities = "CAP_NET_BIND_SERVICE"; # allow it to listen on 113

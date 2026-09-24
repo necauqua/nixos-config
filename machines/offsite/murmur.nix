@@ -22,7 +22,7 @@ in
     };
   };
 
-  security.acme.certs.${domain}.postRun = "systemctl restart murmur.service";
+  security.acme.certs.${domain}.reloadServices = [ "murmur.service" ];
   services.nginx.virtualHosts.${domain}.enableACME = true;
   users.users.murmur.extraGroups = [ "nginx" ];
 }

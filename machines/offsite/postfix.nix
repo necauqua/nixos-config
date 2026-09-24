@@ -72,7 +72,7 @@ in
 
   # systemd.services.rspamd.serviceConfig.SupplementaryGroups = [ cfg.group ];
 
-  security.acme.certs.${domain}.postRun = "systemctl restart postfix.service";
+  security.acme.certs.${domain}.reloadServices = [ "postfix.service" ];
   users.users.postfix.extraGroups = [ config.services.nginx.group ];
 
   networking.firewall.allowedTCPPorts = [ 587 ];
