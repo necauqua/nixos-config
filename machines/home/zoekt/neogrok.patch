@@ -1,0 +1,218 @@
+diff --git a/src/app.html b/src/app.html
+index e6badd9..70b943f 100644
+--- a/src/app.html
++++ b/src/app.html
+@@ -2,24 +2,6 @@
+ <html lang="en" class="[scrollbar-gutter:stable_both-edges]">
+   <head>
+     <meta charset="utf-8" />
+-    <link
+-      rel="apple-touch-icon"
+-      sizes="180x180"
+-      href="%sveltekit.assets%/apple-touch-icon.png"
+-    />
+-    <link
+-      rel="icon"
+-      type="image/png"
+-      sizes="32x32"
+-      href="%sveltekit.assets%/favicon-32x32.png"
+-    />
+-    <link
+-      rel="icon"
+-      type="image/png"
+-      sizes="16x16"
+-      href="%sveltekit.assets%/favicon-16x16.png"
+-    />
+-    <link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
+     <meta name="viewport" content="width=device-width" />
+     %sveltekit.head%
+   </head>
+diff --git a/src/lib/site-name.ts b/src/lib/site-name.ts
+new file mode 100644
+index 0000000..1680681
+--- /dev/null
++++ b/src/lib/site-name.ts
+@@ -0,0 +1,2 @@
++// The name of this site, in the lander and in the title of every page.
++export const siteName = "necauq.ua codesearch";
+diff --git a/src/routes/(search-page)/+page.svelte b/src/routes/(search-page)/+page.svelte
+index cfd0d14..dc7bb23 100644
+--- a/src/routes/(search-page)/+page.svelte
++++ b/src/routes/(search-page)/+page.svelte
+@@ -1,4 +1,5 @@
+ <script lang="ts">
++  import { siteName } from "$lib/site-name";
+   import { page } from "$app/state";
+   import type { SearchResults as ApiSearchResults } from "$lib/server/search-api";
+   import SearchForm from "./search-form.svelte";
+@@ -25,13 +26,21 @@
+       return previousSearchResults;
+     }
+   });
++
++  // Before the first search, the title, the search form and the query
++  // examples under them are in the middle of the space below the navigation.
++  // The form moves to the top as soon as there are results to show.
++  let landing = $derived(
++    data.searchOutcome.kind === "none" ||
++      (data.searchOutcome.kind === "error" && !previousSearchResults),
++  );
+ </script>
+ 
+ <svelte:head>
+   <title
+     >{routeSearchQuery.query
+       ? `${routeSearchQuery.query} - `
+-      : ""}neogrok</title
++      : ""}{siteName}</title
+   >
+ </svelte:head>
+ 
+@@ -41,19 +50,25 @@
+   proper maintenance of the intricate synchronization between the route state
+   and the form state.
+ -->
+-<SearchForm
+-  queryError={data.searchOutcome.kind === "error"
+-    ? data.searchOutcome.error
+-    : null}
+-/>
+-{#if data.searchOutcome.kind === "none"}
+-  <Lander />
+-{:else if data.searchOutcome.kind === "error"}
+-  {#if previousSearchResults}
+-    <SearchResults results={previousSearchResults} />
+-  {:else}
+-    <Lander />
++<div class={landing ? "flex flex-col justify-center min-h-full" : ""}>
++  <div class={landing ? "w-full max-w-4xl mx-auto" : ""}>
++    {#if landing}
++      <h1 class="text-4xl text-center pb-8 tracking-wide">{siteName}</h1>
++    {/if}
++    <SearchForm
++      queryError={data.searchOutcome.kind === "error"
++        ? data.searchOutcome.error
++        : null}
++    />
++  </div>
++  {#if landing}
++    <div class="pt-6">
++      <Lander />
++    </div>
+   {/if}
+-{:else}
++</div>
++{#if data.searchOutcome.kind === "success"}
+   <SearchResults results={data.searchOutcome.results} />
++{:else if data.searchOutcome.kind === "error" && previousSearchResults}
++  <SearchResults results={previousSearchResults} />
+ {/if}
+diff --git a/src/routes/(search-page)/lander.svelte b/src/routes/(search-page)/lander.svelte
+index 5fda408..ed559c3 100644
+--- a/src/routes/(search-page)/lander.svelte
++++ b/src/routes/(search-page)/lander.svelte
+@@ -3,8 +3,7 @@
+   import ExampleQuery from "$lib/example-query.svelte";
+ </script>
+ 
+-<h1 class="text-4xl text-center pt-8 tracking-wide">ɴᴇᴏɢʀᴏᴋ</h1>
+-<div class="flex flex-col items-center pt-6 gap-4">
++<div class="flex flex-col items-center gap-4">
+   <span class="text-center">
+     <h2 class="text-2xl font-semibold">query examples</h2>
+     <Link to="/syntax">
+diff --git a/src/routes/+layout.svelte b/src/routes/+layout.svelte
+index 7515055..0d9511d 100644
+--- a/src/routes/+layout.svelte
++++ b/src/routes/+layout.svelte
+@@ -21,7 +21,14 @@
+   contextifyPreferences(data.preferences);
+ </script>
+ 
+-<div class="container mx-auto px-2 py-4">
++<!--
++  The page fills the window, so that the search page can center its content in
++  the space under the navigation. The column is never wider than the window,
++  the long lines of a result scroll on their own.
++-->
++<div
++  class="container mx-auto px-2 py-4 min-h-svh grid grid-rows-[auto_1fr] grid-cols-[minmax(0,1fr)]"
++>
+   <nav class="pb-12">
+     <ul class="flex justify-center text-xs gap-y-2 flex-wrap">
+       {#each navLinks as [url, text]}
+diff --git a/src/routes/about/+page.svelte b/src/routes/about/+page.svelte
+index e1cca93..24e31c4 100644
+--- a/src/routes/about/+page.svelte
++++ b/src/routes/about/+page.svelte
+@@ -1,11 +1,12 @@
+ <script lang="ts">
++  import { siteName } from "$lib/site-name";
+   import Link from "$lib/link.svelte";
+   import Heading from "$lib/doc-section-heading.svelte";
+   import ExampleQuery from "$lib/example-query.svelte";
+ </script>
+ 
+ <svelte:head>
+-  <title>About - neogrok</title>
++  <title>About - {siteName}</title>
+ </svelte:head>
+ 
+ <div class="space-y-2 max-w-prose mx-auto">
+diff --git a/src/routes/preferences/+page.svelte b/src/routes/preferences/+page.svelte
+index e920e7c..fb96d63 100644
+--- a/src/routes/preferences/+page.svelte
++++ b/src/routes/preferences/+page.svelte
+@@ -1,4 +1,5 @@
+ <script lang="ts">
++  import { siteName } from "$lib/site-name";
+   import { usePreferences } from "$lib/preferences.svelte";
+   import IntegerInput from "$lib/integer-input.svelte";
+ 
+@@ -6,7 +7,7 @@
+ </script>
+ 
+ <svelte:head>
+-  <title>Preferences - neogrok</title>
++  <title>Preferences - {siteName}</title>
+ </svelte:head>
+ 
+ <div class="space-y-4 max-w-4xl mx-auto">
+diff --git a/src/routes/repositories/+page.svelte b/src/routes/repositories/+page.svelte
+index b53064d..024138a 100644
+--- a/src/routes/repositories/+page.svelte
++++ b/src/routes/repositories/+page.svelte
+@@ -1,4 +1,5 @@
+ <script lang="ts">
++  import { siteName } from "$lib/site-name";
+   import { page } from "$app/state";
+   import type { ListResults } from "$lib/server/zoekt-list-repositories";
+   import SearchForm from "./search-form.svelte";
+@@ -28,7 +29,7 @@
+   <title
+     >{routeListQuery.query
+       ? `${routeListQuery.query} - `
+-      : ""}neogrok/repositories</title
++      : ""}{siteName}/repositories</title
+   >
+ </svelte:head>
+ 
+diff --git a/src/routes/syntax/+page.svelte b/src/routes/syntax/+page.svelte
+index c822417..e18f70b 100644
+--- a/src/routes/syntax/+page.svelte
++++ b/src/routes/syntax/+page.svelte
+@@ -1,4 +1,5 @@
+ <script lang="ts">
++  import { siteName } from "$lib/site-name";
+   import Link from "$lib/link.svelte";
+   import ExampleQuery from "$lib/example-query.svelte";
+   import Expression from "$lib/expression.svelte";
+@@ -6,7 +7,7 @@
+ </script>
+ 
+ <svelte:head>
+-  <title>Query syntax - neogrok</title>
++  <title>Query syntax - {siteName}</title>
+ </svelte:head>
+ 
+ <div class="space-y-2 max-w-prose mx-auto">

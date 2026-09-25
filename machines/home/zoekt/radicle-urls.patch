@@ -1,0 +1,18 @@
+diff --git a/gitindex/index.go b/gitindex/index.go
+index d2f5cb3..c771031 100644
+--- a/gitindex/index.go
++++ b/gitindex/index.go
+@@ -158,6 +158,13 @@ func setTemplates(repo *zoekt.Repository, u *url.URL, typ string) error {
+ 		// but the query  parameters are obmitted.
+ 		repo.FileURLTemplate = urlJoinPath("src/commit", varVersion, varPath) + "?display=source"
+ 		repo.LineFragmentTemplate = "#L{{.LineNumber}}"
++	case "radicle":
++		// the radicle web client, with the url of a repository on a seed
++		// https://app.radicle.xyz/nodes/seed.radicle.xyz/rad:z3gqcJUoA1n9HaHKufZs5FCSGazv5/commits/0f8bd6cd1cc6ea7a8d3fcd0db1f8bb5fb2fa2d8f
++		// https://app.radicle.xyz/nodes/seed.radicle.xyz/rad:z3gqcJUoA1n9HaHKufZs5FCSGazv5/tree/0f8bd6cd1cc6ea7a8d3fcd0db1f8bb5fb2fa2d8f/README.md#L10
++		repo.CommitURLTemplate = urlJoinPath("commits", varVersion)
++		repo.FileURLTemplate = urlJoinPath("tree", varVersion, varPath)
++		repo.LineFragmentTemplate = "#L{{.LineNumber}}"
+ 	default:
+ 		return fmt.Errorf("URL scheme type %q unknown", typ)
+ 	}

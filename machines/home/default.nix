@@ -11,6 +11,7 @@
     ./radicle.nix
     ./traefik.nix
     ./wireguard.nix
+    ./zoekt
   ];
 
   boot = {

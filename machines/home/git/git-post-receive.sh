@@ -56,6 +56,11 @@ if [ -n "$rid" ]; then
   printf 'mirroring to %s\n' "$rid" >&2
   "$SUDO" -u radicle "$RAD_MIRROR" push "$repo" "$rid" >&2 \
     || printf 'warning: the push to %s failed\n' "$rid" >&2
+
+  # a repository on radicle is public, so the code search takes it in. The
+  # file starts an index run in the background, see zoekt/
+  : > "$ZOEKT_PENDING" \
+    || printf 'warning: the code search does not know about this push\n' >&2
 fi
 
 exit 0

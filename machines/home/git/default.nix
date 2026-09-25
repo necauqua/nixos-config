@@ -89,6 +89,9 @@ let
       SUDO=${config.security.wrapperDir}/sudo
       RAD_MIRROR=${lib.getExe rad-mirror}
       SYSTEMCTL=${systemctl}
+      # the code search indexes the repository again once this file exists
+      # (zoekt/)
+      ZOEKT_PENDING=/var/lib/zoekt/pending
     '' + builtins.readFile ./git-post-receive.sh;
   };
 
