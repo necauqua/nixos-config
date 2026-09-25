@@ -40,6 +40,7 @@ in
 
     aliases = {
       all = [ "log" "-r" "all()" ];
+      "10" = [ "log" "-r" "all()" "--limit=10" ];
       mine = [ "log" "-r" "mine()" ];
       tug = [ "bookmark" "move" "--from" "heads(::@- & bookmarks())" "--to" "@-" ];
       diffp = [ "diff" "-r" "@-" ];
