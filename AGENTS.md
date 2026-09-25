@@ -42,7 +42,8 @@ The repo uses `direnv` + `use flake` for the dev shell, which provides `agenix` 
 # Build and switch the current machine (requires sudo, runs locally)
 sudo nixos-rebuild switch --flake .
 
-# Deploy a remote machine
+# Deploy a remote machine (the devShell `deploy` skips deploy-rs's
+# `nix flake check` of all machines; run that yourself when needed)
 deploy .#home
 deploy .#offsite
 

@@ -113,7 +113,12 @@
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = [
           agenix.packages.${system}.default
-          deploy-rs.packages.${system}.default
+          # deploy-rs runs `nix flake check` before each deploy, which evaluates
+          # every machine and builds every node. The deploy itself evaluates
+          # and builds its target, so run `nix flake check` to check them all
+          (pkgs.writeShellScriptBin "deploy" ''
+            exec ${deploy-rs.packages.${system}.default}/bin/deploy --skip-checks "$@"
+          '')
           pkgs.statix
           pkgs.deadnix
         ];
