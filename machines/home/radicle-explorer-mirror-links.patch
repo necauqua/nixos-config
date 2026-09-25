@@ -1,8 +1,23 @@
 diff --git a/src/views/repos/Header.svelte b/src/views/repos/Header.svelte
-index 4a734c8..05931ed 100644
+index 4a734c8..059af3a 100644
 --- a/src/views/repos/Header.svelte
 +++ b/src/views/repos/Header.svelte
-@@ -21,6 +21,21 @@
+@@ -5,11 +5,12 @@
+ 
+ <script lang="ts">
+   import type { BaseUrl, Repo } from "@http-client";
++  import type { LoadedRoute } from "@app/lib/router/definitions";
+ 
+   import config from "@app/lib/config";
+   import debounce from "lodash/debounce";
+-  import { routeToPath } from "@app/lib/router";
+-  import { toClipboard } from "@app/lib/utils";
++  import { activeRouteStore, routeToPath } from "@app/lib/router";
++  import { safeDecodeURIComponent, toClipboard } from "@app/lib/utils";
+ 
+   import Button from "@app/components/Button.svelte";
+   import Icon from "@app/components/Icon.svelte";
+@@ -21,6 +22,67 @@
    export let repo: Repo;
    export let repoId: string;
  
@@ -21,10 +36,56 @@ index 4a734c8..05931ed 100644
 +    mirrorDelegates.includes(delegate.id),
 +  );
 +
++  // A segment of the url of a mirror. A value that comes from the address
++  // bar here is url-encoded already, so it is decoded first.
++  function segment(value: string): string {
++    return encodeURIComponent(safeDecodeURIComponent(value));
++  }
++
++  // The part of the url of a mirror after the repository, for the page that
++  // is open here: the same file, history or commit, at the same branch or
++  // commit. Every other page opens the repository itself. Github keeps the
++  // slashes of a ref in the url, tangled encodes them into one segment.
++  function mirrorPage(route: LoadedRoute, slashedRefs: boolean): string {
++    if (route.resource === "repo.commit") {
++      return `/commit/${route.params.commit.commit.id}`;
++    }
++    if (route.resource !== "repo.source" && route.resource !== "repo.history") {
++      return "";
++    }
++
++    // the branches of another peer are not on the mirrors, only its commits
++    // can be
++    const { peer, revision, commit } = route.params;
++    const value = safeDecodeURIComponent(
++      peer
++        ? commit
++        : revision || repo.payloads["xyz.radicle.project"].data.defaultBranch,
++    );
++    const ref = slashedRefs
++      ? value.split("/").map(encodeURIComponent).join("/")
++      : encodeURIComponent(value);
++
++    if (route.resource === "repo.history") {
++      return `/commits/${ref}`;
++    }
++
++    // the path is a file, or "/" for the root with its readme
++    const path = route.params.path
++      .split("/")
++      .filter(part => part !== "")
++      .map(segment)
++      .join("/");
++    if (path !== "") {
++      return `/blob/${ref}/${path}`;
++    }
++    return peer || revision ? `/tree/${ref}` : "";
++  }
++
    let shareIcon: "link" | "checkmark" = "link";
  
    const restoreIcon = debounce(() => {
-@@ -105,6 +120,34 @@
+@@ -105,6 +167,34 @@
      align-items: center;
      gap: 0.5rem;
    }
@@ -59,7 +120,7 @@ index 4a734c8..05931ed 100644
  </style>
  
  <div class="container">
-@@ -189,6 +232,46 @@
+@@ -189,6 +279,52 @@
    <div class="spacer"></div>
  
    <div class="actions">
@@ -67,7 +128,10 @@ index 4a734c8..05931ed 100644
 +      <a
 +        class="mirror"
 +        title="Open on GitHub"
-+        href="https://github.com/necauqua/{repoName}"
++        href="https://github.com/necauqua/{repoName}{mirrorPage(
++          $activeRouteStore,
++          true,
++        )}"
 +        target="_blank"
 +        rel="noreferrer">
 +        <span class="global-hide-on-small-desktop-down">Open on</span>
@@ -86,7 +150,10 @@ index 4a734c8..05931ed 100644
 +      <a
 +        class="mirror"
 +        title="Open on tangled"
-+        href="https://tangled.org/necauq.ua/{repoName}"
++        href="https://tangled.org/necauq.ua/{repoName}{mirrorPage(
++          $activeRouteStore,
++          false,
++        )}"
 +        target="_blank"
 +        rel="noreferrer">
 +        <span class="global-hide-on-small-desktop-down">Open on</span>

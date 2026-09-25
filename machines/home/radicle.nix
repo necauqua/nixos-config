@@ -61,7 +61,8 @@ let
     }];
   }).overrideAttrs (old: {
     # every repository here is also on github and on tangled, so the header of
-    # a repository carries a link to each of them
+    # a repository carries a link to each of them. The link opens the same
+    # file, history or commit there, at the same branch or commit
     patches = (old.patches or [ ]) ++ [ ./radicle-explorer-mirror-links.patch ];
   });
 
