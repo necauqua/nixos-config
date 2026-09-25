@@ -17,6 +17,9 @@
       listenAddr = "127.0.0.1:${toString config.ports.tangled-knot}";
       internalListenAddr = "127.0.0.1:${toString config.ports.tangled-knot-internal}";
     };
+    # without a motd the knot greets every ssh git command with a default
+    # one, which also shows in the output of each push that home mirrors here
+    motd = "";
   };
 
   services.nginx.virtualHosts."knot.necauq.ua" = {
