@@ -1,4 +1,4 @@
-{ pkgs, features, ... }: {
+{ config, pkgs, features, ... }: {
   imports = [ features.gnome features.fcitx ];
 
   services.greetd = {
@@ -49,6 +49,9 @@
       libsecret
       swaynotificationcenter
       pavucontrol
+      udisks
+      zenity
+      config.programs.niri.package
     ];
   };
 

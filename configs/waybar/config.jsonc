@@ -23,6 +23,7 @@
     "pulseaudio",
     "network",
     "battery",
+    "custom/udisks",
     "custom/printer",
     "custom/weather",
     "custom/notification",
@@ -99,6 +100,15 @@
     "return-type": "json",
     "exec": "~/.config/waybar/scripts/weather.sh",
     "interval": 15
+  },
+  "custom/udisks": {
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/udisks.sh",
+    // the script exits when udisks restarts
+    "restart-interval": 5,
+    "escape": true,
+    "on-click": "~/.config/waybar/scripts/udisks.sh open",
+    "on-click-right": "~/.config/waybar/scripts/udisks.sh unmount"
   },
   "custom/printer": {
     "format": "󰹛 {}",

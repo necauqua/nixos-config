@@ -51,6 +51,7 @@ window#waybar {
 #temperature,
 #custom-weather,
 #custom-printer,
+#custom-udisks,
 #idle_inhibitor,
 #jack,
 #tray,
@@ -76,6 +77,10 @@ window#waybar {
 
 #custom-printer.paused {
   color: #ffbe61;
+}
+
+#custom-udisks.unmounted {
+  color: #888888;
 }
 
 #battery.charging {
