@@ -168,6 +168,14 @@
 
   programs.coolercontrol.enable = true;
 
+  # only chromium policies, the browser itself is in the home profile; let the
+  # music player page of the twitch bot (limatoukka) resume playing after a
+  # reload without a click
+  programs.chromium = {
+    enable = true;
+    extraOpts.AutoplayAllowlist = [ "http://localhost:35354" ];
+  };
+
   hardware = {
     nvidia.open = false;
     enableRedistributableFirmware = true;
