@@ -23,6 +23,7 @@
     "pulseaudio",
     "network",
     "battery",
+    "custom/printer",
     "custom/weather",
     "custom/notification",
     "clock"
@@ -98,6 +99,13 @@
     "return-type": "json",
     "exec": "~/.config/waybar/scripts/weather.sh",
     "interval": 15
+  },
+  "custom/printer": {
+    "format": "󰹛 {}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/printer.sh",
+    "interval": 30,
+    "on-click": "xdg-open http://u1.lan"
   },
   "clock": {
     "format": "1{:%F/%T %Z}",

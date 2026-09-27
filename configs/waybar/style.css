@@ -50,6 +50,7 @@ window#waybar {
 #cpu,
 #temperature,
 #custom-weather,
+#custom-printer,
 #idle_inhibitor,
 #jack,
 #tray,
@@ -71,6 +72,10 @@ window#waybar {
 
 #clock {
   color: #5fd1fa;
+}
+
+#custom-printer.paused {
+  color: #ffbe61;
 }
 
 #battery.charging {
