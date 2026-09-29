@@ -61,13 +61,8 @@ Secrets, from inside `secrets/`, with `~/.ssh/secrets_ed25519` as the identity (
 # passphrase prompt (EDITOR=: skips the editor and the no-change guard)
 env EDITOR=: agenix -e <name>.age -i ~/.ssh/secrets_ed25519
 
-# Re-encrypt everything. `age` cannot use ssh-agent, so an encrypted key
-# prompts once per secret — strip the passphrase from a tmpfs copy first
-set -l k $XDG_RUNTIME_DIR/agenix-key
-install -m600 ~/.ssh/secrets_ed25519 $k
-ssh-keygen -p -N '' -f $k
-agenix -r -i $k
-rm -f $k $k.pub
+# Re-encrypt everything with a single passphrase prompt (see the script for why)
+./rekey.sh
 ```
 
 ## Verification
