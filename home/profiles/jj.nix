@@ -11,7 +11,6 @@ in
 
     git = {
       fetch = [ "glob:*" ];
-      sign-on-push = true;
       private-commits = private-revset;
     };
     snapshot.auto-track = "none()";
@@ -19,7 +18,7 @@ in
     signing = {
       backend = "ssh";
       key = git.signing.key;
-      signing.behavior = "drop";
+      behavior = "drop";
     };
 
     ui = {
