@@ -114,7 +114,7 @@
     "format": "󰹛 {}",
     "return-type": "json",
     "exec": "~/.config/waybar/scripts/printer.sh",
-    "interval": 30,
+    "interval": 5,
     "on-click": "xdg-open http://u1.lan"
   },
   "clock": {
