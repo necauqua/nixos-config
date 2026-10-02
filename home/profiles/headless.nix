@@ -98,7 +98,6 @@
 
         # dev services/vcs
         gh
-        radicle-node
         opencode
         pgcli
         semver

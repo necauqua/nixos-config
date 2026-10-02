@@ -110,6 +110,17 @@ let
   };
 in
 {
+  nixpkgs.config.permittedInsecurePackages = [
+    # only private repos are affected, and all repos here are public
+    "radicle-node-1.10.3"
+  ];
+
+  # when nixpkgs removes the mark, the exception is not necessary anymore
+  assertions = [{
+    assertion = pkgs.radicle-node.meta.knownVulnerabilities or [ ] != [ ];
+    message = "radicle-node is not marked insecure anymore, remove its exception from machines/home/radicle.nix";
+  }];
+
   # radicle-node reads the key as a systemd credential. rad-mirror runs outside
   # that service and reads the very same file, through the symlink below
   secrets.radicle-key = {
