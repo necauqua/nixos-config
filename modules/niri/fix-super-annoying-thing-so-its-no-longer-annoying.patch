@@ -1,0 +1,224 @@
+From 059b392b24bbbbcdf45752331b5a68cc3555336b Mon Sep 17 00:00:00 2001
+From: Anton Bulakh <him@necauq.ua>
+Date: Fri, 2 Oct 2026 06:10:26 +0300
+Subject: [PATCH] layout~: add ignore-offscreen-windows-input option
+
+GTK and Electron windows have an input region past their geometry for
+the shadows and resize borders of client-side decorations. When such a
+window is just off screen, this region extends onto the screen, and the
+pointer at the screen edge focuses the hidden window with
+focus-follows-mouse.
+
+With the new flag, pointer input skips tiles that are fully outside of
+the view. The overview keeps input for all tiles.
+
+See https://github.com/niri-wm/niri/issues/4621
+---
+ docs/wiki/Configuration:-Layout.md | 19 +++++++++++++++++++
+ niri-config/src/layout.rs          |  5 +++++
+ niri-config/src/lib.rs             |  1 +
+ src/layout/monitor.rs              |  4 ++--
+ src/layout/scrolling.rs            | 10 +++++++++-
+ src/layout/tile.rs                 | 10 ++++++++++
+ src/layout/workspace.rs            | 13 ++++++++++---
+ 7 files changed, 56 insertions(+), 6 deletions(-)
+
+diff --git a/docs/wiki/Configuration:-Layout.md b/docs/wiki/Configuration:-Layout.md
+index 5e5e2a5..1b12a26 100644
+--- a/docs/wiki/Configuration:-Layout.md
++++ b/docs/wiki/Configuration:-Layout.md
+@@ -10,6 +10,7 @@ layout {
+     center-focused-column "never"
+     always-center-single-column
+     empty-workspace-above-first
++    ignore-offscreen-windows-input
+     default-column-display "tabbed"
+     background-color "#003300"
+ 
+@@ -154,6 +155,24 @@ layout {
+ }
+ ```
+ 
++### `ignore-offscreen-windows-input`
++
++If set, windows that are fully outside of the view do not get pointer input.
++
++The input region of some windows extends past their visible area, for example for the shadows and the resize borders of client-side decorations (GTK and Electron apps do this).
++When such a window is just off screen, this invisible area can extend onto the screen.
++Then the pointer at the edge of the screen goes to the hidden window: [focus-follows-mouse](./Configuration:-Input.md#focus-follows-mouse) focuses it and scrolls the view to it, and a click starts to resize it.
++
++With this flag, the pointer goes through such windows.
++Windows that are partially on screen keep their full input region.
++In the overview, all windows get input as usual.
++
++```kdl
++layout {
++    ignore-offscreen-windows-input
++}
++```
++
+ ### `default-column-display`
+ 
+ <sup>Since: 25.02</sup>
+diff --git a/niri-config/src/layout.rs b/niri-config/src/layout.rs
+index f84528b..08bf828 100644
+--- a/niri-config/src/layout.rs
++++ b/niri-config/src/layout.rs
+@@ -20,6 +20,7 @@ pub struct Layout {
+     pub center_focused_column: CenterFocusedColumn,
+     pub always_center_single_column: bool,
+     pub empty_workspace_above_first: bool,
++    pub ignore_offscreen_windows_input: bool,
+     pub default_column_display: ColumnDisplay,
+     pub gaps: f64,
+     pub struts: Struts,
+@@ -43,6 +44,7 @@ impl Default for Layout {
+             center_focused_column: CenterFocusedColumn::Never,
+             always_center_single_column: false,
+             empty_workspace_above_first: false,
++            ignore_offscreen_windows_input: false,
+             default_column_display: ColumnDisplay::Normal,
+             gaps: 16.,
+             struts: Struts::default(),
+@@ -67,6 +69,7 @@ impl MergeWith<LayoutPart> for Layout {
+             insert_hint,
+             always_center_single_column,
+             empty_workspace_above_first,
++            ignore_offscreen_windows_input,
+             gaps,
+         );
+ 
+@@ -118,6 +121,8 @@ pub struct LayoutPart {
+     pub always_center_single_column: Option<Flag>,
+     #[knuffel(child)]
+     pub empty_workspace_above_first: Option<Flag>,
++    #[knuffel(child)]
++    pub ignore_offscreen_windows_input: Option<Flag>,
+     #[knuffel(child, unwrap(argument, str))]
+     pub default_column_display: Option<ColumnDisplay>,
+     #[knuffel(child, unwrap(argument))]
+diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
+index 329b766..d72f50c 100644
+--- a/niri-config/src/lib.rs
++++ b/niri-config/src/lib.rs
+@@ -1449,6 +1449,7 @@ mod tests {
+                 center_focused_column: OnOverflow,
+                 always_center_single_column: false,
+                 empty_workspace_above_first: false,
++                ignore_offscreen_windows_input: false,
+                 default_column_display: Tabbed,
+                 gaps: 8.0,
+                 struts: Struts {
+diff --git a/src/layout/monitor.rs b/src/layout/monitor.rs
+index 53c0606..0996e58 100644
+--- a/src/layout/monitor.rs
++++ b/src/layout/monitor.rs
+@@ -1565,12 +1565,12 @@ impl<W: LayoutElement> Monitor<W> {
+         if self.overview_progress.is_some() {
+             let zoom = self.overview_zoom();
+             let pos_within_workspace = (pos_within_output - geo.loc).downscale(zoom);
+-            let (win, hit) = ws.window_under(pos_within_workspace)?;
++            let (win, hit) = ws.window_under(pos_within_workspace, true)?;
+             // During the overview animation, we cannot do input hits because we cannot really
+             // represent scaled windows properly.
+             Some((win, hit.to_activate()))
+         } else {
+-            let (win, hit) = ws.window_under(pos_within_output - geo.loc)?;
++            let (win, hit) = ws.window_under(pos_within_output - geo.loc, false)?;
+             Some((win, hit.offset_win_pos(geo.loc)))
+         }
+     }
+diff --git a/src/layout/scrolling.rs b/src/layout/scrolling.rs
+index 007bcaf..cbc41a8 100644
+--- a/src/layout/scrolling.rs
++++ b/src/layout/scrolling.rs
+@@ -2964,7 +2964,11 @@ impl<W: LayoutElement> ScrollingSpace<W> {
+         }
+     }
+ 
+-    pub fn window_under(&self, pos: Point<f64, Logical>) -> Option<(&W, HitType)> {
++    pub fn window_under(
++        &self,
++        pos: Point<f64, Logical>,
++        is_overview: bool,
++    ) -> Option<(&W, HitType)> {
+         // This matches self.tiles_with_render_positions().
+         let scale = self.scale;
+         let view_off = Point::from((-self.view_pos(), 0.));
+@@ -3000,6 +3004,10 @@ impl<W: LayoutElement> ScrollingSpace<W> {
+                 // Round to physical pixels.
+                 let tile_pos = tile_pos.to_physical_precise_round(scale).to_logical(scale);
+ 
++                if !is_overview && tile.is_offscreen_input_ignored(tile_pos) {
++                    continue;
++                }
++
+                 if let Some(rv) = HitType::hit_tile(tile, tile_pos, pos) {
+                     return Some(rv);
+                 }
+diff --git a/src/layout/tile.rs b/src/layout/tile.rs
+index 86c7eba..1ec3f52 100644
+--- a/src/layout/tile.rs
++++ b/src/layout/tile.rs
+@@ -897,6 +897,16 @@ impl<W: LayoutElement> Tile<W> {
+         }
+     }
+ 
++    pub fn is_offscreen_input_ignored(&self, tile_pos: Point<f64, Logical>) -> bool {
++        if !self.options.layout.ignore_offscreen_windows_input {
++            return false;
++        }
++
++        let view = Rectangle::from_size(self.view_size);
++        let tile = Rectangle::new(tile_pos + self.bob_offset(), self.animated_tile_size());
++        !view.overlaps(tile)
++    }
++
+     pub fn request_tile_size(
+         &mut self,
+         mut size: Size<f64, Logical>,
+diff --git a/src/layout/workspace.rs b/src/layout/workspace.rs
+index 49548a8..dbf5ba1 100644
+--- a/src/layout/workspace.rs
++++ b/src/layout/workspace.rs
+@@ -1753,19 +1753,26 @@ impl<W: LayoutElement> Workspace<W> {
+         self.scrolling.start_open_animation(id) || self.floating.start_open_animation(id)
+     }
+ 
+-    pub fn window_under(&self, pos: Point<f64, Logical>) -> Option<(&W, HitType)> {
++    pub fn window_under(
++        &self,
++        pos: Point<f64, Logical>,
++        is_overview: bool,
++    ) -> Option<(&W, HitType)> {
+         // This logic is consistent with tiles_with_render_positions().
+         if self.is_floating_visible() {
+             if let Some(rv) = self
+                 .floating
+                 .tiles_with_render_positions()
++                .filter(|(tile, tile_pos)| {
++                    is_overview || !tile.is_offscreen_input_ignored(*tile_pos)
++                })
+                 .find_map(|(tile, tile_pos)| HitType::hit_tile(tile, tile_pos, pos))
+             {
+                 return Some(rv);
+             }
+         }
+ 
+-        self.scrolling.window_under(pos)
++        self.scrolling.window_under(pos, is_overview)
+     }
+ 
+     pub fn resize_edges_under(&self, pos: Point<f64, Logical>) -> Option<ResizeEdge> {
+@@ -1773,7 +1780,7 @@ impl<W: LayoutElement> Workspace<W> {
+             .find_map(|(tile, tile_pos, visible)| {
+                 // This logic should be consistent with window_under() in when it returns Some vs.
+                 // None.
+-                if !visible {
++                if !visible || tile.is_offscreen_input_ignored(tile_pos) {
+                     return None;
+                 }
+ 
+-- 
+2.55.0
+

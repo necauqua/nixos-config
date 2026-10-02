@@ -15,7 +15,18 @@
     };
   };
 
-  programs.niri.enable = true;
+  programs.niri = {
+    enable = true;
+    # the shadows and resize borders of client-side decorations of a window
+    # that is just off screen reach onto the screen, so the pointer at the
+    # screen edge focuses it (niri-wm/niri#4621). The patch adds the
+    # `layout { ignore-offscreen-windows-input; }` option against that.
+    package = pkgs.niri.overrideAttrs (super: {
+      patches = (super.patches or [ ]) ++ [
+        ./fix-super-annoying-thing-so-its-no-longer-annoying.patch
+      ];
+    });
+  };
   programs.waybar.enable = true;
 
   systemd.user.services.waybar = {
