@@ -49,6 +49,14 @@ in
       push = [ "git" "push" ];
       fetch = [ "git" "fetch" ];
       add = [ "file" "track" ];
+      last-flake = [
+        "log"
+        "--no-graph"
+        "-r"
+        ''latest(::@ & description(regex:"^nix flake update"))''
+        "-T"
+        ''committer.timestamp().ago() ++ "\n"''
+      ];
 
       count = [ "util" "exec" "--" "sh" "-c" "jj log -r \"\${1:-all()}\" -T '\".\"' --no-graph | wc -c" "--" ];
     };
