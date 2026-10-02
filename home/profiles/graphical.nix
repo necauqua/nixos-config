@@ -2,6 +2,25 @@
 let
   graphical = !config.headless;
   x11 = osConfig.services.xserver.enable;
+
+  discord = pkgs.discord.override { withOpenASAR = true; };
+
+  # an autostart entry that runs the program after a short delay
+  # (this is how my manual desktop files did it, don't remember the reason,
+  # this is from way before niri and maybe even hyprland)
+  delayedAutostart = name: package:
+    let
+      script = pkgs.writeShellScript "autostart-${name}" ''
+        sleep 5
+        exec ${lib.getExe package}
+      '';
+      item = pkgs.makeDesktopItem {
+        inherit name;
+        desktopName = name;
+        exec = "${script}";
+      };
+    in
+    "${item}/share/applications/${name}.desktop";
 in
 {
   xsession.enable = pkgs.stdenv.hostPlatform.isLinux && graphical;
@@ -97,6 +116,14 @@ in
     swaync.enable = graphical && !x11;
   };
 
+  xdg.autostart = {
+    enable = graphical;
+    entries = [
+      (delayedAutostart "discord" discord)
+      (delayedAutostart "firefox" config.programs.firefox.finalPackage)
+    ];
+  };
+
   home.packages = with pkgs; lib.optionals graphical [
     dex
     xclip
@@ -108,7 +135,6 @@ in
     thunderbird
 
     telegram-desktop
-    (makeAutostartItem { name = "org.telegram.desktop"; package = telegram-desktop; })
 
     maim
     d-spy
@@ -117,7 +143,7 @@ in
 
     chatterino2
     bitwarden-desktop
-    (discord.override { withOpenASAR = true; })
+    discord
     vesktop
     mumble
     emote

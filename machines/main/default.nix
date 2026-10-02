@@ -191,4 +191,6 @@
     event = "button/power.*";
     action = ""; # noop
   };
+
+  home-manager.users.necauqua.services.caffeine.enable = lib.mkForce false;
 }
