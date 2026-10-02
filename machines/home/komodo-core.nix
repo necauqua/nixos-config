@@ -1,7 +1,7 @@
 { config, pkgs, lib, features, ... }:
 
 let
-  version = "2.3.2";
+  version = "2.3.3";
 
   # Komodo serves its web ui from a plain directory of static files, which is
   # built with node and is not part of the nixpkgs komodo package. The official
@@ -9,8 +9,8 @@ let
   # so take it from there instead of rebuilding the whole node toolchain.
   ui-image = pkgs.dockerTools.pullImage {
     imageName = "ghcr.io/moghtech/komodo-ui";
-    imageDigest = "sha256:0310b377463f4eb2be73194f05b4a56a2402ce49695b55b29ffc7353e3630eed";
-    hash = "sha256-AldvaQvZZzJuNpRb6r29RS1/V1fN0hWeSpXVXfQycGY=";
+    imageDigest = "sha256:d1abf70c21b141d1582aec144a3ca38854959e580464d30478048339f48cd7cc";
+    hash = "sha256-1ygXuQZzDjX/+GAc+RO9U8zHiz+7PkR3eVcfIciS83o=";
     finalImageName = "ghcr.io/moghtech/komodo-ui";
     finalImageTag = version;
   };
