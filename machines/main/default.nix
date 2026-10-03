@@ -6,6 +6,7 @@
     nvidia
     samba
     obs
+    orca-slicer
     niri
     mullvad
 
