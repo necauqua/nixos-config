@@ -100,6 +100,9 @@
 
       # also make some java guis prettier
       _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2.5 -Dawt.useSystemAAFontSettings=lcd -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+      # java awt assumes a reparenting wm, else its windows stay blank/grey
+      # (niri via xwayland-satellite, hyprland)
+      _JAVA_AWT_WM_NONREPARENTING = "1";
     };
 
     etc = with pkgs; {
