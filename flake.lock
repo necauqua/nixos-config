@@ -767,11 +767,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1790033698,
-        "narHash": "sha256-RrHh6HNcmOazcS2tKuB8zLQcR0qxnzL4a4dQXFigw7Q=",
+        "lastModified": 1790641870,
+        "narHash": "sha256-JZP4i7PIlEeLF2q8Kv+FVtZ+PqS9nLCQaYjokU0mRgg=",
         "owner": "necauqua",
         "repo": "twitch-archiver",
-        "rev": "05845f2d575d82eed0db2a4667f7bc80a91725fa",
+        "rev": "c95aa5d7742364c99c9b50979644be9d6706b567",
         "type": "github"
       },
       "original": {
