@@ -18,6 +18,7 @@
     ./murmur.nix
     ./nas-mount.nix
     ./nginx.nix
+    ./noiting.nix
     ./ntfy.nix
     ./pds.nix
     ./pgp

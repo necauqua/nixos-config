@@ -29,6 +29,9 @@ in
   "dkim-key.age".publicKeys = offsite-only;
   "elastic-key.age".publicKeys = offsite-only;
   "murmur-password.age".publicKeys = offsite-only;
+  # env file of the noit.ing container: NOITING_TWITCH_CLIENT_ID and
+  # NOITING_TWITCH_CLIENT_SECRET
+  "noiting.age".publicKeys = offsite-only;
   "pds-env.age".publicKeys = offsite-only;
   "reposilite-password.age".publicKeys = offsite-only;
   "smtp-server-sasl.age".publicKeys = offsite-only;
