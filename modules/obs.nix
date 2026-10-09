@@ -77,11 +77,13 @@ let
 
   obs-localvocal = pkgs.callPackage obs-localvocal-pkg { withCuda = true; };
 
-  # obs-studio 32 marks several APIs that some plugins still use as deprecated,
-  # and those plugins build with -Werror
-  allow-deprecated = plugin: plugin.overrideAttrs (old: {
+  # Some plugins build with -Werror, so warnings from newer dependencies stop
+  # the build: obs-studio 32 marks several APIs that they use as deprecated,
+  # and with glibc's C23 qualifier-preserving strrchr etc. they discard const
+  allow-warnings = warnings: plugin: plugin.overrideAttrs (old: {
     env = (old.env or { }) // {
-      NIX_CFLAGS_COMPILE = (old.env.NIX_CFLAGS_COMPILE or "") + " -Wno-error=deprecated-declarations";
+      NIX_CFLAGS_COMPILE = toString ([ (old.env.NIX_CFLAGS_COMPILE or "") ]
+        ++ map (w: "-Wno-error=${w}") warnings);
     };
   });
 in
@@ -98,8 +100,8 @@ in
       obs-tuna
       obs-vkcapture
       obs-localvocal
-      (allow-deprecated obs-move-transition)
-      (allow-deprecated obs-shaderfilter)
+      (allow-warnings [ "deprecated-declarations" ] obs-move-transition)
+      (allow-warnings [ "deprecated-declarations" "discarded-qualifiers" ] obs-shaderfilter)
     ];
   };
 }
