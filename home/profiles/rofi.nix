@@ -1,8 +1,6 @@
 { config, pkgs, ... }: {
   programs.rofi = {
     enable = pkgs.stdenv.hostPlatform.isLinux && !config.headless;
-    font = "JetBrains Mono 12";
-    terminal = "kitty";
     theme =
       let
         lit = config.lib.formats.rasi.mkLiteral;
@@ -47,7 +45,9 @@
         "element normal normal".background-color = lit "transparent";
         "element alternate normal".background-color = lit "transparent";
       };
-    extraConfig = {
+    settings = {
+      font = "JetBrains Mono 12";
+      terminal = "kitty";
       modi = "window,run,ssh,combi";
       combi-hide-mode-prefix = true;
       dpi = 96;
