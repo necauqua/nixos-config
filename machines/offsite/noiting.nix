@@ -136,6 +136,7 @@ in
   systemd.services.noiting-backup = {
     description = "Copy the noit.ing database to home";
     onFailure = [ "noiting-backup-failed.service" ];
+    onSuccess = [ "noiting-backup-recovered.service" ];
     unitConfig.RequiresMountsFor = [ backups ];
     serviceConfig = {
       Type = "oneshot";
@@ -153,11 +154,38 @@ in
     };
   };
 
+  # Home is sometimes offline for hours, so the alerts are sent only on a
+  # change: for the first failed backup, and for the first good backup after
+  # failures. The `failing` file in the state directory records that the
+  # failure alert went out. It is written only after tg-alert succeeded, so an
+  # alert that could not be sent is tried again on the next failure.
   systemd.services.noiting-backup-failed = {
-    description = "Report a failed noit.ing backup";
-    serviceConfig.Type = "oneshot";
+    description = "Report the first failed noit.ing backup";
+    serviceConfig = {
+      Type = "oneshot";
+      StateDirectory = "noiting-backup-alert";
+    };
     script = ''
-      /run/current-system/sw/bin/tg-alert "noit.ing: the database backup to home failed on offsite, see \`journalctl -u noiting-backup\`"
+      state=$STATE_DIRECTORY/failing
+      if [ ! -e "$state" ]; then
+        /run/current-system/sw/bin/tg-alert "noit.ing: the database backup to home failed on offsite, see \`journalctl -u noiting-backup\`"
+        touch "$state"
+      fi
+    '';
+  };
+
+  systemd.services.noiting-backup-recovered = {
+    description = "Report the first good noit.ing backup after failures";
+    serviceConfig = {
+      Type = "oneshot";
+      StateDirectory = "noiting-backup-alert";
+    };
+    script = ''
+      state=$STATE_DIRECTORY/failing
+      if [ -e "$state" ]; then
+        /run/current-system/sw/bin/tg-alert "noit.ing: the database backup to home works again on offsite"
+        rm -f "$state"
+      fi
     '';
   };
 
