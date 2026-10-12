@@ -9,6 +9,7 @@
     orca-slicer
     niri
     mullvad
+    noita
 
     ./ollama.nix
     ./restic.nix
@@ -16,6 +17,8 @@
   ];
 
   networking = { hostName = "main"; hostId = "09e32be7"; };
+
+  noita.saveDataset = "main/noita-save";
 
   # let the home server use this machine's /nix/store as a substituter over ssh
   # (its nix-daemon connects as necauqua using home's ssh host key)
