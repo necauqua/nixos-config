@@ -48,13 +48,13 @@
 
   fileSystems = {
     "/" = {
-      # device = "/dev/disk/by-label/nix";
-      device = "/dev/disk/by-uuid/0b2f87a7-e43d-4139-b11d-9bc2db393100";
+      # device = "/dev/disk/by-label/nixos";
+      device = "/dev/disk/by-uuid/54ff2ff5-a8ce-4f66-8e7f-a22035b8f8b4";
       fsType = "ext4";
     };
     "/boot" = {
       # device = "/dev/disk/by-label/BOOT";
-      device = "/dev/disk/by-uuid/F514-94ED";
+      device = "/dev/disk/by-uuid/203C-6B7D";
       fsType = "vfat";
       options = [ "fmask=0077" ];
     };
