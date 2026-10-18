@@ -2,6 +2,8 @@
   services.goatcounter = {
     enable = true;
     proxy = true;
+    # Without this, an upgrade leaves the schema old and goatcounter only warns
+    extraArgs = [ "-automigrate" ];
   };
   services.nginx.virtualHosts =
     let
