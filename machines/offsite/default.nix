@@ -7,6 +7,7 @@
 
     acme
     komodo
+    nginx-vhost-logs
     rsync-restricted-group
     ssh
     tg-alert

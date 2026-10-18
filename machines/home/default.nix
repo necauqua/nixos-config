@@ -3,6 +3,7 @@
   imports = with features; [
     nix-flakes
     nix-config
+    nginx-vhost-logs
     nvidia
     flake-inputs.docker-zfs-plugin.nixosModules.docker-zfs-plugin
 

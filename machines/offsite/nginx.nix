@@ -37,6 +37,8 @@
         home-config = {
           forceSSL = true;
           useACMEHost = "necauq.ua";
+          # one log for the domain and its subdomains
+          accessLog = "/var/log/nginx/home.necauq.ua.access.log";
           locations."/" = {
             proxyPass = "http://10.100.0.2:8080";
             proxyWebsockets = true;

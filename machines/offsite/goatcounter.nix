@@ -10,6 +10,8 @@
       stats-config = {
         forceSSL = true;
         useACMEHost = "necauq.ua";
+        # one log for the domain and its subdomains
+        accessLog = "/var/log/nginx/stats.necauq.ua.access.log";
         locations."/".proxyPass = with config.services.goatcounter;
           "http://${address}:${toString port}";
       };
