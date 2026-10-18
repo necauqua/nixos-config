@@ -108,10 +108,23 @@ in
       volumes = [ "${data}:/data" ];
       environment.NOITING_CLIENT_IP_HEADER = "X-Real-IP";
       environmentFiles = [ config.age.secrets.noiting.path ];
+      # the identifier of the lines of the log driver, in place of the
+      # container id
+      extraOptions = [ "--log-opt=tag=noiting" ];
     };
   };
 
-  systemd.services.docker-noiting.restartTriggers = [ config.secrets.noiting.hash ];
+  # The logs of the server (one JSON object on each line) come from the
+  # journald log driver, with the container fields: `journalctl -t noiting`,
+  # or `docker logs noiting`. The `docker run` of the unit is attached to the
+  # container and would write each line again, so the unit drops its stdout.
+  # Its stderr stays for the errors of docker itself, so a panic of the server
+  # (stderr) shows twice. Both together:
+  # `journalctl SYSLOG_IDENTIFIER=noiting + _SYSTEMD_UNIT=docker-noiting.service`
+  systemd.services.docker-noiting = {
+    restartTriggers = [ config.secrets.noiting.hash ];
+    serviceConfig.StandardOutput = "null";
+  };
 
   systemd.tmpfiles.rules = [ "d ${data} 0750 root root -" ];
 
