@@ -135,6 +135,7 @@
     steam.enable = true;
     wireshark.enable = true;
     k3b.enable = true;
+    localsend.enable = true; # also opens its port 53317
     nix-ld = {
       enable = true;
       libraries = with pkgs; [ openssl ];
