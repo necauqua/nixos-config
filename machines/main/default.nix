@@ -35,6 +35,12 @@
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
     kernelModules = [ "kvm-amd" "msr" ];
     kernelParams = [ "libata.allow_tpm=1" "msr.allow_writes=on" ];
+    # xHCI test patch (linux-usb): the 10 Gbps chipset root ports 4-3 and 4-4
+    # report SuperSpeed Plus instead of 5 Gbps SuperSpeed
+    kernelPatches = [{
+      name = "xhci-ssp-bos-psi";
+      patch = ./xhci-ssp-bos-psi.patch;
+    }];
     zfs.extraPools = [ "games" ];
     supportedFilesystems = [ "nfs" ];
     binfmt = {

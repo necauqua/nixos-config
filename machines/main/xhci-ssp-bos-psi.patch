@@ -1,0 +1,34 @@
+xhci: hub: base the root hub SSP BOS on the USB 3.x port capability with
+the most unique PSI IDs
+
+Test patch from Mathias Nyman (linux-usb, reply to the report of
+2026-10-30). On the X570 chipset xHCI (1022:149c, 0000:06:00.3) only the
+port capabilities of xHCI ports 9 and 10 (4-3, 4-4) have the 10 Gb/s PSI
+(ID 5).
+
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -59,13 +59,18 @@
+ 
+ 	/* Create the descriptor for port with the highest revision */
+ 	for (i = 0; i < xhci->num_port_caps; i++) {
+-		u8 major = xhci->port_caps[i].maj_rev;
+-		u8 minor = xhci->port_caps[i].min_rev;
+-		u16 rev = (major << 8) | minor;
++		struct xhci_port_cap *cap = &xhci->port_caps[i];
++		u16 rev = (cap->maj_rev << 8) | cap->min_rev;
+ 
+ 		if (i == 0 || bcdUSB < rev) {
+ 			bcdUSB = rev;
+-			port_cap = &xhci->port_caps[i];
++			port_cap = cap;
++
++		/* for same revisions prefer a default psic 0, otherwise highest uid psic */
++		} else if (bcdUSB == rev && port_cap->psi_count != 0) {
++			if (cap->psi_count == 0 ||
++			    cap->psi_uid_count > port_cap->psi_uid_count)
++				port_cap = cap;
+ 		}
+ 	}
+ 
