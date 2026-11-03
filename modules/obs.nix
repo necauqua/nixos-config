@@ -45,8 +45,8 @@ let
         icu70
         stdenv.cc.cc.lib
       ] ++ lib.optionals withCuda [
-        cudaPackages.cudatoolkit
-        cudaPackages.cudnn
+        cudaPackages.cuda_cudart
+        cudaPackages.libcublas
       ];
 
       dontWrapQtApps = true;
@@ -75,7 +75,12 @@ let
       };
     };
 
-  obs-localvocal = pkgs.callPackage obs-localvocal-pkg { withCuda = true; };
+  # The prebuilt nvidia .deb links against the CUDA 12 sonames (libcudart.so.12
+  # etc.), so it needs CUDA 12 even where the default cudaPackages is newer
+  obs-localvocal = pkgs.callPackage obs-localvocal-pkg {
+    withCuda = true;
+    cudaPackages = pkgs.cudaPackages_12;
+  };
 
   # Some plugins build with -Werror, so warnings from newer dependencies stop
   # the build: obs-studio 32 marks several APIs that they use as deprecated,
