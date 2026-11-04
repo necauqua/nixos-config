@@ -10,6 +10,7 @@
     niri
     mullvad
     noita
+    rtl-sdr
 
     ./ollama.nix
     ./restic.nix
