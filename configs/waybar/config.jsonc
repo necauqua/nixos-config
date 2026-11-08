@@ -115,7 +115,8 @@
     "return-type": "json",
     "exec": "~/.config/waybar/scripts/printer.sh",
     "interval": 5,
-    "on-click": "xdg-open http://u1.lan"
+    // the unit PATH of waybar has no browser, niri has the session PATH
+    "on-click": "niri msg action spawn -- xdg-open http://u1.lan"
   },
   "clock": {
     "format": "1{:%F/%T %Z}",
@@ -241,8 +242,7 @@
     "format": " {temperatureC}°C",
     "format-critical": " {temperatureC}°C",
     "interval": 1,
-    "critical-threshold": 80,
-    "on-click": "foot btop"
+    "critical-threshold": 80
   },
   "pulseaudio": {
     "format": "{volume}% {icon}",
