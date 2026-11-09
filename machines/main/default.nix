@@ -89,6 +89,12 @@
         "x-systemd.automount"
         "x-systemd.idle-timeout=600"
         "x-systemd.mount-timeout=5s"
+        # when home is offline, a request fails with EIO after about 30 s
+        # (timeouts of 5, 10 and 15 s) instead of hanging the caller forever,
+        # and the caller can be systemd itself
+        "soft"
+        "timeo=50"
+        "retrans=2"
       ];
     };
   };

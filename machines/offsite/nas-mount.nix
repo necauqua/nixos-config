@@ -6,6 +6,10 @@
       "nfsvers=4.2"
       "_netdev"
       "noatime"
+      # a missing home fails a snapshot with an error, and does not freeze it
+      "soft"
+      "timeo=100"
+      "retrans=3"
       # mount lazily on first access so a down VPN/NAS doesn't block boot
       "x-systemd.automount"
       "x-systemd.idle-timeout=600"

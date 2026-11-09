@@ -129,7 +129,14 @@
       "/var/log" = { device = "rpool/var/log"; fsType = "zfs"; };
       "/saved" = { device = "rpool/root/saved"; fsType = "zfs"; neededForBoot = true; };
       "/boot" = { label = "boot"; fsType = "vfat"; };
-      "/storage" = { device = "home.lan:/storage"; fsType = "nfs"; };
+      "/storage" = {
+        device = "home.lan:/storage";
+        fsType = "nfs";
+        # when home is offline, a request fails with EIO after about 30 s
+        # (timeouts of 5, 10 and 15 s) instead of hanging the caller forever,
+        # and the caller can be systemd itself
+        options = [ "soft" "timeo=50" "retrans=2" ];
+      };
     } // extras;
 
   environment.etc."machine-id".source = "/saved/machine-id";
