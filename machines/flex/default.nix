@@ -87,10 +87,7 @@
     initrd = {
       availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "sdhci_pci" ];
 
-      luks.devices.root = {
-        device = "/dev/disk/by-label/root";
-        preLVM = true;
-      };
+      luks.devices.root.device = "/dev/disk/by-label/root";
 
       # # zfs is so completely stupid, apparently they made it so
       # # you cannot rollback to an older snapshot without deleting
