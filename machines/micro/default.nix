@@ -89,7 +89,7 @@
     };
   };
 
-  services.journald.extraConfig = "SystemMaxUse=100M";
+  services.journald.settings.Journal.SystemMaxUse = "100M";
 
   programs.fish.enable = true;
 
