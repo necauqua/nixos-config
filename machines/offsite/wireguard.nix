@@ -1,5 +1,7 @@
+{ config, lib, ... }:
 let
   port = 51820;
+  wg0 = config.networking.wireguard.interfaces.wg0;
 in
 {
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
@@ -24,4 +26,12 @@ in
       }
     ];
   };
+
+  # The NFS mounts from home go through the tunnel. When a switch stops the
+  # tunnel, a mount without its server blocks the generators of systemd, and a
+  # re-exec of systemd then freezes PID 1. A changed tunnel takes effect after
+  # a reboot or a manual restart of these units.
+  systemd.services = lib.genAttrs
+    ([ "wireguard-wg0" ] ++ map (peer: "wireguard-wg0-peer-${peer.name}") wg0.peers)
+    (_: { restartIfChanged = false; });
 }
