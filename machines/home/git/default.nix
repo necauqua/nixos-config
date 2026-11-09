@@ -31,10 +31,8 @@ let
     '' + builtins.readFile ./rad-mirror.sh;
   };
 
+  # the knot on offsite serves ssh itself, on port 22
   knot = "knot.necauq.ua";
-  # the knot shares the sshd of offsite, which listens here and leaves a tarpit
-  # on port 22 (modules/ssh.nix)
-  knot-port = 5555;
   # the tangled account that owns the repository records
   tangled-did = "did:plc:5q3nxglkbatgvuvwcu4tnexs";
   tangled-pds = "https://pds.necauq.ua";
@@ -47,35 +45,19 @@ let
     runtimeInputs = with pkgs; [ curl jq ];
     text = ''
       name=$1
-      cursor=""
 
-      while :; do
-        url="${tangled-pds}/xrpc/com.atproto.repo.listRecords?repo=${tangled-did}&collection=sh.tangled.repo&limit=100"
-        if [ -n "$cursor" ]; then
-          url="$url&cursor=$cursor"
-        fi
-        response=$(curl -fsSL --max-time 10 "$url")
+      # the declaration of a repository has its name as the record key
+      if ! response=$(curl -fsSL --max-time 10 -G \
+        "${tangled-pds}/xrpc/com.atproto.repo.getRecord" \
+        --data-urlencode "repo=${tangled-did}" \
+        --data-urlencode "collection=org.tangled.repo.declaration" \
+        --data-urlencode "rkey=$name"); then
+        printf 'no org.tangled.repo.declaration record named %s on %s\n' \
+          "$name" "${tangled-pds}" >&2
+        exit 1
+      fi
 
-        # older records carry the name as the record key, newer ones as a field
-        did=$(jq -r --arg name "$name" \
-          'first(.records[]
-            | select((.value.name // (.uri | split("/") | last)) == $name)
-            | .value.repoDid)' <<< "$response")
-
-        if [ -n "$did" ]; then
-          # the url carries a port, so it is the ssh:// form and not the short one
-          printf 'ssh://git@%s:%d/%s\n' "${knot}" ${toString knot-port} "$did"
-          exit 0
-        fi
-
-        cursor=$(jq -r '.cursor // empty' <<< "$response")
-        if [ -z "$cursor" ]; then
-          break
-        fi
-      done
-
-      printf 'no sh.tangled.repo record named %s on %s\n' "$name" "${tangled-pds}" >&2
-      exit 1
+      printf 'git@%s:%s\n' "${knot}" "$(jq -r '.value.repo' <<< "$response")"
     '';
   };
 
@@ -159,13 +141,10 @@ in
   programs.ssh.knownHosts = {
     "github.com".publicKey =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
-    # the knot runs on offsite and shares its host key (secrets/secrets.nix);
-    # ssh keeps a host that listens off port 22 under this spelling
-    ${knot} = {
-      hostNames = [ "[${knot}]:${toString knot-port}" ];
-      publicKey =
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIATmTop5IhHPpDQUS5l/HA+LgvLtecby0+97Pu/+PI+P";
-    };
+    # knot-migrate gave the knot a copy of the host key of offsite
+    # (secrets/secrets.nix)
+    ${knot}.publicKey =
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIATmTop5IhHPpDQUS5l/HA+LgvLtecby0+97Pu/+PI+P";
   };
 
   # systemd-tmpfiles refuses every path under /storage, see komodo-core.nix,

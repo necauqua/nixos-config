@@ -28,6 +28,8 @@ in
   "cloudflare.age".publicKeys = keys [ home offsite ];
   "dkim-key.age".publicKeys = offsite-only;
   "elastic-key.age".publicKeys = offsite-only;
+  # env file of the tangled knot: KNOT_MASTER_KEY
+  "knot.age".publicKeys = offsite-only;
   "murmur-password.age".publicKeys = offsite-only;
   # env file of the noit.ing container: NOITING_TWITCH_CLIENT_ID and
   # NOITING_TWITCH_CLIENT_SECRET
