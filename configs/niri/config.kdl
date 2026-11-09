@@ -236,7 +236,7 @@ binds {
     Mod+S { spawn "kitty"; }
     Mod+B { spawn "firefox"; }
     Alt+Space { spawn "rofi" "-show" "drun" "-show-icons"; }
-    Mod+L { spawn "swaylock" "-S" "--clock" "--effect-blur" "7x5" "--timestr" "%T" "--datestr" "1%F" "--indicator"; }
+    Mod+L { spawn "lock-screen"; }
 
     Mod+Space { toggle-window-floating; }
     Mod+X { close-window; }
