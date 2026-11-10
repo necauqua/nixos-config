@@ -1,6 +1,14 @@
-/* Hide Sidebery sidebar title */
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] > #sidebar-header {
-  visibility: collapse !important;
+/* Hide the header (panel switcher + close button) of extension sidebars.
+   It is in the webext-panels.xhtml document, which does not tell which
+   extension it holds, so this applies to all extension sidebars. */
+#webextpanels-window > #sidebar-panel-header {
+  display: none !important;
+}
+
+/* Remove the rounded corners of the sidebar panel and of the content area */
+#sidebar,
+.browserContainer {
+  border-radius: 0 !important;
 }
 
 /* Configure autohide_sidebar (add stuff to :root for what follows) */
